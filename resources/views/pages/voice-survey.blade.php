@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Voice Survey & IVR — Protiddhoni</title>
+<meta name="description" content="Collect responses from millions across Bangladesh through automated voice surveys. NPS, CSAT, market research — all in Bangla, all auto-analyzed." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#003087; --blue:#0070BA; --sky:#009CDE; --gold:#FFC439; --cream:#FFF9E6;
+    --ink:#0a1230; --paper:#fafbff; --line:#eef1f8; --muted:#6b7693; --slate:#3d4a72;
+    --green:#22c55e; --amber:#f59e0b; --red:#ef4444; --purple:#7c3aed;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#fff;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none}
+  .bn{font-family:'Hind Siliguri',sans-serif}
+  .container{max-width:1240px;margin:0 auto;padding:0 32px}
+
+  /* NAV */
+  .navbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;max-width:1240px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.5px;font-size:18px}
+  .logo-dot{width:11px;height:11px;background:linear-gradient(135deg,var(--sky),var(--gold));border-radius:50%;box-shadow:0 0 0 3px rgba(0,156,222,.15)}
+  .nav-links{display:flex;gap:28px;font-size:14px;color:var(--slate);font-weight:500}
+  .nav-links a{transition:color .2s}
+  .nav-links a:hover,.nav-links a.active{color:var(--blue)}
+  .nav-links a.active{font-weight:700}
+  .nav-cta{display:flex;gap:10px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:13px;transition:all .2s}
+  .btn-ghost{color:var(--slate)}
+  .btn-ghost:hover{color:var(--blue)}
+  .btn-primary{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:0 8px 20px -8px rgba(0,48,135,.5)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 28px -8px rgba(0,48,135,.6)}
+  .btn-outline{background:#fff;color:var(--navy);border:1.5px solid #d4dae8}
+  .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-gold{background:linear-gradient(135deg,#FFC439,#f59e0b);color:var(--ink)}
+  .btn-lg{padding:14px 24px;font-size:14px}
+
+  /* HERO */
+  .hero{background:linear-gradient(180deg,#fff7e6 0%,#fff 25%,#f0f4ff 65%,#e8eef9 100%);position:relative;overflow:hidden;padding:64px 0 56px}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .hero-h1{font-size:56px;font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--ink)}
+  .hero-h1 .accent{background:linear-gradient(90deg,var(--navy),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{font-size:16px;color:#4a5675;line-height:1.65;max-width:520px;margin-top:18px}
+  .hero-sub strong{color:var(--ink)}
+  .status-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.1);color:#15803d;padding:8px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px;border:1px solid rgba(34,197,94,.25);margin-bottom:18px;text-transform:uppercase}
+  .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.6}}
+  .cta-row{display:flex;gap:10px;margin-top:26px;align-items:center;flex-wrap:wrap}
+  .trust-strip{display:flex;align-items:center;gap:12px;margin-top:22px;color:var(--muted);font-size:11px;font-weight:500}
+  .stars{color:var(--gold);letter-spacing:1.5px}
+
+  /* IVR mock */
+  .ivr-mock{position:relative;height:560px}
+  .ivr-flow{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 30px 60px -25px rgba(0,48,135,.18);position:relative;overflow:hidden}
+  .ivr-head{display:flex;align-items:center;gap:10px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .ivr-head .ic{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--blue),var(--sky));color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .ivr-head h4{font-size:14px;font-weight:800}
+  .ivr-head p{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .ivr-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;font-size:13px;animation:slideUp .6s ease-out backwards}
+  .ivr-step:nth-child(1){animation-delay:.2s}
+  .ivr-step:nth-child(2){animation-delay:.8s}
+  .ivr-step:nth-child(3){animation-delay:1.4s}
+  .ivr-step:nth-child(4){animation-delay:2s}
+  .ivr-step:nth-child(5){animation-delay:2.6s}
+  @keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .ivr-step.user{margin-left:36px}
+  .ivr-bubble{flex:1;border-radius:14px;padding:11px 14px;line-height:1.55}
+  .ivr-bubble.bot{background:#f0f4ff;color:var(--ink);border-top-left-radius:4px}
+  .ivr-bubble.user{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-top-right-radius:4px;margin-left:auto}
+  .ivr-step .av{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:800}
+  .ivr-step.bot .av{background:#dbeafe;color:var(--navy)}
+  .ivr-step.user .av{background:var(--gold);color:var(--ink);order:2}
+  .ivr-rating{display:flex;gap:4px;margin-top:6px}
+  .ivr-rating span{font-size:18px;color:var(--gold);animation:starPop .3s ease-out backwards}
+  .ivr-rating span:nth-child(1){animation-delay:2.7s}
+  .ivr-rating span:nth-child(2){animation-delay:2.85s}
+  .ivr-rating span:nth-child(3){animation-delay:3s}
+  .ivr-rating span:nth-child(4){animation-delay:3.15s}
+  .ivr-rating span:nth-child(5){animation-delay:3.3s}
+  @keyframes starPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+  .stat-float{position:absolute;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border:1px solid rgba(0,48,135,.08);border-radius:14px;padding:11px 14px;box-shadow:0 16px 32px -10px rgba(0,48,135,.18);min-width:140px;animation:floatY 4s ease-in-out infinite}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .stat-float.sf1{top:-14px;right:-14px;animation-delay:1.5s}
+  .stat-float.sf2{bottom:-14px;left:-14px;animation-delay:2.6s}
+  .sf-eyebrow{font-size:9px;letter-spacing:1.5px;color:var(--navy);font-weight:800;text-transform:uppercase}
+  .sf-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--ink)}
+  .sf-sub{font-size:10px;color:var(--muted);margin-top:1px}
+
+  /* SECTION */
+  section{padding:96px 0}
+  .section-head{text-align:center;max-width:720px;margin:0 auto 56px}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:800;color:var(--blue);margin-bottom:14px}
+  h2.section-title{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:var(--ink)}
+  h2.section-title .accent{background:linear-gradient(90deg,var(--navy),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .section-sub{font-size:17px;color:#4a5675;margin-top:14px;line-height:1.6}
+
+  /* STATS */
+  .stats-banner{padding:48px 0;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;position:relative;overflow:hidden}
+  .stats-banner::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 300px at 80% 50%,rgba(255,196,57,.15),transparent),radial-gradient(600px 300px at 10% 50%,rgba(0,156,222,.2),transparent)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;z-index:1}
+  .stat-item{text-align:center;border-right:1px solid rgba(255,255,255,.1);padding:0 20px}
+  .stat-item:last-child{border-right:none}
+  .stat-num-big{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:800;letter-spacing:-2px;line-height:1;background:linear-gradient(180deg,#fff,#FFC439);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat-lbl{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:10px;font-weight:700}
+
+  /* SURVEY TYPES */
+  .types{background:#fff}
+  .type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:1080px;margin:0 auto}
+  .type-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px;display:flex;gap:22px;transition:all .3s}
+  .type-card:hover{transform:translateY(-3px);box-shadow:0 24px 48px -20px rgba(0,48,135,.18);border-color:transparent}
+  .type-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+  .type-card.nps .type-icon{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:var(--navy)}
+  .type-card.csat .type-icon{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#a16207}
+  .type-card.market .type-icon{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d}
+  .type-card.election .type-icon{background:linear-gradient(135deg,#fae8ff,#e9d5ff);color:#7c3aed}
+  .type-card h4{font-size:19px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px}
+  .type-card p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+  .type-tag{display:inline-block;background:rgba(0,112,186,.08);color:var(--navy);padding:4px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.5px;font-family:'JetBrains Mono',monospace}
+
+  /* DASHBOARD */
+  .dash-section{background:linear-gradient(180deg,#f8fafc,#fff)}
+  .dash-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+  .dash-text h3{font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:16px}
+  .dash-text p{font-size:15px;color:#4a5675;line-height:1.7;margin-bottom:18px}
+  .dash-feats{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:18px}
+  .dash-feats li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--slate)}
+  .dash-feats li::before{content:"✓";color:var(--green);font-weight:800;flex-shrink:0;font-size:15px}
+
+  .dashboard{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -25px rgba(0,48,135,.2)}
+  .dash-head{padding:18px 24px;background:linear-gradient(180deg,#f8fafc,#fff);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .dash-head h5{font-size:14px;font-weight:800;letter-spacing:-.3px}
+  .dash-head .status{font-size:11px;color:#15803d;background:rgba(34,197,94,.1);padding:4px 10px;border-radius:999px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+  .dash-body{padding:24px}
+  .dash-row1{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+  .dash-kpi{padding:16px;border-radius:12px;background:#fafbff;border:1px solid var(--line)}
+  .dash-kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
+  .dash-kpi-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;color:var(--ink);margin-top:4px;letter-spacing:-1px}
+  .dash-kpi-trend{font-size:11px;color:#15803d;font-weight:700;margin-top:2px}
+  .dash-kpi-trend.down{color:var(--red)}
+
+  .nps-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:14px 0 8px}
+  .nps-bar div{height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:800}
+  .nps-bar .promoters{background:var(--green);width:62%}
+  .nps-bar .passives{background:var(--gold);width:24%;color:var(--ink)}
+  .nps-bar .detractors{background:var(--red);width:14%}
+  .nps-legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600}
+
+  .resp-list{margin-top:20px}
+  .resp-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .resp-item:last-child{border-bottom:none}
+  .resp-region{flex:1;font-weight:600;color:var(--ink)}
+  .resp-bar{flex:1.5;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+  .resp-bar div{height:100%;background:linear-gradient(90deg,var(--blue),var(--sky));border-radius:3px;animation:fillBar 1.4s ease-out forwards;transform-origin:left;transform:scaleX(0)}
+  @keyframes fillBar{to{transform:scaleX(1)}}
+  .resp-pct{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink);width:50px;text-align:right}
+
+  /* BUILDER */
+  .builder{background:#fff}
+  .builder-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:flex-start}
+  .builder-mock{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 24px 48px -22px rgba(0,48,135,.16)}
+  .builder-canvas{background:#0a1230;border-radius:14px;padding:24px;min-height:380px;position:relative;overflow:hidden;color:#fff}
+  .builder-canvas::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(0,156,222,.18),transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,196,57,.12),transparent 50%)}
+  .node{position:relative;z-index:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;margin-bottom:12px;backdrop-filter:blur(10px);font-size:12.5px;display:flex;align-items:center;gap:12px}
+  .node .ic{width:32px;height:32px;border-radius:9px;background:rgba(255,196,57,.18);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:800}
+  .node .meta{font-size:10px;color:rgba(255,255,255,.5);font-family:'JetBrains Mono',monospace;margin-top:2px}
+  .node strong{color:#fff;font-weight:700}
+  .node-arrow{position:relative;z-index:1;text-align:center;color:rgba(255,255,255,.3);margin:-4px 0}
+
+  /* HOW IT WORKS */
+  .how{background:linear-gradient(180deg,#f8fafc,#fff)}
+  .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;margin-top:48px}
+  .how-grid::before{content:"";position:absolute;top:32px;left:8%;right:8%;height:2px;background:repeating-linear-gradient(90deg,var(--blue) 0,var(--blue) 6px,transparent 6px,transparent 12px);z-index:0}
+  .how-step{position:relative;text-align:center;padding:0 12px;z-index:1}
+  .how-num{width:64px;height:64px;border-radius:50%;background:#fff;border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--blue);margin:0 auto 18px;font-family:'JetBrains Mono',monospace;box-shadow:0 8px 24px -8px rgba(0,112,186,.4)}
+  .how-step h4{font-size:17px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px}
+  .how-step p{font-size:13px;color:var(--muted);line-height:1.55}
+
+  /* TESTIMONIAL */
+  .testimonial{background:#fff;text-align:center}
+  .testi-quote{font-size:26px;font-weight:600;letter-spacing:-.5px;line-height:1.45;max-width:880px;margin:0 auto 32px;color:var(--ink)}
+  .testi-quote::before{content:"\201C";font-family:Georgia,serif;font-size:80px;color:var(--gold);line-height:.5;display:block;margin-bottom:8px;font-weight:700}
+  .testi-author{display:flex;align-items:center;justify-content:center;gap:14px}
+  .testi-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px}
+  .testi-name{font-weight:800;font-size:14px;text-align:left}
+  .testi-role{font-size:12px;color:var(--muted);margin-top:1px;text-align:left}
+
+  /* FAQ */
+  .faq{background:linear-gradient(180deg,#f8fafc,#fff)}
+  .faq-grid{max-width:820px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--line);padding:20px 0}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:16px;letter-spacing:-.2px;list-style:none}
+  .faq-q::-webkit-details-marker{display:none}
+  .faq-q::after{content:"+";font-size:24px;font-weight:300;color:var(--blue);transition:transform .2s;flex-shrink:0;margin-left:16px}
+  .faq-item[open] .faq-q::after{content:"−"}
+  .faq-a{color:var(--muted);font-size:14px;line-height:1.7;margin-top:12px;max-width:680px}
+
+  /* FINAL CTA */
+  .final-cta{background:var(--ink);color:#fff;text-align:center;position:relative;overflow:hidden}
+  .final-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 50% 0%,rgba(255,196,57,.18),transparent),radial-gradient(600px 400px at 10% 100%,rgba(0,156,222,.15),transparent)}
+  .final-cta-inner{position:relative;z-index:1;max-width:800px;margin:0 auto}
+  .final-cta h2{font-size:48px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:18px}
+  .final-cta h2 .accent{background:linear-gradient(90deg,var(--gold),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .final-cta p{font-size:16px;color:rgba(255,255,255,.75);max-width:560px;margin:0 auto 36px;line-height:1.6}
+  .final-cta .cta-row{justify-content:center}
+  .final-cta .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+  .final-cta .btn-outline:hover{background:rgba(255,255,255,.05);border-color:#fff}
+  .perks{display:flex;justify-content:center;gap:32px;margin-top:32px;color:rgba(255,255,255,.6);font-size:12px;font-weight:600;flex-wrap:wrap}
+  .perks span::before{content:"✓ ";color:var(--green);margin-right:4px}
+
+  /* FOOTER */
+  .footer{background:#070c1f;color:rgba(255,255,255,.65);padding:64px 0 28px;font-size:13px}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:32px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .footer-brand{font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .footer-tagline{line-height:1.6;margin-bottom:18px;font-size:13px}
+  .footer-social{display:flex;gap:10px}
+  .footer-social a{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .2s}
+  .footer-social a:hover{background:var(--blue);color:#fff}
+  .footer-col h5{color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-col a{transition:color .2s;font-size:13px}
+  .footer-col a:hover{color:#fff}
+  .footer-bot{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:16px;font-size:12px;color:rgba(255,255,255,.45)}
+  .footer-bot-links{display:flex;gap:20px}
+
+  /* RESPONSIVE */
+  @media(max-width:980px){
+    .nav-links{display:none}
+    .hero-grid,.dash-grid,.builder-grid{grid-template-columns:1fr;gap:36px}
+    .hero-h1{font-size:38px}
+    .ivr-mock{height:auto}
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:24px}
+    .stat-item{border-right:none}
+    .type-grid{grid-template-columns:1fr}
+    .how-grid{grid-template-columns:1fr;gap:32px}
+    .how-grid::before{display:none}
+    .footer-grid{grid-template-columns:repeat(2,1fr)}
+    .final-cta h2{font-size:30px}
+    h2.section-title{font-size:28px}
+    .stat-num-big{font-size:36px}
+    .testi-quote{font-size:20px}
+    section{padding:64px 0}
+    .dash-row1{grid-template-columns:1fr 1fr}
+  }
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s ease-out,transform .8s ease-out}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  .brand-logo-img{display:block;width:158px;height:auto;max-height:46px;object-fit:contain}
+  .footer-brand .brand-logo-img,.footer .logo .brand-logo-img{width:172px;max-height:52px}
+  @media(max-width:520px){.brand-logo-img{width:132px;max-height:40px}}</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo"><img src="/assets/img/protiddhoni-logo.png" alt="Protiddhoni" class="brand-logo-img"></a>
+    <div class="nav-links">
+      <a href="/voice-otp">Voice OTP</a>
+      <a href="/voice-survey" class="active">Surveys</a>
+      <a href="/voice-broadcast">Broadcast</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/api-docs">API Docs</a>
+      <a href="/blog">Blog</a>
+      <a href="/about">About</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="/contact">Sign in</a>
+      <a class="btn btn-primary" href="/contact">Start free →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="status-pill"><span class="live-dot"></span><span data-cms="voice-survey.hero.pill">Voice Survey · 4x response rate vs SMS</span></span>
+        <h1 class="hero-h1" data-cms-html="voice-survey.hero.headline">What customers actually say,<br/><span class="accent">over the phone.</span></h1>
+        <p class="hero-sub" data-cms-html="voice-survey.hero.subhead">Emails go unopened, SMS goes unanswered, online survey links go unclicked. <strong>A voice survey rings the phone directly</strong> — the question is asked in Bangla, the customer presses 1–5 to reply. Auto-analysed, real-time dashboard.</p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary btn-lg" href="#">Build a survey →</a>
+          <a class="btn btn-outline btn-lg" href="#demo">▶ See live dashboard</a>
+        </div>
+
+        <div class="trust-strip">
+          <span class="stars">★★★★★</span>
+          <span><strong style="color:var(--ink)">4.8/5</strong> · 80+ NGOs · BRAC · Grameen · a2i · Election Comm</span>
+        </div>
+      </div>
+
+      <div class="ivr-mock">
+        <div class="ivr-flow">
+          <div class="ivr-head">
+            <div class="ic">🎙</div>
+            <div>
+              <h4>Live Survey · NPS Q4 2026</h4>
+              <p>+880 9610-114455 · in progress</p>
+            </div>
+          </div>
+
+          <div class="ivr-step bot">
+            <div class="av">📞</div>
+            <div class="ivr-bubble bot">Assalamu Alaikum. Calling from <strong>BRAC</strong>. We'd like 30 seconds of your feedback — it would be a huge help.</div>
+          </div>
+          <div class="ivr-step user">
+            <div class="ivr-bubble user">▸ Press 1 to continue</div>
+            <div class="av">🟡</div>
+          </div>
+          <div class="ivr-step bot">
+            <div class="av">🎙</div>
+            <div class="ivr-bubble bot">How would you rate our service? <strong>1 = very poor, 5 = excellent.</strong></div>
+          </div>
+          <div class="ivr-step user">
+            <div class="ivr-bubble user">▸ Press 5
+              <div class="ivr-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            </div>
+            <div class="av">🟡</div>
+          </div>
+          <div class="ivr-step bot">
+            <div class="av">✓</div>
+            <div class="ivr-bubble bot" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d"><strong>Thank you!</strong> Your feedback has been recorded.</div>
+          </div>
+        </div>
+
+        <div class="stat-float sf1">
+          <div class="sf-eyebrow">Response rate</div>
+          <div class="sf-num">68%</div>
+          <div class="sf-sub">vs 12% SMS</div>
+        </div>
+        <div class="stat-float sf2">
+          <div class="sf-eyebrow">Live respondents</div>
+          <div class="sf-num">2,847</div>
+          <div class="sf-sub">last 24h</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-banner">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num-big">4x</div><div class="stat-lbl">Higher response</div></div>
+      <div class="stat-item"><div class="stat-num-big">68%</div><div class="stat-lbl">Avg completion</div></div>
+      <div class="stat-item"><div class="stat-num-big">14M</div><div class="stat-lbl">Responses / yr</div></div>
+      <div class="stat-item"><div class="stat-num-big">3min</div><div class="stat-lbl">Survey to launch</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPES -->
+<section class="types">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Survey templates</span>
+      <h2 class="section-title">Built for the questions <span class="accent">you actually ask</span></h2>
+      <p class="section-sub">Pick a ready template or build from scratch with our visual IVR designer.</p>
+    </div>
+
+    <div class="type-grid">
+      <div class="type-card nps reveal">
+        <div class="type-icon">📈</div>
+        <div>
+          <h4>NPS — Net Promoter Score</h4>
+          <p>"0-10 scale e amake recommend korben?" — classic NPS, auto-segmented into Promoters / Passives / Detractors.</p>
+          <span class="type-tag">9 questions · 90s avg</span>
+        </div>
+      </div>
+      <div class="type-card csat reveal">
+        <div class="type-icon">😊</div>
+        <div>
+          <h4>CSAT — Customer Satisfaction</h4>
+          <p>Post-purchase, post-call, post-delivery satisfaction surveys. 1-5 ratings with optional voice comments.</p>
+          <span class="type-tag">3-5 questions · 45s avg</span>
+        </div>
+      </div>
+      <div class="type-card market reveal">
+        <div class="type-icon">📊</div>
+        <div>
+          <h4>Market research</h4>
+          <p>Brand awareness, product testing, pricing sensitivity, demographic deep-dives. Multi-branch logic.</p>
+          <span class="type-tag">10-20 questions · 4min avg</span>
+        </div>
+      </div>
+      <div class="type-card election reveal">
+        <div class="type-icon">🗳</div>
+        <div>
+          <h4>Polling & political</h4>
+          <p>Election-period polling, public opinion, policy feedback. Designed for fast, large-sample national reach.</p>
+          <span class="type-tag">5-7 questions · 2min avg</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="dash-section" id="demo">
+  <div class="container">
+    <div class="dash-grid">
+      <div class="dash-text reveal">
+        <span class="eyebrow">Real-time dashboard</span>
+        <h3>Watch responses pour in <br/>across Bangladesh, live.</h3>
+        <p>The dashboard updates live the moment a survey launches — responses from every district, Dhaka to Bandarban, visible in real time.</p>
+
+        <ul class="dash-feats">
+          <li><strong>Live NPS / CSAT scores</strong> with promoter / passive / detractor breakdown</li>
+          <li><strong>Geo-segmented results</strong> — district-wise, age group-wise, gender-wise filtering</li>
+          <li><strong>Voice comment transcription</strong> — open-ended Bangla replies auto-transcribed</li>
+          <li><strong>Sentiment analysis</strong> — AI-powered positive/negative/neutral tagging</li>
+          <li><strong>Export anywhere</strong> — CSV, Excel, Looker, Tableau, Metabase, Google Sheets</li>
+        </ul>
+
+        <div class="cta-row" style="margin-top:32px"><a class="btn btn-primary btn-lg" href="#">Try interactive demo →</a></div>
+      </div>
+
+      <div class="dashboard reveal">
+        <div class="dash-head">
+          <h5>📊 NPS Q4 2026 — Live results</h5>
+          <span class="status"><span class="live-dot"></span>Live</span>
+        </div>
+        <div class="dash-body">
+          <div class="dash-row1">
+            <div class="dash-kpi"><div class="dash-kpi-lbl">NPS Score</div><div class="dash-kpi-val">+48</div><div class="dash-kpi-trend">↑ +6 vs Q3</div></div>
+            <div class="dash-kpi"><div class="dash-kpi-lbl">Responses</div><div class="dash-kpi-val">12,847</div><div class="dash-kpi-trend">↑ 18% MoM</div></div>
+            <div class="dash-kpi"><div class="dash-kpi-lbl">Completion</div><div class="dash-kpi-val">71%</div><div class="dash-kpi-trend down">↓ 2% vs Q3</div></div>
+          </div>
+
+          <div style="margin-top:8px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700">NPS distribution</div>
+          <div class="nps-bar">
+            <div class="promoters">62% Promoters</div>
+            <div class="passives">24%</div>
+            <div class="detractors">14%</div>
+          </div>
+          <div class="nps-legend"><span>● Promoters (9-10)</span><span>● Passives (7-8)</span><span>● Detractors (0-6)</span></div>
+
+          <div class="resp-list">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:8px">Responses by division</div>
+            <div class="resp-item"><div class="resp-region">Dhaka</div><div class="resp-bar"><div style="width:78%"></div></div><div class="resp-pct">78%</div></div>
+            <div class="resp-item"><div class="resp-region">Chattogram</div><div class="resp-bar"><div style="width:64%"></div></div><div class="resp-pct">64%</div></div>
+            <div class="resp-item"><div class="resp-region">Sylhet</div><div class="resp-bar"><div style="width:55%"></div></div><div class="resp-pct">55%</div></div>
+            <div class="resp-item"><div class="resp-region">Khulna</div><div class="resp-bar"><div style="width:62%"></div></div><div class="resp-pct">62%</div></div>
+            <div class="resp-item"><div class="resp-region">Rajshahi</div><div class="resp-bar"><div style="width:48%"></div></div><div class="resp-pct">48%</div></div>
+            <div class="resp-item"><div class="resp-region">Rangpur · Mymensingh · Barisal</div><div class="resp-bar"><div style="width:40%"></div></div><div class="resp-pct">40%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section class="builder">
+  <div class="container">
+    <div class="builder-grid">
+      <div class="reveal">
+        <span class="eyebrow">Visual builder</span>
+        <h3 style="font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:14px">Drag-drop IVR — <br/>no code, no engineer.</h3>
+        <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:18px">Design complete surveys with drag-and-drop in our visual flow builder. Branching logic, conditional routing, voice-recording capture — all built in.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:18px">
+          <li style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--slate)"><span style="color:var(--green);font-weight:800">✓</span>Branching: "press 1 → ask Q3", "press 2 → ask Q5"</li>
+          <li style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--slate)"><span style="color:var(--green);font-weight:800">✓</span>Voice recording: 30-sec open-ended responses</li>
+          <li style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--slate)"><span style="color:var(--green);font-weight:800">✓</span>Multi-language: switch Bangla/English mid-survey</li>
+          <li style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--slate)"><span style="color:var(--green);font-weight:800">✓</span>Quotas: stop after N responses per district / segment</li>
+        </ul>
+      </div>
+
+      <div class="builder-mock reveal">
+        <div class="builder-canvas">
+          <div class="node">
+            <div class="ic">▶</div>
+            <div><strong>START</strong><div class="meta">Greeting · Bangla</div></div>
+          </div>
+          <div class="node-arrow">↓</div>
+          <div class="node">
+            <div class="ic">?</div>
+            <div><strong>Q1: Service rating?</strong><div class="meta">Press 1-5 · DTMF</div></div>
+          </div>
+          <div class="node-arrow">↓ branch</div>
+          <div class="node">
+            <div class="ic">⇉</div>
+            <div><strong>IF rating ≥ 4 → Q2A</strong><div class="meta">Conditional logic · auto</div></div>
+          </div>
+          <div class="node-arrow">↓</div>
+          <div class="node">
+            <div class="ic">🎤</div>
+            <div><strong>Q2A: Why did you love it?</strong><div class="meta">Voice recording · 30s</div></div>
+          </div>
+          <div class="node-arrow">↓</div>
+          <div class="node">
+            <div class="ic">✓</div>
+            <div><strong>END · Save response</strong><div class="meta">Webhook → CRM</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">From design to insights</span>
+      <h2 class="section-title">Live in <span class="accent">3 minutes.</span></h2>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-step reveal"><div class="how-num">01</div><h4>Design</h4><p>Drag-drop builder e questions add korun ba template select korun.</p></div>
+      <div class="how-step reveal"><div class="how-num">02</div><h4>Upload list</h4><p>CSV upload korun ba CRM (HubSpot, Zoho, custom) shonge connect korun.</p></div>
+      <div class="how-step reveal"><div class="how-num">03</div><h4>Launch</h4><p>Schedule koren ba immediately blast koren — full BD, 4 carrier, simultaneous dial.</p></div>
+      <div class="how-step reveal"><div class="how-num">04</div><h4>Analyze</h4><p>Live dashboard e response dekhun, sentiment & geo breakdown, then export.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <div class="container">
+    <div class="reveal">
+      <div class="testi-quote">
+        Amra 64 districts e khana-baari level survey kortam — fieldwork e 3 month lagto. Protiddhoni diye <strong style="color:var(--blue)">7 dine 18,000 response</strong> peyechi, with auto-transcribed Bangla comments. Game changer for impact research.
+      </div>
+      <div class="testi-author">
+        <div class="testi-avatar">DR</div>
+        <div>
+          <div class="testi-name">Dr. Habibur Rahman</div>
+          <div class="testi-role">Director, Research · BRAC Institute of Governance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Voice Survey FAQ</span>
+      <h2 class="section-title">Questions about <span class="accent">running surveys</span></h2>
+    </div>
+
+    <div class="faq-grid">
+      <details class="faq-item" open>
+        <summary class="faq-q">How do voice surveys get higher response rates?</summary>
+        <p class="faq-a">SMS reply rate is ~12%, online-survey link click rate is ~3%. A voice call rings directly, the customer picks up, and a 1–5 button press takes 30 seconds. Result: 60–70% completion rate. Far more natural for Bangla speakers.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Can respondents speak open-ended answers?</summary>
+        <p class="faq-a">Yes — every question can capture either DTMF (button press) or a voice recording (10–60 seconds). Open-ended Bangla recordings are auto-transcribed and sentiment-tagged automatically.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What about data privacy?</summary>
+        <p class="faq-a">Respondent consent recorded automatically (intro message e). All data stored in BD-resident servers, encrypted. PII can be auto-redacted from transcripts. GDPR-compliant + Bangladesh DPDP-ready.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Can I target specific districts or demographics?</summary>
+        <p class="faq-a">Definitely — you can filter your uploaded list by district, division, age range (if known), or gender. Or set quotas: "stop after 200 responses from each district" for representative samples.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What if a respondent is busy?</summary>
+        <p class="faq-a">Configurable retry — by default we'll try 3 times spread across 24h. Voicemail detection avoids burning your budget. Respondent can also press 9 to "call back later" and we'll auto-reschedule.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How fast can I see results?</summary>
+        <p class="faq-a">Real-time. Dashboard updates every second as calls complete. NPS, completion %, district breakdown — all live. CSV export available as soon as responses come in.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Can I integrate with my CRM?</summary>
+        <p class="faq-a">Yes — native integrations with HubSpot, Salesforce, Zoho, Pipedrive, plus webhooks for any custom CRM. Survey trigger from CRM events ("close ticket → trigger CSAT survey 24h later") supported.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What's the per-survey cost?</summary>
+        <p class="faq-a">From ৳0.55 per completed survey on the Business plan. Failed/abandoned calls = no charge. Volume pricing kicks in at 10K+ responses/month. <a href="/pricing" style="color:var(--blue);font-weight:700">Full pricing →</a></p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <div class="final-cta-inner">
+      <span class="eyebrow" style="color:var(--gold)">Ready to listen?</span>
+      <h2>Stop guessing what your customers <span class="accent">really think.</span></h2>
+      <p>Free trial includes 100 voice survey responses. Build your first survey in 3 minutes — no card, no contract.</p>
+      <div class="cta-row">
+        <a class="btn btn-gold btn-lg" href="#">Start free survey →</a>
+        <a class="btn btn-outline btn-lg" href="/contact">Book a walkthrough</a>
+      </div>
+      <div class="perks">
+        <span>100 free responses</span>
+        <span>No card required</span>
+        <span>Live dashboard</span>
+        <span>Cancel anytime</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><img src="/assets/img/protiddhoni-logo.png" alt="Protiddhoni" class="brand-logo-img"></div>
+        <p class="footer-tagline">Bangladesh's most reliable voice broadcasting platform. Reaching every district, every upazila, every customer.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="/voice-otp">Voice OTP</a></li>
+          <li><a href="/voice-survey">Voice Survey</a></li>
+          <li><a href="/voice-broadcast">Voice Broadcast</a></li>
+          <li><a href="/api-docs">Developer API</a></li>
+          <li><a href="#">SDKs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="#">Banking & MFS</a></li>
+          <li><a href="#">E-commerce</a></li>
+          <li><a href="#">Healthcare</a></li>
+          <li><a href="#">Education</a></li>
+          <li><a href="#">Government & NGO</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="/about">About us</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="/api-docs">API Reference</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="#">Status page</a></li>
+          <li><a href="#">Compliance</a></li>
+          <li><a href="#">Help center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <div>© 2026 Protiddhoni Ltd. · Built with ❤️ in Dhaka, Bangladesh</div>
+      <div class="footer-bot-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+<script src="/assets/js/cms-client.js"></script>
+<script>CMS.init({ base: window.PROTIDDHONI_CMS_BASE || '/api', page: 'voice-survey' });</script>
+</body>
+</html>
+
+
+
