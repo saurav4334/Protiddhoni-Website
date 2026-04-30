@@ -50,7 +50,7 @@
               <span class="w-3 h-3 rounded-full bg-red-400"></span>
               <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
               <span class="w-3 h-3 rounded-full bg-green-400"></span>
-              <span class="ml-3 text-xs text-ink-500 font-mono">dashboard.voicereach.com</span>
+              <span class="ml-3 text-xs text-ink-500 font-mono">dashboard.protiddhoni-bd.com</span>
             </div>
             <span class="chip-sky chip">Live</span>
           </div>
@@ -307,7 +307,8 @@
           <div class="mt-5 flex items-center gap-3">
             <div
               class="w-10 h-10 rounded-full {{ $index === 1 ? 'bg-paypal-gold text-paypal-navy' : 'bg-paypal-navy text-white' }} font-bold flex items-center justify-center">
-              {{ $t['name'][0] }}{{ explode(' ', $t['name'])[1][0] ?? '' }}</div>
+              {{ $t['name'][0] }}{{ explode(' ', $t['name'])[1][0] ?? '' }}
+            </div>
             <div>
               <p class="font-bold {{ $index === 1 ? '' : 'text-ink-900' }} text-sm">{{ $t['name'] }}</p>
               <p class="text-xs {{ $index === 1 ? 'opacity-80' : 'text-ink-500' }}">{{ $t['role'] }}</p>
