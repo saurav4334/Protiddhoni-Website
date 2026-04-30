@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CMS Super Admin — Protiddhoni</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { darkMode:'class', theme:{ extend:{
+    fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], mono:['JetBrains Mono','monospace'] },
+    colors: { paypal:{navy:'#003087',blue:'#0070BA',sky:'#009CDE',gold:'#FFC439',cream:'#FFF9E6'}, ink:{900:'#0a1f44',700:'#2c2e2f',500:'#687173',300:'#c3cad9'}, surface:{50:'#f7f9fc',100:'#eef3f9',200:'#e1e8f0'}}
+  }}}
+</script>
+<style>
+  body { font-family:'Plus Jakarta Sans', sans-serif; background:#f7f9fc; color:#2c2e2f; }
+  body.dark { background:#0a1024; color:#e2e8f0; }
+  body.dark .card { background:#111936; border-color:#1e2a4f; color:#e2e8f0; }
+  body.dark .topbar { background:rgba(10,16,36,.8); border-color:#1e2a4f; }
+  body.dark th { background:#0a1024; color:#94a3b8; border-color:#1e2a4f; }
+  body.dark td { border-color:#1e2a4f; }
+  body.dark tr:hover td { background:#0f1733; }
+  body.dark input, body.dark select, body.dark textarea { background:#0a1024; border-color:#1e2a4f; color:#e2e8f0; }
+  body.dark .chip-info { background:#1e2a4f; color:#93c5fd; }
+  body.dark .text-ink-900 { color:#e2e8f0; }
+  body.dark .text-ink-700 { color:#cbd5e1; }
+  body.dark .text-ink-500 { color:#94a3b8; }
+  body.dark .border-surface-100, body.dark .border-surface-200 { border-color:#1e2a4f; }
+  body.dark .bg-surface-50 { background:#0f1733; }
+  .mesh-blue { background: linear-gradient(135deg,#003087 0%,#0070BA 55%,#009CDE 100%); }
+  .card { background:#fff; border:1px solid #e1e8f0; border-radius:18px; transition:.2s; }
+  .chip { display:inline-flex; gap:.35rem; padding:.25rem .7rem; border-radius:999px; font-size:.7rem; font-weight:700; }
+  .chip-success { background:#dcfce7; color:#15803d; }
+  .chip-warn { background:#fef3c7; color:#b45309; }
+  .chip-fail { background:#fee2e2; color:#b91c1c; }
+  .chip-info { background:#eef3f9; color:#003087; }
+  .chip-sky { background:#E0F4FB; color:#0070BA; }
+  .chip-gold { background:#FFF9E6; color:#8b6b00; }
+  .chip-purple { background:#f3e8ff; color:#7e22ce; }
+  .side-link { display:flex; align-items:center; gap:.7rem; padding:.55rem .9rem; border-radius:12px; font-size:.88rem; font-weight:600; color:#c3cad9; cursor:pointer; transition:.2s; }
+  .side-link:hover { background:rgba(255,255,255,0.08); color:#fff; }
+  .side-link.active { background:#FFC439; color:#0a1f44; }
+  .side-link.active .side-icon { background:#0a1f44; color:#FFC439; }
+  .side-icon { width:26px; height:26px; border-radius:8px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:.85rem; }
+  .btn-primary { background:#0070BA; color:#fff; padding:.55rem 1.1rem; border-radius:10px; font-weight:700; font-size:.85rem; display:inline-flex; align-items:center; gap:.4rem; cursor:pointer; }
+  .btn-primary:hover { background:#003087; }
+  .btn-gold { background:#FFC439; color:#0a1f44; padding:.55rem 1.1rem; border-radius:10px; font-weight:700; font-size:.85rem; cursor:pointer; }
+  .btn-ghost { background:#eef3f9; color:#003087; padding:.55rem 1.1rem; border-radius:10px; font-weight:700; font-size:.85rem; cursor:pointer; }
+  .btn-ghost:hover { background:#e1e8f0; }
+  .btn-danger { background:#fee2e2; color:#b91c1c; padding:.55rem 1.1rem; border-radius:10px; font-weight:700; font-size:.85rem; }
+  body.dark .btn-ghost { background:#1e2a4f; color:#93c5fd; }
+  .text-gradient { background: linear-gradient(135deg,#003087,#0070BA 50%,#009CDE); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  input, select, textarea { background:#fff; border:1px solid #e1e8f0; color:#2c2e2f; font-family:inherit; font-size:.85rem; }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:#0070BA; box-shadow:0 0 0 3px rgba(0,112,186,.15); }
+  table { width:100%; border-collapse:collapse; }
+  th { text-align:left; font-size:.7rem; font-weight:700; text-transform:uppercase; color:#687173; padding:.75rem 1rem; border-bottom:1px solid #e1e8f0; background:#f7f9fc; }
+  td { padding:.9rem 1rem; font-size:.85rem; border-bottom:1px solid #eef3f9; }
+  tr:hover td { background:#f7f9fc; }
+  .progress { height:6px; background:#eef3f9; border-radius:999px; overflow:hidden; }
+  .progress > div { height:100%; border-radius:999px; }
+  .tab { padding:.5rem 1rem; border-radius:10px; font-size:.85rem; font-weight:700; color:#687173; cursor:pointer; }
+  .tab:hover { background:#eef3f9; color:#003087; }
+  .tab.active { background:#003087; color:#fff; }
+  .section { display:none; }
+  .section.active { display:block; animation:fade .25s; }
+  @keyframes fade { from { opacity:0; transform:translateY(6px);} to { opacity:1; transform:none;} }
+  .dot-live { width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.6); animation:pulse 1.8s infinite; display:inline-block; }
+  @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(34,197,94,.6);} 70% { box-shadow:0 0 0 8px rgba(34,197,94,0);} 100% { box-shadow:0 0 0 0 rgba(34,197,94,0);} }
+  .scroll-thin::-webkit-scrollbar { width:6px; height:6px; }
+  .scroll-thin::-webkit-scrollbar-thumb { background:#c3cad9; border-radius:999px; }
+  .avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:.75rem; }
+  .ring-gold { box-shadow:0 0 0 4px #FFF9E6,0 0 0 5px #FFC439; }
+  .toggle { position:relative; width:40px; height:22px; background:#c3cad9; border-radius:999px; cursor:pointer; transition:.2s; flex-shrink:0; }
+  .toggle.on { background:#0070BA; }
+  .toggle::after { content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition:.2s; }
+  .toggle.on::after { left:20px; }
+  .editor-toolbar button { padding:.35rem .55rem; border-radius:6px; font-weight:600; color:#687173; }
+  .editor-toolbar button:hover { background:#eef3f9; color:#003087; }
+  .editor-toolbar button.active { background:#003087; color:#fff; }
+  .folder { display:flex; align-items:center; gap:.6rem; padding:.6rem .8rem; border-radius:10px; cursor:pointer; font-size:.85rem; font-weight:600; color:#2c2e2f; }
+  .folder:hover { background:#eef3f9; }
+  .folder.active { background:#eef3f9; color:#003087; }
+  .media-thumb { aspect-ratio:1; border-radius:12px; background-size:cover; background-position:center; position:relative; cursor:pointer; overflow:hidden; border:2px solid transparent; transition:.2s; }
+  .media-thumb:hover { border-color:#0070BA; transform:scale(1.02); }
+  .social-btn { display:flex; align-items:center; gap:.6rem; padding:.7rem 1rem; border-radius:12px; font-weight:700; font-size:.85rem; color:#fff; }
+  .notif-item { padding:1rem; border-bottom:1px solid #eef3f9; display:flex; gap:.8rem; align-items:flex-start; transition:.15s; cursor:pointer; }
+  .notif-item:hover { background:#f7f9fc; }
+  .notif-unread { background:#f0f7ff; }
+  .kbd { font-family:'JetBrains Mono', monospace; padding:.1rem .4rem; border-radius:6px; background:#eef3f9; border-bottom:2px solid #c3cad9; font-size:.7rem; }
+  .modal-back { position:fixed; inset:0; background:rgba(10,31,68,.6); backdrop-filter:blur(4px); z-index:60; display:none; align-items:center; justify-content:center; padding:1rem; }
+  .modal-back.show { display:flex; }
+  .check { accent-color:#0070BA; }
+</style>
+</head>
+<body class="antialiased">
+
+<div class="flex min-h-screen">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-[#0a1f44] text-white flex flex-col sticky top-0 h-screen overflow-y-auto scroll-thin flex-shrink-0">
+    <div class="p-5 border-b border-white/10">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl mesh-blue flex items-center justify-center ring-gold"><svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/></svg></div>
+        <div>
+          <p class="font-extrabold leading-none">Protiddhoni</p>
+          <p class="text-[10px] text-paypal-gold font-semibold tracking-widest">CMS · SUPER ADMIN</p>
+        </div>
+      </a>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5">
+      <p class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2">Overview</p>
+      <div class="side-link active" data-target="dashboard"><span class="side-icon">📊</span>Dashboard</div>
+      <div class="side-link" data-target="analytics"><span class="side-icon">📈</span>Analytics</div>
+      <div class="side-link" data-target="notifications"><span class="side-icon">🔔</span>Notifications<span class="ml-auto text-[10px] bg-red-500 text-white px-1.5 rounded-full">7</span></div>
+
+      <p class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2 mt-3">Content</p>
+      <div class="side-link" data-target="posts"><span class="side-icon">📝</span>Posts</div>
+      <div class="side-link" data-target="editor"><span class="side-icon">✏️</span>New Post</div>
+      <div class="side-link" data-target="categories"><span class="side-icon">🗂️</span>Categories & Tags</div>
+      <div class="side-link" data-target="media"><span class="side-icon">🖼️</span>Media Library</div>
+      <div class="side-link" data-target="seo"><span class="side-icon">🔍</span>SEO Manager</div>
+
+      <p class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2 mt-3">Social</p>
+      <div class="side-link" data-target="social"><span class="side-icon">🌐</span>Social Accounts</div>
+      <div class="side-link" data-target="scheduler"><span class="side-icon">📅</span>Content Scheduler</div>
+      <div class="side-link" data-target="engagement"><span class="side-icon">💬</span>Engagement</div>
+      <div class="side-link" data-target="capi"><span class="side-icon">🎯</span>Conversion API<span class="ml-auto text-[9px] bg-paypal-gold text-paypal-navy px-1.5 rounded-full font-extrabold">NEW</span></div>
+
+      <p class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2 mt-3">People</p>
+      <div class="side-link" data-target="users"><span class="side-icon">👥</span>Users</div>
+      <div class="side-link" data-target="roles"><span class="side-icon">🛡️</span>Roles & Permissions</div>
+      <div class="side-link" data-target="audit"><span class="side-icon">📜</span>Audit Log</div>
+
+      <p class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2 mt-3">System</p>
+      <div class="side-link" data-target="integrations"><span class="side-icon">🔌</span>API & Integrations</div>
+      <div class="side-link" data-target="architecture"><span class="side-icon">🏗️</span>Architecture</div>
+      <div class="side-link" data-target="settings"><span class="side-icon">⚙️</span>Settings</div>
+    </nav>
+    <div class="p-4 border-t border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="avatar mesh-blue">NF</div>
+        <div class="text-sm">
+          <p class="font-bold">Nazmul Fahim</p>
+          <p class="text-[10px] text-paypal-gold">Super Admin</p>
+        </div>
+        <button class="ml-auto text-white/60 hover:text-white text-xs" onclick="alert('Logged out')">⏻</button>
+      </div>
+      <a href="index.html" class="mt-3 block text-center text-xs text-white/50 hover:text-paypal-gold">← Back to site</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 min-w-0">
+
+    <!-- TOPBAR -->
+    <div class="topbar sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-surface-200 px-8 py-3 flex items-center gap-3">
+      <button class="btn-ghost !py-1.5 !px-2.5" onclick="document.querySelector('aside').classList.toggle('hidden')">☰</button>
+      <div class="flex-1 relative max-w-xl">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-ink-500">🔍</span>
+        <input class="w-full pl-10 pr-12 py-2.5 rounded-full text-sm" placeholder="Search posts, users, media..." />
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 kbd">⌘K</span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-ink-500"><span class="dot-live"></span><span class="font-semibold">All systems operational</span></div>
+      <button onclick="toggleTheme()" class="btn-ghost !py-1.5 !px-2.5" title="Toggle dark mode">🌓</button>
+      <button class="relative" onclick="document.querySelector('[data-target=notifications]').click()"><span class="text-xl">🔔</span><span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full px-1.5 font-bold">7</span></button>
+      <button class="btn-gold">+ New</button>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section id="dashboard" class="section active p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-4">
+        <div>
+          <h1 class="text-3xl font-extrabold text-ink-900">Welcome back, Nazmul 👋</h1>
+          <p class="text-ink-500 mt-1 text-sm">Here's what's happening across your CMS today — <span class="font-semibold text-paypal-navy">April 23, 2026</span></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="rounded-lg px-3 py-2"><option>Last 7 days</option><option>Last 30 days</option><option>Last 90 days</option><option>Year to date</option></select>
+          <button class="btn-ghost">📊 Compare</button>
+          <button class="btn-primary">📥 Export</button>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Total Users</span><span class="text-xl">👥</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">24,812</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-green-600 font-bold">↗ +12.8%</span><span class="text-ink-500">this month</span></div>
+          <div class="progress mt-3"><div class="mesh-blue" style="width:78%"></div></div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Published Posts</span><span class="text-xl">📝</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">1,428</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-green-600 font-bold">↗ +48</span><span class="text-ink-500">this week</span></div>
+          <div class="progress mt-3"><div style="width:91%;background:#22c55e"></div></div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Page Views</span><span class="text-xl">👁️</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">2.4M</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-green-600 font-bold">↗ +18.4%</span><span class="text-ink-500">vs last month</span></div>
+          <div class="progress mt-3"><div style="width:64%;background:#FFC439"></div></div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Engagement Rate</span><span class="text-xl">💬</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">6.8%</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-red-600 font-bold">↘ -0.3%</span><span class="text-ink-500">FB dip</span></div>
+          <div class="progress mt-3"><div style="width:68%;background:#0070BA"></div></div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="grid lg:grid-cols-6 gap-3 mb-6">
+        <button onclick="goto('editor')" class="card p-4 hover:border-paypal-blue text-left"><span class="text-2xl">✍️</span><p class="font-extrabold text-sm mt-2">New Post</p><p class="text-xs text-ink-500">Rich editor</p></button>
+        <button onclick="goto('media')" class="card p-4 hover:border-paypal-blue text-left"><span class="text-2xl">📤</span><p class="font-extrabold text-sm mt-2">Upload Media</p><p class="text-xs text-ink-500">Drag & drop</p></button>
+        <button onclick="goto('scheduler')" class="card p-4 hover:border-paypal-blue text-left"><span class="text-2xl">📅</span><p class="font-extrabold text-sm mt-2">Schedule Post</p><p class="text-xs text-ink-500">FB / LinkedIn</p></button>
+        <button onclick="goto('users')" class="card p-4 hover:border-paypal-blue text-left"><span class="text-2xl">➕</span><p class="font-extrabold text-sm mt-2">Invite User</p><p class="text-xs text-ink-500">Assign role</p></button>
+        <button onclick="goto('analytics')" class="card p-4 hover:border-paypal-blue text-left"><span class="text-2xl">📊</span><p class="font-extrabold text-sm mt-2">Reports</p><p class="text-xs text-ink-500">Traffic & ROI</p></button>
+        <button onclick="goto('settings')" class="card p-4 hover:border-paypal-blue text-left"><span class="text-2xl">⚙️</span><p class="font-extrabold text-sm mt-2">Settings</p><p class="text-xs text-ink-500">Config & keys</p></button>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="grid lg:grid-cols-3 gap-4 mb-6">
+        <div class="card p-6 lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div><h3 class="font-extrabold text-ink-900">Traffic & Engagement</h3><p class="text-xs text-ink-500">Daily trend — last 30 days</p></div>
+            <div class="flex items-center gap-1">
+              <button class="tab !text-xs !py-1 !px-2.5">7D</button><button class="tab active !text-xs !py-1 !px-2.5">30D</button><button class="tab !text-xs !py-1 !px-2.5">90D</button>
+            </div>
+          </div>
+          <canvas id="trafficChart" height="110"></canvas>
+        </div>
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div><h3 class="font-extrabold text-ink-900">Traffic Sources</h3><p class="text-xs text-ink-500">Last 30 days</p></div>
+            <span class="chip chip-sky">Live</span>
+          </div>
+          <canvas id="sourceChart" height="180"></canvas>
+          <div class="mt-4 space-y-2 text-xs">
+            <div class="flex justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-paypal-navy"></span>Direct</span><span class="font-bold">38.2%</span></div>
+            <div class="flex justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-paypal-blue"></span>Organic Search</span><span class="font-bold">28.6%</span></div>
+            <div class="flex justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-paypal-sky"></span>Social</span><span class="font-bold">21.4%</span></div>
+            <div class="flex justify-between"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-paypal-gold"></span>Referral</span><span class="font-bold">11.8%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-4 mb-6">
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900">Devices</h3>
+          <p class="text-xs text-ink-500 mb-4">Visitor split</p>
+          <canvas id="deviceChart" height="180"></canvas>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900">Top Locations</h3>
+          <p class="text-xs text-ink-500 mb-4">By page views</p>
+          <div class="space-y-3 mt-5">
+            <div><div class="flex justify-between text-sm font-bold mb-1"><span>🇧🇩 Bangladesh</span><span>1.42M</span></div><div class="progress"><div class="mesh-blue" style="width:88%"></div></div></div>
+            <div><div class="flex justify-between text-sm font-bold mb-1"><span>🇮🇳 India</span><span>284k</span></div><div class="progress"><div style="width:22%;background:#0070BA"></div></div></div>
+            <div><div class="flex justify-between text-sm font-bold mb-1"><span>🇺🇸 United States</span><span>168k</span></div><div class="progress"><div style="width:14%;background:#009CDE"></div></div></div>
+            <div><div class="flex justify-between text-sm font-bold mb-1"><span>🇬🇧 UK</span><span>84k</span></div><div class="progress"><div style="width:8%;background:#FFC439"></div></div></div>
+            <div><div class="flex justify-between text-sm font-bold mb-1"><span>🇦🇪 UAE</span><span>42k</span></div><div class="progress"><div style="width:4%;background:#6366f1"></div></div></div>
+          </div>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900">Social Channels</h3>
+          <p class="text-xs text-ink-500 mb-4">Reach this month</p>
+          <div class="space-y-3 mt-5">
+            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-[#1877F2] text-white flex items-center justify-center font-bold">f</span><div class="flex-1"><p class="text-sm font-bold">Facebook</p><p class="text-xs text-ink-500">486k reach · 24.8k eng.</p></div><span class="text-xs text-green-600 font-bold">+18%</span></div>
+            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-[#0A66C2] text-white flex items-center justify-center font-bold">in</span><div class="flex-1"><p class="text-sm font-bold">LinkedIn</p><p class="text-xs text-ink-500">128k imp · 4.2k clicks</p></div><span class="text-xs text-green-600 font-bold">+24%</span></div>
+            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-bold">𝕏</span><div class="flex-1"><p class="text-sm font-bold">X (Twitter)</p><p class="text-xs text-ink-500">82k imp · 1.8k eng.</p></div><span class="text-xs text-red-600 font-bold">-4%</span></div>
+            <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-white" style="background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45)">IG</span><div class="flex-1"><p class="text-sm font-bold">Instagram</p><p class="text-xs text-ink-500">214k reach · 12.8k eng.</p></div><span class="text-xs text-green-600 font-bold">+32%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT -->
+      <div class="grid lg:grid-cols-5 gap-4">
+        <div class="card lg:col-span-3 overflow-hidden">
+          <div class="p-5 flex items-center justify-between border-b border-surface-100">
+            <div><h3 class="font-extrabold text-ink-900">Recent Posts</h3><p class="text-xs text-ink-500">Last 7 days</p></div>
+            <button class="btn-ghost !py-1.5 !px-3 text-xs" onclick="goto('posts')">View all →</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table>
+              <thead><tr><th>Title</th><th>Author</th><th>Views</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><p class="font-bold">Why voice broadcasting is Bangladesh's fastest-growing channel</p><p class="text-xs text-ink-500">Voice Marketing · Featured</p></td><td>Rakib A.</td><td>12.8k</td><td><span class="chip chip-success">Published</span></td></tr>
+                <tr><td><p class="font-bold">How Daraz BD lifted repeat orders 23% with voice drops</p><p class="text-xs text-ink-500">Case Study</p></td><td>Sarah H.</td><td>8.4k</td><td><span class="chip chip-success">Published</span></td></tr>
+                <tr><td><p class="font-bold">Scaling to 50,000 concurrent voice calls</p><p class="text-xs text-ink-500">Engineering</p></td><td>Tamim K.</td><td>6.2k</td><td><span class="chip chip-success">Published</span></td></tr>
+                <tr><td><p class="font-bold">The 7 voice-script templates that convert</p><p class="text-xs text-ink-500">Playbook · Draft</p></td><td>Rakib A.</td><td>—</td><td><span class="chip chip-warn">Draft</span></td></tr>
+                <tr><td><p class="font-bold">Voice OTP vs SMS: full security breakdown</p><p class="text-xs text-ink-500">Security · Schedule Apr 26</p></td><td>Sarah H.</td><td>—</td><td><span class="chip chip-info">Scheduled</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card lg:col-span-2 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div><h3 class="font-extrabold text-ink-900">Recent Activity</h3><p class="text-xs text-ink-500">Live feed</p></div>
+            <span class="chip chip-gold"><span class="dot-live"></span> Live</span>
+          </div>
+          <div id="activityFeed" class="space-y-3 max-h-[340px] overflow-y-auto scroll-thin"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ANALYTICS ============ -->
+    <section id="analytics" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Analytics</h1><p class="text-ink-500 text-sm mt-1">Traffic, engagement & conversion insights</p></div>
+        <div class="flex gap-2"><button class="btn-ghost">📅 Apr 1 – Apr 23</button><button class="btn-ghost">⚖ Compare</button><button class="btn-primary">📥 Export</button></div>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-4 mb-6">
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Sessions</p><p class="text-2xl font-extrabold mt-1">1.84M</p><p class="text-xs text-green-600 mt-1">↗ +22.4%</p></div>
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Avg. Session</p><p class="text-2xl font-extrabold mt-1">3m 28s</p><p class="text-xs text-green-600 mt-1">↗ +12s</p></div>
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Bounce Rate</p><p class="text-2xl font-extrabold mt-1">38.2%</p><p class="text-xs text-green-600 mt-1">↘ -2.1%</p></div>
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Conversions</p><p class="text-2xl font-extrabold mt-1">4,284</p><p class="text-xs text-green-600 mt-1">↗ +18%</p></div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-4 mb-6">
+        <div class="card p-6"><h3 class="font-extrabold text-ink-900">Page Views by Day</h3><canvas id="pvChart" height="180"></canvas></div>
+        <div class="card p-6"><h3 class="font-extrabold text-ink-900">Engagement Funnel</h3><canvas id="funnelChart" height="180"></canvas></div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card overflow-hidden">
+          <div class="p-5 border-b border-surface-100"><h3 class="font-extrabold text-ink-900">Top Pages</h3></div>
+          <table>
+            <thead><tr><th>Page</th><th>Views</th><th>Avg. time</th><th>Bounce</th></tr></thead>
+            <tbody>
+              <tr><td class="font-bold">/voice-broadcasting</td><td>248k</td><td>4m 12s</td><td>28%</td></tr>
+              <tr><td class="font-bold">/pricing</td><td>182k</td><td>3m 42s</td><td>34%</td></tr>
+              <tr><td class="font-bold">/blog/voice-marketing-2026</td><td>124k</td><td>5m 08s</td><td>22%</td></tr>
+              <tr><td class="font-bold">/api-docs</td><td>84k</td><td>8m 14s</td><td>18%</td></tr>
+              <tr><td class="font-bold">/case-studies/daraz-bd</td><td>68k</td><td>6m 02s</td><td>24%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card overflow-hidden">
+          <div class="p-5 border-b border-surface-100"><h3 class="font-extrabold text-ink-900">Top Referrers</h3></div>
+          <table>
+            <thead><tr><th>Source</th><th>Sessions</th><th>Conv.</th><th>Quality</th></tr></thead>
+            <tbody>
+              <tr><td class="font-bold">google.com</td><td>482k</td><td>3.8%</td><td><div class="progress"><div style="width:82%;background:#22c55e"></div></div></td></tr>
+              <tr><td class="font-bold">facebook.com</td><td>284k</td><td>2.2%</td><td><div class="progress"><div style="width:64%;background:#0070BA"></div></div></td></tr>
+              <tr><td class="font-bold">linkedin.com</td><td>142k</td><td>5.4%</td><td><div class="progress"><div style="width:92%;background:#22c55e"></div></div></td></tr>
+              <tr><td class="font-bold">twitter.com</td><td>82k</td><td>1.4%</td><td><div class="progress"><div style="width:42%;background:#FFC439"></div></div></td></tr>
+              <tr><td class="font-bold">github.com</td><td>24k</td><td>8.2%</td><td><div class="progress"><div style="width:96%;background:#22c55e"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NOTIFICATIONS ============ -->
+    <section id="notifications" class="section p-8">
+      <div class="flex items-end justify-between mb-6">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Notifications</h1><p class="text-ink-500 text-sm mt-1">In-app, email, and webhook alerts</p></div>
+        <div class="flex gap-2"><button class="btn-ghost">✓ Mark all read</button><button class="btn-primary">⚙ Preferences</button></div>
+      </div>
+
+      <div class="flex gap-2 mb-6 border-b border-surface-200">
+        <div class="tab active">All (24)</div><div class="tab">Unread (7)</div><div class="tab">Comments</div><div class="tab">System</div><div class="tab">Security</div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="notif-item notif-unread">
+          <span class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-xl flex-shrink-0">💬</span>
+          <div class="flex-1"><p class="font-bold text-sm">New comment on "Voice OTP vs SMS"</p><p class="text-xs text-ink-500 mt-1">Tanvir Ahmed: "Great breakdown — do you have data on SIM swap incidents in BD?"</p><p class="text-[11px] text-ink-500 mt-1">12 min ago</p></div>
+          <div class="flex gap-2"><button class="btn-primary !py-1 !px-2.5 !text-xs">Reply</button></div>
+        </div>
+        <div class="notif-item notif-unread">
+          <span class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-xl flex-shrink-0">📣</span>
+          <div class="flex-1"><p class="font-bold text-sm">Facebook post reached 10k+ people</p><p class="text-xs text-ink-500 mt-1">"Eid Sale — Voice drops now live" — 12.4k reach, 2.8k engagement</p><p class="text-[11px] text-ink-500 mt-1">42 min ago</p></div>
+          <button class="btn-ghost !py-1 !px-2.5 !text-xs">View</button>
+        </div>
+        <div class="notif-item notif-unread">
+          <span class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl flex-shrink-0">⚠️</span>
+          <div class="flex-1"><p class="font-bold text-sm">LinkedIn API token expiring in 3 days</p><p class="text-xs text-ink-500 mt-1">Re-authenticate to keep scheduling active</p><p class="text-[11px] text-ink-500 mt-1">1 h ago</p></div>
+          <button class="btn-gold !py-1 !px-2.5 !text-xs">Refresh</button>
+        </div>
+        <div class="notif-item notif-unread">
+          <span class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-xl flex-shrink-0">🛡️</span>
+          <div class="flex-1"><p class="font-bold text-sm">5 failed login attempts from 45.148.*.14</p><p class="text-xs text-ink-500 mt-1">IP auto-blocked for 24 hours</p><p class="text-[11px] text-ink-500 mt-1">2 h ago</p></div>
+          <button class="btn-ghost !py-1 !px-2.5 !text-xs">Investigate</button>
+        </div>
+        <div class="notif-item">
+          <span class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl flex-shrink-0">👤</span>
+          <div class="flex-1"><p class="font-bold text-sm">New user registered — Rifat Kabir</p><p class="text-xs text-ink-500 mt-1">Role: Editor · rifat@company.com · Invited by Nazmul</p><p class="text-[11px] text-ink-500 mt-1">4 h ago</p></div>
+        </div>
+        <div class="notif-item">
+          <span class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-xl flex-shrink-0">📤</span>
+          <div class="flex-1"><p class="font-bold text-sm">Scheduled post published on LinkedIn</p><p class="text-xs text-ink-500 mt-1">"7 voice-script templates that convert" — 1.2k impressions so far</p><p class="text-[11px] text-ink-500 mt-1">6 h ago</p></div>
+        </div>
+        <div class="notif-item">
+          <span class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-xl flex-shrink-0">💾</span>
+          <div class="flex-1"><p class="font-bold text-sm">Nightly backup completed · 248 MB</p><p class="text-xs text-ink-500 mt-1">Stored in s3://protiddhoni-backups/2026-04-23.tar.gz</p><p class="text-[11px] text-ink-500 mt-1">8 h ago</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ POSTS ============ -->
+    <section id="posts" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Posts</h1><p class="text-ink-500 text-sm mt-1">1,428 total — Create, edit, schedule & publish</p></div>
+        <div class="flex gap-2"><button class="btn-ghost">📥 Export</button><button class="btn-primary" onclick="goto('editor')">+ New Post</button></div>
+      </div>
+
+      <div class="flex gap-2 mb-6 border-b border-surface-200 overflow-x-auto">
+        <div class="tab active">All (1,428)</div><div class="tab">Published (1,204)</div><div class="tab">Draft (142)</div><div class="tab">Scheduled (68)</div><div class="tab">Trash (14)</div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="p-4 border-b border-surface-100 flex flex-wrap gap-3 items-center">
+          <input class="rounded-lg px-3 py-2 flex-1 min-w-[240px]" placeholder="🔍 Search posts by title, author, ID…" />
+          <select class="rounded-lg px-3 py-2"><option>All categories</option><option>Voice Marketing</option><option>Engineering</option><option>Case Studies</option><option>Security</option></select>
+          <select class="rounded-lg px-3 py-2"><option>All authors</option><option>Rakib Ahmed</option><option>Sarah Haque</option><option>Tamim Khan</option></select>
+          <select class="rounded-lg px-3 py-2"><option>Sort: Newest</option><option>Oldest</option><option>Most viewed</option><option>Most engaged</option></select>
+        </div>
+        <div class="overflow-x-auto">
+          <table>
+            <thead><tr><th><input type="checkbox" class="check"/></th><th>Title</th><th>Category</th><th>Author</th><th>Views</th><th>SEO</th><th>Published</th><th>Status</th><th></th></tr></thead>
+            <tbody id="postsTable"></tbody>
+          </table>
+        </div>
+        <div class="p-4 border-t border-surface-100 flex items-center justify-between text-xs text-ink-500">
+          <span>Showing 1–10 of 1,428</span>
+          <div class="flex gap-1"><button class="btn-ghost !py-1 !px-2.5">←</button><button class="btn-primary !py-1 !px-2.5">1</button><button class="btn-ghost !py-1 !px-2.5">2</button><button class="btn-ghost !py-1 !px-2.5">3</button><button class="btn-ghost !py-1 !px-2.5">…</button><button class="btn-ghost !py-1 !px-2.5">143</button><button class="btn-ghost !py-1 !px-2.5">→</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EDITOR ============ -->
+    <section id="editor" class="section p-8">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+          <button class="btn-ghost !py-1.5 !px-2.5" onclick="goto('posts')">←</button>
+          <div><h1 class="text-2xl font-extrabold text-ink-900">Create New Post</h1><p class="text-ink-500 text-xs mt-0.5">Draft saved 38 seconds ago · <span class="text-green-600 font-bold">✓ Synced</span></p></div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn-ghost">👁 Preview</button>
+          <button class="btn-ghost">💾 Save Draft</button>
+          <button class="btn-gold">📅 Schedule</button>
+          <button class="btn-primary">🚀 Publish</button>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-5">
+          <div class="card p-6">
+            <input class="w-full !text-2xl font-extrabold !border-0 !px-0 focus:!ring-0 focus:!shadow-none" placeholder="Post title..." value="Why voice marketing is the next $1B opportunity in South Asia"/>
+            <div class="text-xs text-ink-500 mt-2">URL: <span class="font-mono text-paypal-blue">/blog/voice-marketing-next-billion-south-asia</span> <button class="ml-2 text-xs underline">Edit</button></div>
+          </div>
+
+          <div class="card">
+            <div class="editor-toolbar p-3 border-b border-surface-100 flex gap-1 flex-wrap items-center">
+              <button class="active"><b>B</b></button><button><i>I</i></button><button><u>U</u></button><button><s>S</s></button>
+              <span class="w-px h-5 bg-surface-200 mx-1"></span>
+              <button>H1</button><button>H2</button><button>H3</button>
+              <span class="w-px h-5 bg-surface-200 mx-1"></span>
+              <button>• List</button><button>1. List</button><button>❝ Quote</button><button>〈/〉 Code</button>
+              <span class="w-px h-5 bg-surface-200 mx-1"></span>
+              <button>🔗 Link</button><button>🖼 Image</button><button>🎥 Video</button><button>📊 Embed</button>
+              <span class="w-px h-5 bg-surface-200 mx-1"></span>
+              <button>↶</button><button>↷</button>
+              <div class="ml-auto text-xs text-ink-500">1,248 words · 6 min read</div>
+            </div>
+            <div class="p-6 min-h-[420px] text-sm leading-relaxed" contenteditable="true">
+              <p>By 2026, Bangladesh alone will cross <strong>180 million active mobile connections</strong>. Yet the average SMS campaign now converts below <em>0.8%</em>. Voice — cheap, intimate, language-neutral — is quietly capturing what SMS lost.</p>
+              <h2 class="text-xl font-extrabold mt-5 mb-2">The Three Forces Driving the Shift</h2>
+              <ol class="list-decimal ml-6 space-y-2">
+                <li><strong>SMS fatigue.</strong> Open rates dropped 38% between 2022 and 2025.</li>
+                <li><strong>Cost collapse.</strong> Per-call voice cost fell from ৳2.80 to ৳0.58.</li>
+                <li><strong>Regional language.</strong> 64% of respondents prefer Bangla audio over English SMS.</li>
+              </ol>
+              <blockquote class="border-l-4 border-paypal-blue pl-4 italic my-5 text-ink-700">"Our repeat-order rate went from 11% to 34% after switching the win-back journey from SMS to voice." — Head of Growth, Daraz BD</blockquote>
+              <p>Continue reading to explore the playbooks, tooling, and case studies...</p>
+            </div>
+          </div>
+
+          <div class="card p-6">
+            <h3 class="font-extrabold text-ink-900 mb-3">SEO & Social Preview</h3>
+            <div class="space-y-3">
+              <div><label class="text-xs font-bold text-ink-500 uppercase">Meta title <span class="text-ink-300">(58/60)</span></label><input class="w-full mt-1 rounded-lg px-3 py-2" value="Why voice marketing is the next $1B opportunity in South Asia"/></div>
+              <div><label class="text-xs font-bold text-ink-500 uppercase">Meta description <span class="text-ink-300">(142/160)</span></label><textarea rows="2" class="w-full mt-1 rounded-lg px-3 py-2">How Bangladesh's voice-first marketing channel is overtaking SMS — 8× engagement, 72% lower cost, and where smart brands are betting next.</textarea></div>
+              <div><label class="text-xs font-bold text-ink-500 uppercase">Focus keywords</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="voice marketing, voice broadcasting bangladesh, sms vs voice"/></div>
+              <div class="bg-surface-50 rounded-lg p-4 text-sm">
+                <p class="text-xs text-ink-500">voicereach.com › blog</p>
+                <p class="text-paypal-blue font-bold mt-1">Why voice marketing is the next $1B opportunity in South Asia</p>
+                <p class="text-ink-500 text-xs mt-1">How Bangladesh's voice-first marketing channel is overtaking SMS — 8× engagement, 72% lower cost...</p>
+              </div>
+              <div class="flex items-center justify-between pt-2 text-xs"><span class="text-ink-500">SEO score</span><span class="font-bold text-green-600">94 / 100 ✓</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <div class="card p-5">
+            <h3 class="font-extrabold text-ink-900 mb-3">Publish</h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between"><span class="text-ink-500">Status</span><span class="chip chip-warn">Draft</span></div>
+              <div class="flex justify-between"><span class="text-ink-500">Visibility</span><select class="rounded-lg px-2 py-1 text-xs"><option>Public</option><option>Private</option><option>Password-protected</option></select></div>
+              <div class="flex justify-between"><span class="text-ink-500">Date</span><input type="datetime-local" class="rounded-lg px-2 py-1 text-xs" value="2026-04-24T09:00"/></div>
+            </div>
+          </div>
+          <div class="card p-5">
+            <h3 class="font-extrabold text-ink-900 mb-3">Category</h3>
+            <select class="w-full rounded-lg px-3 py-2"><option>Voice Marketing</option><option>Engineering</option><option>Case Studies</option><option>Product</option><option>Security</option></select>
+          </div>
+          <div class="card p-5">
+            <h3 class="font-extrabold text-ink-900 mb-3">Tags</h3>
+            <div class="flex flex-wrap gap-2 mb-3"><span class="chip chip-info">bangladesh ✕</span><span class="chip chip-info">voice ✕</span><span class="chip chip-info">growth ✕</span></div>
+            <input class="w-full rounded-lg px-3 py-2" placeholder="Add a tag and press Enter..."/>
+          </div>
+          <div class="card p-5">
+            <h3 class="font-extrabold text-ink-900 mb-3">Featured Image</h3>
+            <div class="aspect-video rounded-lg bg-gradient-to-br from-paypal-navy to-paypal-sky flex items-center justify-center text-5xl text-white">🎙️</div>
+            <button class="btn-ghost w-full justify-center mt-3">Change image</button>
+          </div>
+          <div class="card p-5">
+            <h3 class="font-extrabold text-ink-900 mb-3">Cross-post to Social</h3>
+            <div class="space-y-3 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" class="check" checked/> <span class="font-bold">f</span> Facebook Page</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="check" checked/> <span class="font-bold">in</span> LinkedIn Company</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="check"/> <span class="font-bold">𝕏</span> X (Twitter)</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="check"/> <span class="font-bold">IG</span> Instagram</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CATEGORIES ============ -->
+    <section id="categories" class="section p-8">
+      <div class="flex items-end justify-between mb-6">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Categories & Tags</h1><p class="text-ink-500 text-sm mt-1">Organize your content taxonomy</p></div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-5">
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-4"><h3 class="font-extrabold text-ink-900">Categories</h3><button class="btn-primary !py-1.5 !px-3 text-xs">+ Add</button></div>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-50"><div><p class="font-bold">Voice Marketing</p><p class="text-xs text-ink-500">/voice-marketing · 248 posts</p></div><div class="flex gap-2"><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button><button class="btn-danger !py-1 !px-2 !text-xs">Delete</button></div></div>
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-50"><div><p class="font-bold">Engineering</p><p class="text-xs text-ink-500">/engineering · 184 posts</p></div><div class="flex gap-2"><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button><button class="btn-danger !py-1 !px-2 !text-xs">Delete</button></div></div>
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-50"><div><p class="font-bold">Case Studies</p><p class="text-xs text-ink-500">/case-studies · 92 posts</p></div><div class="flex gap-2"><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button><button class="btn-danger !py-1 !px-2 !text-xs">Delete</button></div></div>
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-50"><div><p class="font-bold">Security</p><p class="text-xs text-ink-500">/security · 48 posts</p></div><div class="flex gap-2"><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button><button class="btn-danger !py-1 !px-2 !text-xs">Delete</button></div></div>
+            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-50"><div><p class="font-bold">Product</p><p class="text-xs text-ink-500">/product · 64 posts</p></div><div class="flex gap-2"><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button><button class="btn-danger !py-1 !px-2 !text-xs">Delete</button></div></div>
+          </div>
+        </div>
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-4"><h3 class="font-extrabold text-ink-900">Tags</h3><button class="btn-primary !py-1.5 !px-3 text-xs">+ Add</button></div>
+          <div class="flex flex-wrap gap-2">
+            <span class="chip chip-info">bangladesh · 142</span><span class="chip chip-info">voice · 98</span><span class="chip chip-sky">otp · 84</span><span class="chip chip-gold">security · 72</span><span class="chip chip-purple">growth · 68</span><span class="chip chip-info">api · 64</span><span class="chip chip-sky">bKash · 48</span><span class="chip chip-gold">daraz · 42</span><span class="chip chip-info">sms · 38</span><span class="chip chip-purple">survey · 32</span><span class="chip chip-info">ivr · 28</span><span class="chip chip-sky">enterprise · 24</span>
+          </div>
+          <div class="mt-5"><input class="w-full rounded-lg px-3 py-2" placeholder="Add new tag..."/></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MEDIA LIBRARY ============ -->
+    <section id="media" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Media Library</h1><p class="text-ink-500 text-sm mt-1">2,428 items · 4.2 GB of 50 GB used</p></div>
+        <div class="flex gap-2"><button class="btn-ghost">📁 New Folder</button><button class="btn-primary">📤 Upload</button></div>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-4">
+        <div class="card p-4 lg:col-span-1">
+          <p class="text-xs font-bold text-ink-500 uppercase mb-2">Folders</p>
+          <div class="space-y-1">
+            <div class="folder active">📁 All media <span class="ml-auto text-xs text-ink-500">2,428</span></div>
+            <div class="folder">🖼️ Images <span class="ml-auto text-xs text-ink-500">1,842</span></div>
+            <div class="folder">🎥 Videos <span class="ml-auto text-xs text-ink-500">128</span></div>
+            <div class="folder">📄 Documents <span class="ml-auto text-xs text-ink-500">284</span></div>
+            <div class="folder">🎵 Audio <span class="ml-auto text-xs text-ink-500">174</span></div>
+            <p class="text-xs font-bold text-ink-500 uppercase mt-4 mb-2">Organized</p>
+            <div class="folder">📁 Blog covers</div>
+            <div class="folder">📁 Case studies</div>
+            <div class="folder">📁 Product screenshots</div>
+            <div class="folder">📁 Social graphics</div>
+            <div class="folder">📁 Team photos</div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-surface-100">
+            <p class="text-xs font-bold text-ink-500 uppercase mb-2">Storage</p>
+            <div class="progress mb-2"><div class="mesh-blue" style="width:8.4%"></div></div>
+            <p class="text-xs text-ink-500">4.2 GB used of 50 GB</p>
+            <button class="mt-3 btn-ghost w-full justify-center text-xs">Upgrade to 500 GB</button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4">
+          <div class="card p-4 mb-4 flex flex-wrap gap-3 items-center">
+            <input class="flex-1 rounded-lg px-3 py-2 min-w-[240px]" placeholder="🔍 Search media..."/>
+            <select class="rounded-lg px-3 py-2"><option>All types</option><option>Images</option><option>Videos</option><option>Documents</option></select>
+            <select class="rounded-lg px-3 py-2"><option>Newest first</option><option>Largest first</option><option>A → Z</option></select>
+            <div class="flex gap-1"><button class="btn-primary !py-1.5 !px-2.5">⊞</button><button class="btn-ghost !py-1.5 !px-2.5">☰</button></div>
+          </div>
+
+          <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3" id="mediaGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SEO ============ -->
+    <section id="seo" class="section p-8">
+      <div class="mb-6"><h1 class="text-3xl font-extrabold text-ink-900">SEO Manager</h1><p class="text-ink-500 text-sm mt-1">Sitemaps, robots.txt, schema & redirects</p></div>
+      <div class="grid lg:grid-cols-3 gap-4 mb-6">
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Avg. SEO Score</p><p class="text-3xl font-extrabold text-green-600 mt-1">86 / 100</p><p class="text-xs text-ink-500 mt-1">↗ +4 this month</p></div>
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Indexed Pages</p><p class="text-3xl font-extrabold mt-1">1,284</p><p class="text-xs text-ink-500 mt-1">of 1,428 total</p></div>
+        <div class="card p-5"><p class="text-xs text-ink-500 uppercase font-semibold">Broken Links</p><p class="text-3xl font-extrabold text-red-600 mt-1">12</p><p class="text-xs text-ink-500 mt-1">needs attention</p></div>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-5">
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-4">Global SEO Settings</h3>
+          <div class="space-y-3">
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Default title template</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="%title% — VoiceReach"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Default description</label><textarea rows="2" class="w-full mt-1 rounded-lg px-3 py-2">Voice broadcasting, voice OTP, and voice surveys — built for Bangladesh.</textarea></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Google Search Console ID</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" value="google-site-verification=8hF2klMn..."/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Google Analytics 4</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" value="G-BKXM4ZQPTE"/></div>
+          </div>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-4">Redirects & Sitemap</h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center justify-between p-3 rounded-lg bg-surface-50"><div><p class="font-mono text-xs">/old-blog → /blog</p><p class="text-xs text-ink-500">301 permanent · 248 hits</p></div><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button></div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-surface-50"><div><p class="font-mono text-xs">/v1/api → /docs</p><p class="text-xs text-ink-500">301 permanent · 84 hits</p></div><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button></div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-surface-50"><div><p class="font-mono text-xs">/pricing-old → /pricing</p><p class="text-xs text-ink-500">302 temp · 42 hits</p></div><button class="btn-ghost !py-1 !px-2 !text-xs">Edit</button></div>
+            <button class="btn-primary w-full justify-center mt-3">+ Add redirect</button>
+          </div>
+          <div class="mt-5 pt-5 border-t border-surface-100 flex gap-2">
+            <button class="btn-ghost flex-1 justify-center">🗺 sitemap.xml</button>
+            <button class="btn-ghost flex-1 justify-center">🤖 robots.txt</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SOCIAL ACCOUNTS ============ -->
+    <section id="social" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Social Accounts</h1><p class="text-ink-500 text-sm mt-1">Connect Meta, LinkedIn, X & Instagram via OAuth</p></div>
+        <button class="btn-primary">+ Connect account</button>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5 mb-6">
+        <div class="card p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="w-14 h-14 rounded-2xl bg-[#1877F2] text-white flex items-center justify-center text-2xl font-extrabold">f</span>
+            <div class="flex-1">
+              <h3 class="font-extrabold text-ink-900">Facebook · Meta Graph API</h3>
+              <p class="text-xs text-ink-500">Page posting, scheduling, insights</p>
+            </div>
+            <span class="chip chip-success">● Connected</span>
+          </div>
+          <div class="bg-surface-50 rounded-lg p-4 text-sm">
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Page</span><span class="font-bold">VoiceReach by Protiddhoni</span></div>
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Followers</span><span class="font-bold">48,284</span></div>
+            <div class="flex justify-between mb-1"><span class="text-ink-500">App ID</span><span class="font-mono text-xs">482918••••2744</span></div>
+            <div class="flex justify-between"><span class="text-ink-500">Token expires</span><span class="font-bold">Jun 12, 2026</span></div>
+          </div>
+          <div class="mt-4 flex gap-2"><button class="btn-ghost flex-1 justify-center">🔁 Refresh token</button><button class="btn-danger flex-1 justify-center">Disconnect</button></div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="w-14 h-14 rounded-2xl bg-[#0A66C2] text-white flex items-center justify-center text-xl font-extrabold">in</span>
+            <div class="flex-1">
+              <h3 class="font-extrabold text-ink-900">LinkedIn · Marketing API</h3>
+              <p class="text-xs text-ink-500">Company page posts, analytics</p>
+            </div>
+            <span class="chip chip-warn">⚠ Expiring soon</span>
+          </div>
+          <div class="bg-surface-50 rounded-lg p-4 text-sm">
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Company</span><span class="font-bold">Protiddhoni Limited</span></div>
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Followers</span><span class="font-bold">12,480</span></div>
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Client ID</span><span class="font-mono text-xs">77kklpw••••m4j</span></div>
+            <div class="flex justify-between"><span class="text-ink-500">Token expires</span><span class="font-bold text-amber-600">Apr 26 (3 days)</span></div>
+          </div>
+          <div class="mt-4 flex gap-2"><button class="btn-gold flex-1 justify-center">🔁 Re-authenticate</button><button class="btn-danger flex-1 justify-center">Disconnect</button></div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center text-2xl font-extrabold">𝕏</span>
+            <div class="flex-1">
+              <h3 class="font-extrabold text-ink-900">X (Twitter) · v2 API</h3>
+              <p class="text-xs text-ink-500">Tweet scheduling, metrics</p>
+            </div>
+            <span class="chip chip-success">● Connected</span>
+          </div>
+          <div class="bg-surface-50 rounded-lg p-4 text-sm">
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Handle</span><span class="font-bold">@voicereach_bd</span></div>
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Followers</span><span class="font-bold">8,420</span></div>
+            <div class="flex justify-between"><span class="text-ink-500">Tier</span><span class="font-bold">Basic ($100/mo)</span></div>
+          </div>
+          <div class="mt-4 flex gap-2"><button class="btn-ghost flex-1 justify-center">🔁 Refresh</button><button class="btn-danger flex-1 justify-center">Disconnect</button></div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-extrabold text-white" style="background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45)">IG</span>
+            <div class="flex-1">
+              <h3 class="font-extrabold text-ink-900">Instagram · Graph API</h3>
+              <p class="text-xs text-ink-500">Via Meta Business — feed & reels</p>
+            </div>
+            <span class="chip chip-success">● Connected</span>
+          </div>
+          <div class="bg-surface-50 rounded-lg p-4 text-sm">
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Account</span><span class="font-bold">@voicereach</span></div>
+            <div class="flex justify-between mb-1"><span class="text-ink-500">Followers</span><span class="font-bold">22,140</span></div>
+            <div class="flex justify-between"><span class="text-ink-500">Linked to</span><span class="font-bold">FB · VoiceReach</span></div>
+          </div>
+          <div class="mt-4 flex gap-2"><button class="btn-ghost flex-1 justify-center">🔁 Refresh</button><button class="btn-danger flex-1 justify-center">Disconnect</button></div>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <h3 class="font-extrabold text-ink-900 mb-4">OAuth Flow</h3>
+        <div class="grid md:grid-cols-5 gap-3 text-sm">
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full mesh-blue text-white flex items-center justify-center font-bold">1</div><p class="mt-2 font-bold">Click connect</p><p class="text-xs text-ink-500">CMS redirects to provider</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-paypal-blue text-white flex items-center justify-center font-bold">2</div><p class="mt-2 font-bold">Provider login</p><p class="text-xs text-ink-500">User authorizes scopes</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-paypal-sky text-white flex items-center justify-center font-bold">3</div><p class="mt-2 font-bold">Callback</p><p class="text-xs text-ink-500">Auth code → server</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-paypal-gold text-paypal-navy flex items-center justify-center font-bold">4</div><p class="mt-2 font-bold">Exchange</p><p class="text-xs text-ink-500">Get access + refresh token</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-green-600 text-white flex items-center justify-center font-bold">✓</div><p class="mt-2 font-bold">Encrypted store</p><p class="text-xs text-ink-500">AES-256 at rest</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCHEDULER ============ -->
+    <section id="scheduler" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Content Scheduler</h1><p class="text-ink-500 text-sm mt-1">Queue posts across all connected channels</p></div>
+        <div class="flex gap-2"><button class="btn-ghost">📅 Week</button><button class="btn-primary">+ Schedule post</button></div>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-4 mb-6">
+        <div class="card p-4"><p class="text-xs text-ink-500 uppercase font-semibold">Scheduled</p><p class="text-2xl font-extrabold mt-1">48</p></div>
+        <div class="card p-4"><p class="text-xs text-ink-500 uppercase font-semibold">Posted today</p><p class="text-2xl font-extrabold text-green-600 mt-1">12</p></div>
+        <div class="card p-4"><p class="text-xs text-ink-500 uppercase font-semibold">Draft queue</p><p class="text-2xl font-extrabold mt-1">8</p></div>
+        <div class="card p-4"><p class="text-xs text-ink-500 uppercase font-semibold">Failed</p><p class="text-2xl font-extrabold text-red-600 mt-1">2</p></div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="p-5 border-b border-surface-100 flex items-center justify-between">
+          <h3 class="font-extrabold text-ink-900">Weekly Calendar — Apr 20 to Apr 26</h3>
+          <div class="flex gap-1"><button class="btn-ghost !py-1 !px-2.5">←</button><button class="btn-ghost !py-1 !px-2.5">Today</button><button class="btn-ghost !py-1 !px-2.5">→</button></div>
+        </div>
+        <div class="grid grid-cols-7 border-b border-surface-100 text-xs font-bold text-center">
+          <div class="py-3 border-r border-surface-100">Mon 20</div><div class="py-3 border-r border-surface-100">Tue 21</div><div class="py-3 border-r border-surface-100">Wed 22</div><div class="py-3 border-r border-surface-100 bg-surface-50 text-paypal-navy">Thu 23</div><div class="py-3 border-r border-surface-100">Fri 24</div><div class="py-3 border-r border-surface-100">Sat 25</div><div class="py-3">Sun 26</div>
+        </div>
+        <div class="grid grid-cols-7 min-h-[320px] text-xs">
+          <div class="border-r border-surface-100 p-2 space-y-2">
+            <div class="p-2 bg-blue-50 border-l-4 border-[#1877F2] rounded-r"><p class="font-bold">9:00 AM · f</p><p class="truncate">Product launch teaser</p></div>
+            <div class="p-2 bg-sky-50 border-l-4 border-[#0A66C2] rounded-r"><p class="font-bold">2:00 PM · in</p><p class="truncate">Case study: Daraz BD</p></div>
+          </div>
+          <div class="border-r border-surface-100 p-2 space-y-2">
+            <div class="p-2 bg-pink-50 border-l-4 border-[#E1306C] rounded-r"><p class="font-bold">10:00 AM · IG</p><p class="truncate">Behind the scenes</p></div>
+          </div>
+          <div class="border-r border-surface-100 p-2 space-y-2">
+            <div class="p-2 bg-gray-50 border-l-4 border-black rounded-r"><p class="font-bold">11:00 AM · 𝕏</p><p class="truncate">Thread: voice vs SMS</p></div>
+            <div class="p-2 bg-blue-50 border-l-4 border-[#1877F2] rounded-r"><p class="font-bold">5:00 PM · f</p><p class="truncate">Customer story</p></div>
+          </div>
+          <div class="border-r border-surface-100 p-2 space-y-2 bg-surface-50">
+            <div class="p-2 bg-blue-50 border-l-4 border-[#1877F2] rounded-r"><p class="font-bold">9:00 AM · f · ✓</p><p class="truncate">Eid Sale live</p></div>
+            <div class="p-2 bg-sky-50 border-l-4 border-[#0A66C2] rounded-r"><p class="font-bold">12:00 PM · in</p><p class="truncate">Voice marketing post</p></div>
+            <div class="p-2 bg-pink-50 border-l-4 border-[#E1306C] rounded-r"><p class="font-bold">6:00 PM · IG</p><p class="truncate">Reel: Eid campaign</p></div>
+          </div>
+          <div class="border-r border-surface-100 p-2 space-y-2">
+            <div class="p-2 bg-blue-50 border-l-4 border-[#1877F2] rounded-r"><p class="font-bold">10:00 AM · f</p><p class="truncate">Feature Friday</p></div>
+          </div>
+          <div class="border-r border-surface-100 p-2 space-y-2">
+            <div class="p-2 bg-sky-50 border-l-4 border-[#0A66C2] rounded-r"><p class="font-bold">2:00 PM · in</p><p class="truncate">Week recap</p></div>
+          </div>
+          <div class="p-2 space-y-2">
+            <div class="p-2 bg-gray-50 border-l-4 border-black rounded-r"><p class="font-bold">9:00 AM · 𝕏</p><p class="truncate">Monday motivation</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-6 overflow-hidden">
+        <div class="p-5 border-b border-surface-100"><h3 class="font-extrabold text-ink-900">Scheduled Posts — Table View</h3></div>
+        <table>
+          <thead><tr><th>Post</th><th>Channels</th><th>Author</th><th>Scheduled</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><p class="font-bold">Eid Sale — voice drops now live</p><p class="text-xs text-ink-500">Campaign · 3 channels</p></td><td class="text-lg">f in IG</td><td>Rakib A.</td><td>Apr 23, 9:00 AM</td><td><span class="chip chip-success">Posted ✓</span></td></tr>
+            <tr><td><p class="font-bold">Behind the scenes · office tour</p><p class="text-xs text-ink-500">Reel · 60s</p></td><td class="text-lg">IG</td><td>Sarah H.</td><td>Apr 23, 6:00 PM</td><td><span class="chip chip-info">Queued</span></td></tr>
+            <tr><td><p class="font-bold">Case study: Daraz BD +23%</p><p class="text-xs text-ink-500">Long-form</p></td><td class="text-lg">in</td><td>Sarah H.</td><td>Apr 24, 12:00 PM</td><td><span class="chip chip-info">Queued</span></td></tr>
+            <tr><td><p class="font-bold">Feature Friday · new API</p><p class="text-xs text-ink-500">Image + caption</p></td><td class="text-lg">f 𝕏</td><td>Tamim K.</td><td>Apr 24, 10:00 AM</td><td><span class="chip chip-warn">Draft</span></td></tr>
+            <tr><td><p class="font-bold">Week recap newsletter</p><p class="text-xs text-ink-500">Carousel · 5 slides</p></td><td class="text-lg">in IG</td><td>Rakib A.</td><td>Apr 25, 2:00 PM</td><td><span class="chip chip-info">Queued</span></td></tr>
+            <tr><td><p class="font-bold">Robi OTP case study</p><p class="text-xs text-ink-500">Carousel</p></td><td class="text-lg">in</td><td>Sarah H.</td><td>Apr 22, 3:00 PM</td><td><span class="chip chip-fail">Failed ✕</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ ENGAGEMENT ============ -->
+    <section id="engagement" class="section p-8">
+      <div class="mb-6"><h1 class="text-3xl font-extrabold text-ink-900">Engagement Inbox</h1><p class="text-ink-500 text-sm mt-1">Comments, DMs & mentions from all channels</p></div>
+
+      <div class="grid lg:grid-cols-3 gap-4 mb-6">
+        <div class="card p-5"><div class="flex items-center justify-between"><p class="text-xs text-ink-500 uppercase font-semibold">Unread messages</p><span class="text-xl">✉️</span></div><p class="text-3xl font-extrabold mt-1">84</p></div>
+        <div class="card p-5"><div class="flex items-center justify-between"><p class="text-xs text-ink-500 uppercase font-semibold">Avg. response</p><span class="text-xl">⏱️</span></div><p class="text-3xl font-extrabold mt-1">14m</p></div>
+        <div class="card p-5"><div class="flex items-center justify-between"><p class="text-xs text-ink-500 uppercase font-semibold">Sentiment</p><span class="text-xl">😊</span></div><p class="text-3xl font-extrabold text-green-600 mt-1">82%</p></div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="p-4 border-b border-surface-100 flex gap-2 flex-wrap">
+          <div class="tab active">All</div><div class="tab">f Facebook</div><div class="tab">in LinkedIn</div><div class="tab">IG Instagram</div><div class="tab">𝕏 Twitter</div>
+        </div>
+        <div>
+          <div class="notif-item">
+            <span class="w-10 h-10 rounded-xl bg-[#1877F2] text-white flex items-center justify-center font-bold flex-shrink-0">f</span>
+            <div class="flex-1"><p class="font-bold text-sm">Abir Hasan commented on "Eid Sale live"</p><p class="text-xs text-ink-500 mt-1">"Amazing! How do I sign up for voice broadcasting for my store?"</p><p class="text-[11px] text-ink-500 mt-1">8 min ago · Facebook</p></div>
+            <button class="btn-primary !py-1 !px-2.5 !text-xs">Reply</button>
+          </div>
+          <div class="notif-item">
+            <span class="w-10 h-10 rounded-xl bg-[#0A66C2] text-white flex items-center justify-center font-bold flex-shrink-0">in</span>
+            <div class="flex-1"><p class="font-bold text-sm">Dr. Mahbub Uz Zaman reposted your case study</p><p class="text-xs text-ink-500 mt-1">"This is exactly what our FMCG sector needs..."</p><p class="text-[11px] text-ink-500 mt-1">22 min ago · LinkedIn</p></div>
+            <button class="btn-ghost !py-1 !px-2.5 !text-xs">Thank</button>
+          </div>
+          <div class="notif-item">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white flex-shrink-0" style="background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45)">IG</span>
+            <div class="flex-1"><p class="font-bold text-sm">@nabila.rahman tagged you in a story</p><p class="text-xs text-ink-500 mt-1">"Using @voicereach for our bakery — love it!"</p><p class="text-[11px] text-ink-500 mt-1">1 h ago · Instagram</p></div>
+            <button class="btn-ghost !py-1 !px-2.5 !text-xs">Share</button>
+          </div>
+          <div class="notif-item">
+            <span class="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center font-bold flex-shrink-0">𝕏</span>
+            <div class="flex-1"><p class="font-bold text-sm">3 new replies on your thread "voice vs sms"</p><p class="text-xs text-ink-500 mt-1">142 likes, 48 reposts — top reply from @rifat_dev</p><p class="text-[11px] text-ink-500 mt-1">2 h ago · Twitter/X</p></div>
+            <button class="btn-ghost !py-1 !px-2.5 !text-xs">View</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FACEBOOK CONVERSION API ============ -->
+    <section id="capi" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <h1 class="text-3xl font-extrabold text-ink-900 flex items-center gap-3">
+            <span class="w-11 h-11 rounded-xl bg-[#1877F2] text-white flex items-center justify-center font-extrabold text-xl">f</span>
+            Facebook Conversion API
+            <span class="chip chip-gold">BETA</span>
+          </h1>
+          <p class="text-ink-500 text-sm mt-1">Server-side event tracking for Meta Ads — bypass iOS 14+, adblockers & cookie restrictions for 95%+ match rate</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn-ghost" onclick="alert('Test event sent to Meta Events Manager')">🧪 Send Test Event</button>
+          <button class="btn-ghost">📖 Meta Docs</button>
+          <button class="btn-primary">⚙ Configure</button>
+        </div>
+      </div>
+
+      <!-- Status banner -->
+      <div class="card p-5 mb-6 flex items-center gap-4 border-l-4 !border-l-green-500">
+        <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center text-2xl">✅</div>
+        <div class="flex-1">
+          <p class="font-extrabold text-ink-900">CAPI is live and healthy</p>
+          <p class="text-xs text-ink-500 mt-0.5">Last event received <span class="font-bold text-green-600">3 seconds ago</span> · Dataset <span class="font-mono">ds_482918742744</span> · Deduplication matched with Pixel at <span class="font-bold">98.4%</span></p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-ink-500">Today's events</p>
+          <p class="text-2xl font-extrabold text-gradient">84,284</p>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Event Match Quality</span><span class="text-xl">🎯</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">8.4 <span class="text-sm text-ink-500">/ 10</span></p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-green-600 font-bold">↗ +0.6</span><span class="text-ink-500">vs last week</span></div>
+          <div class="progress mt-3"><div style="width:84%;background:#22c55e"></div></div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Match Rate</span><span class="text-xl">🔗</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">94.2%</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-green-600 font-bold">↗ +2.8%</span><span class="text-ink-500">vs pixel-only (64%)</span></div>
+          <div class="progress mt-3"><div class="mesh-blue" style="width:94%"></div></div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Server Coverage</span><span class="text-xl">🖥️</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">78.6%</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-ink-500 font-bold">21.4% browser-only</span></div>
+          <div class="progress mt-3"><div style="width:79%;background:#0070BA"></div></div>
+        </div>
+        <div class="card p-5">
+          <div class="flex items-center justify-between"><span class="text-xs text-ink-500 font-semibold uppercase">Attributed Revenue</span><span class="text-xl">💰</span></div>
+          <p class="text-3xl font-extrabold text-ink-900 mt-2">৳8.42L</p>
+          <div class="flex items-center gap-2 mt-2 text-xs"><span class="text-green-600 font-bold">↗ +42%</span><span class="text-ink-500">CAPI-recovered</span></div>
+          <div class="progress mt-3"><div style="width:68%;background:#FFC439"></div></div>
+        </div>
+      </div>
+
+      <!-- Charts + Config -->
+      <div class="grid lg:grid-cols-3 gap-4 mb-6">
+        <div class="card p-6 lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div><h3 class="font-extrabold text-ink-900">Events Sent — Pixel vs CAPI</h3><p class="text-xs text-ink-500">Last 14 days — deduplication applied</p></div>
+            <div class="flex items-center gap-1"><button class="tab !text-xs !py-1 !px-2.5">7D</button><button class="tab active !text-xs !py-1 !px-2.5">14D</button><button class="tab !text-xs !py-1 !px-2.5">30D</button></div>
+          </div>
+          <canvas id="capiChart" height="120"></canvas>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-3">Connection</h3>
+          <div class="space-y-3 text-sm">
+            <div>
+              <label class="text-xs font-bold text-ink-500 uppercase">Pixel ID</label>
+              <div class="mt-1 flex gap-2"><input class="flex-1 rounded-lg px-3 py-2 font-mono text-xs" value="482918742744"/><button class="btn-ghost !py-1 !px-2.5 text-xs" onclick="navigator.clipboard.writeText('482918742744')">📋</button></div>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-ink-500 uppercase">Dataset ID</label>
+              <input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" value="ds_482918742744"/>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-ink-500 uppercase">Access Token</label>
+              <input type="password" class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" value="EAAXX••••••••••••••••••••8hF2kl"/>
+              <p class="text-[11px] text-ink-500 mt-1">Expires <span class="font-bold">Jul 28, 2026</span> · Long-lived</p>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-ink-500 uppercase">Test Event Code</label>
+              <input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" value="TEST82991"/>
+            </div>
+            <div class="pt-2 flex items-center justify-between">
+              <div><p class="text-xs font-bold">Auto-hash PII (email, phone)</p><p class="text-[11px] text-ink-500">SHA-256 before sending</p></div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="pt-1 flex items-center justify-between">
+              <div><p class="text-xs font-bold">Send IP & User Agent</p><p class="text-[11px] text-ink-500">Improves match quality</p></div>
+              <div class="toggle on"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Configuration Table -->
+      <div class="card overflow-hidden mb-6">
+        <div class="p-5 border-b border-surface-100 flex items-center justify-between">
+          <div><h3 class="font-extrabold text-ink-900">Event Configuration</h3><p class="text-xs text-ink-500">Standard + custom events being forwarded to Meta</p></div>
+          <button class="btn-primary !py-1.5 !px-3 text-xs">+ Add custom event</button>
+        </div>
+        <table>
+          <thead><tr><th>Event</th><th>Source</th><th>Trigger</th><th>Last 24h</th><th>Match Q.</th><th>Dedup</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><p class="font-bold">PageView</p><p class="text-[11px] text-ink-500">Standard · Awareness</p></td>
+              <td><span class="chip chip-info">Pixel + CAPI</span></td>
+              <td class="font-mono text-xs">fbq('track','PageView')</td>
+              <td>42,184</td>
+              <td><span class="font-bold text-green-600">9.2</span></td>
+              <td>✓ 99.1%</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">ViewContent</p><p class="text-[11px] text-ink-500">Standard · Consideration</p></td>
+              <td><span class="chip chip-info">Pixel + CAPI</span></td>
+              <td class="font-mono text-xs">on /blog/* page load</td>
+              <td>18,402</td>
+              <td><span class="font-bold text-green-600">8.8</span></td>
+              <td>✓ 98.4%</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">Lead</p><p class="text-[11px] text-ink-500">Standard · Conversion</p></td>
+              <td><span class="chip chip-sky">CAPI only</span></td>
+              <td class="font-mono text-xs">contact form submit</td>
+              <td>842</td>
+              <td><span class="font-bold text-green-600">9.4</span></td>
+              <td>n/a</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">CompleteRegistration</p><p class="text-[11px] text-ink-500">Standard · Conversion</p></td>
+              <td><span class="chip chip-info">Pixel + CAPI</span></td>
+              <td class="font-mono text-xs">POST /api/signup success</td>
+              <td>248</td>
+              <td><span class="font-bold text-green-600">9.1</span></td>
+              <td>✓ 97.8%</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">Subscribe</p><p class="text-[11px] text-ink-500">Standard · Conversion</p></td>
+              <td><span class="chip chip-info">Pixel + CAPI</span></td>
+              <td class="font-mono text-xs">stripe.subscription.created</td>
+              <td>42</td>
+              <td><span class="font-bold text-green-600">9.8</span></td>
+              <td>✓ 100%</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">Purchase</p><p class="text-[11px] text-ink-500">Standard · Revenue</p></td>
+              <td><span class="chip chip-sky">CAPI only</span></td>
+              <td class="font-mono text-xs">invoice.paid webhook</td>
+              <td>68</td>
+              <td><span class="font-bold text-green-600">9.6</span></td>
+              <td>n/a</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">InitiateCheckout</p><p class="text-[11px] text-ink-500">Standard · Intent</p></td>
+              <td><span class="chip chip-info">Pixel + CAPI</span></td>
+              <td class="font-mono text-xs">/checkout page load</td>
+              <td>184</td>
+              <td><span class="font-bold text-amber-600">7.4</span></td>
+              <td>⚠ 84.2%</td>
+              <td><span class="chip chip-warn">Needs review</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">voice_broadcast_booked</p><p class="text-[11px] text-ink-500">Custom · VoiceReach</p></td>
+              <td><span class="chip chip-sky">CAPI only</span></td>
+              <td class="font-mono text-xs">broadcast.created webhook</td>
+              <td>128</td>
+              <td><span class="font-bold text-green-600">9.0</span></td>
+              <td>n/a</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+            <tr>
+              <td><p class="font-bold">demo_requested</p><p class="text-[11px] text-ink-500">Custom · Sales qualifier</p></td>
+              <td><span class="chip chip-sky">CAPI only</span></td>
+              <td class="font-mono text-xs">contact form · "demo" intent</td>
+              <td>48</td>
+              <td><span class="font-bold text-green-600">9.2</span></td>
+              <td>n/a</td>
+              <td><span class="chip chip-success">Active</span></td>
+              <td>⋯</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Live stream + Quality -->
+      <div class="grid lg:grid-cols-3 gap-4 mb-6">
+        <div class="card lg:col-span-2 overflow-hidden">
+          <div class="p-5 border-b border-surface-100 flex items-center justify-between">
+            <div><h3 class="font-extrabold text-ink-900">Live Event Stream</h3><p class="text-xs text-ink-500 flex items-center gap-2"><span class="dot-live"></span>Streaming directly from Meta Events Manager</p></div>
+            <div class="flex gap-1"><button class="tab active !text-xs !py-1">All</button><button class="tab !text-xs !py-1">Purchase</button><button class="tab !text-xs !py-1">Lead</button><button class="tab !text-xs !py-1">Errors</button></div>
+          </div>
+          <div id="capiFeed" class="max-h-[420px] overflow-y-auto scroll-thin font-mono text-xs"></div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900">Data Parameters Sent</h3>
+          <p class="text-xs text-ink-500 mb-4">Customer info · auto-hashed</p>
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">em</span> <span class="text-xs text-ink-500">Email (SHA-256)</span></div>
+              <div class="progress"><div style="width:98%;background:#22c55e"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">98% coverage · 84,012 events</p>
+            </div>
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">ph</span> <span class="text-xs text-ink-500">Phone (SHA-256)</span></div>
+              <div class="progress"><div style="width:72%;background:#22c55e"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">72% coverage · 60,684 events</p>
+            </div>
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">fbp</span> <span class="text-xs text-ink-500">Browser ID cookie</span></div>
+              <div class="progress"><div style="width:64%;background:#0070BA"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">64% · only browser-initiated</p>
+            </div>
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">fbc</span> <span class="text-xs text-ink-500">Click ID (ad attr.)</span></div>
+              <div class="progress"><div style="width:42%;background:#FFC439"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">42% · paid ad clicks only</p>
+            </div>
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">client_ip</span> <span class="text-xs text-ink-500">IP address</span></div>
+              <div class="progress"><div style="width:100%;background:#22c55e"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">100% coverage</p>
+            </div>
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">client_ua</span> <span class="text-xs text-ink-500">User agent</span></div>
+              <div class="progress"><div style="width:100%;background:#22c55e"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">100% coverage</p>
+            </div>
+            <div>
+              <div class="flex justify-between items-center text-sm mb-1"><span class="font-bold">external_id</span> <span class="text-xs text-ink-500">User ID (hashed)</span></div>
+              <div class="progress"><div style="width:58%;background:#0070BA"></div></div>
+              <p class="text-[11px] text-ink-500 mt-0.5">58% · logged-in users</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code sample + Deduplication -->
+      <div class="grid lg:grid-cols-2 gap-4 mb-6">
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-2">Server-side Implementation</h3>
+          <p class="text-xs text-ink-500 mb-4">Node.js · Express — auto-included in our CMS middleware</p>
+          <div class="bg-ink-900 text-white rounded-xl p-4 font-mono text-[11px] overflow-x-auto">
+<pre>// packages/api/services/capi.ts
+import crypto from 'crypto';
+import axios from 'axios';
+
+const PIXEL_ID = process.env.FB_PIXEL_ID;
+const ACCESS_TOKEN = process.env.FB_CAPI_TOKEN;
+
+const sha256 = (v) =&gt; crypto
+  .createHash('sha256')
+  .update(String(v).toLowerCase().trim())
+  .digest('hex');
+
+export async function sendEvent(event, req) {
+  const payload = {
+    data: [{
+      event_name: event.name,              // 'Purchase'
+      event_time: Math.floor(Date.now()/1000),
+      event_id:   event.id,                // dedupe w/ Pixel
+      action_source: 'website',
+      event_source_url: event.url,
+      user_data: {
+        em:         event.email ? [sha256(event.email)] : undefined,
+        ph:         event.phone ? [sha256(event.phone)] : undefined,
+        external_id: event.userId ? [sha256(event.userId)] : undefined,
+        client_ip_address: req.ip,
+        client_user_agent: req.get('user-agent'),
+        fbp: req.cookies._fbp,
+        fbc: req.cookies._fbc
+      },
+      custom_data: {
+        currency: 'BDT',
+        value:    event.value,
+        content_ids: event.contentIds,
+        content_type: 'product'
+      }
+    }],
+    test_event_code: process.env.FB_TEST_CODE
+  };
+
+  return axios.post(
+    `https://graph.facebook.com/v19.0/${PIXEL_ID}/events`,
+    payload,
+    { params: { access_token: ACCESS_TOKEN } }
+  );
+}</pre>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-2">Pixel ↔ CAPI Deduplication</h3>
+          <p class="text-xs text-ink-500 mb-4">Same event fired from both sides? Meta merges them via <span class="font-mono">event_id</span></p>
+          <div class="bg-surface-50 rounded-xl p-4 mb-4">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-9 h-9 rounded-xl bg-[#1877F2] text-white flex items-center justify-center font-extrabold">f</span>
+              <div class="flex-1"><p class="text-sm font-bold">Browser fires Pixel event</p><p class="text-xs text-ink-500">event_id = "ord_8842"</p></div>
+              <span class="chip chip-info">60-70%</span>
+            </div>
+            <div class="ml-5 border-l-2 border-dashed border-paypal-blue/40 h-6"></div>
+            <div class="flex items-center gap-3 mt-3">
+              <span class="w-9 h-9 rounded-xl mesh-blue text-white flex items-center justify-center text-lg">🖥️</span>
+              <div class="flex-1"><p class="text-sm font-bold">Server fires CAPI event</p><p class="text-xs text-ink-500">event_id = "ord_8842" (same!)</p></div>
+              <span class="chip chip-sky">100%</span>
+            </div>
+            <div class="ml-5 border-l-2 border-dashed border-paypal-blue/40 h-6"></div>
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-green-500 text-white flex items-center justify-center text-lg">✓</span>
+              <div class="flex-1"><p class="text-sm font-bold">Meta dedupes → 1 event</p><p class="text-xs text-ink-500">Reported, attributed, optimized</p></div>
+              <span class="chip chip-success">Signal</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="p-2 rounded-lg bg-blue-50"><p class="font-extrabold text-lg">84,284</p><p class="text-ink-500">Events sent</p></div>
+            <div class="p-2 rounded-lg bg-green-50"><p class="font-extrabold text-lg text-green-600">82,942</p><p class="text-ink-500">Deduped</p></div>
+            <div class="p-2 rounded-lg bg-amber-50"><p class="font-extrabold text-lg text-amber-600">1,342</p><p class="text-ink-500">CAPI-only recovered</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Issues / Troubleshooting -->
+      <div class="card overflow-hidden">
+        <div class="p-5 border-b border-surface-100 flex items-center justify-between">
+          <h3 class="font-extrabold text-ink-900">Diagnostics &amp; Warnings</h3>
+          <span class="chip chip-warn">2 issues</span>
+        </div>
+        <div class="notif-item">
+          <span class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl flex-shrink-0">⚠️</span>
+          <div class="flex-1">
+            <p class="font-bold text-sm">InitiateCheckout — match quality dropped to 7.4</p>
+            <p class="text-xs text-ink-500 mt-1">Missing <span class="font-mono">em</span> on 16% of events. Likely cause: guest checkout flow. Fix: capture email before redirect to payment.</p>
+            <p class="text-[11px] text-ink-500 mt-1">Flagged 38 min ago</p>
+          </div>
+          <button class="btn-gold !py-1 !px-2.5 !text-xs">Fix guide</button>
+        </div>
+        <div class="notif-item">
+          <span class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-xl flex-shrink-0">🛑</span>
+          <div class="flex-1">
+            <p class="font-bold text-sm">4 events rejected — invalid <span class="font-mono">em</span> hash</p>
+            <p class="text-xs text-ink-500 mt-1">Emails were double-hashed. Ensure SHA-256 is applied once after lowercase+trim.</p>
+            <p class="text-[11px] text-ink-500 mt-1">2h ago · Auto-retried successfully</p>
+          </div>
+          <button class="btn-ghost !py-1 !px-2.5 !text-xs">View</button>
+        </div>
+        <div class="notif-item">
+          <span class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-xl flex-shrink-0">✅</span>
+          <div class="flex-1">
+            <p class="font-bold text-sm">iOS 17 Private Relay detection</p>
+            <p class="text-xs text-ink-500 mt-1">CAPI successfully recovered 1,248 Purchase events where Pixel was blocked (+৳4.2L attributed revenue this week).</p>
+            <p class="text-[11px] text-ink-500 mt-1">Auto-insight · updated hourly</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ USERS ============ -->
+    <section id="users" class="section p-8">
+      <div class="flex items-end justify-between mb-6 flex-wrap gap-3">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Users</h1><p class="text-ink-500 text-sm mt-1">24,812 accounts · Manage team & customers</p></div>
+        <div class="flex gap-2"><button class="btn-ghost">📥 Export</button><button class="btn-primary">+ Invite user</button></div>
+      </div>
+      <div class="flex gap-2 mb-6 border-b border-surface-200 overflow-x-auto">
+        <div class="tab active">All (24,812)</div><div class="tab">Super Admins (2)</div><div class="tab">Admins (12)</div><div class="tab">Editors (42)</div><div class="tab">Viewers (84)</div><div class="tab">Suspended (18)</div>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="p-4 border-b border-surface-100 flex gap-3 flex-wrap"><input class="flex-1 rounded-lg px-3 py-2 min-w-[240px]" placeholder="Search users, emails, companies..." /><select class="rounded-lg px-3 py-2"><option>All roles</option><option>Super Admin</option><option>Admin</option><option>Editor</option><option>Viewer</option></select><select class="rounded-lg px-3 py-2"><option>Newest</option><option>Most active</option></select></div>
+        <table>
+          <thead><tr><th><input type="checkbox" class="check"/></th><th>User</th><th>Role</th><th>Last active</th><th>Joined</th><th>Status</th><th>2FA</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar mesh-blue">NF</div><div><p class="font-bold">Nazmul Fahim</p><p class="text-xs text-ink-500">nazmul.fahim@softifybd.com</p></div></td><td><span class="chip chip-gold">Super Admin</span></td><td>Now</td><td>Jan 2024</td><td><span class="chip chip-success">Active</span></td><td>✓</td><td>⋯</td></tr>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar" style="background:#FFC439;color:#0a1f44">RA</div><div><p class="font-bold">Rakib Ahmed</p><p class="text-xs text-ink-500">rakib@protiddhoni.com</p></div></td><td><span class="chip chip-info">Admin</span></td><td>3 min ago</td><td>Mar 2024</td><td><span class="chip chip-success">Active</span></td><td>✓</td><td>⋯</td></tr>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar" style="background:#009CDE">SH</div><div><p class="font-bold">Sarah Haque</p><p class="text-xs text-ink-500">sarah@protiddhoni.com</p></div></td><td><span class="chip chip-info">Admin</span></td><td>12 min ago</td><td>May 2024</td><td><span class="chip chip-success">Active</span></td><td>✓</td><td>⋯</td></tr>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar" style="background:#6366f1">TK</div><div><p class="font-bold">Tamim Khan</p><p class="text-xs text-ink-500">tamim@protiddhoni.com</p></div></td><td><span class="chip chip-sky">Editor</span></td><td>1 h ago</td><td>Aug 2024</td><td><span class="chip chip-success">Active</span></td><td>✓</td><td>⋯</td></tr>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar" style="background:#22c55e">RK</div><div><p class="font-bold">Rifat Kabir</p><p class="text-xs text-ink-500">rifat@company.com</p></div></td><td><span class="chip chip-sky">Editor</span></td><td>4 h ago</td><td>Apr 2026</td><td><span class="chip chip-warn">Pending</span></td><td>—</td><td>⋯</td></tr>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar" style="background:#a855f7">SS</div><div><p class="font-bold">Sumaiya Siddique</p><p class="text-xs text-ink-500">sumaiya@shohoz.com</p></div></td><td><span class="chip chip-purple">Viewer</span></td><td>Yesterday</td><td>Mar 2026</td><td><span class="chip chip-success">Active</span></td><td>—</td><td>⋯</td></tr>
+            <tr><td><input type="checkbox" class="check"/></td><td class="flex items-center gap-3"><div class="avatar" style="background:#64748b">AZ</div><div><p class="font-bold">Asif Zaman</p><p class="text-xs text-ink-500">asif@spamco.xyz</p></div></td><td><span class="chip chip-purple">Viewer</span></td><td>—</td><td>Apr 2026</td><td><span class="chip chip-fail">Suspended</span></td><td>—</td><td>⋯</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ ROLES ============ -->
+    <section id="roles" class="section p-8">
+      <div class="flex items-end justify-between mb-6">
+        <div><h1 class="text-3xl font-extrabold text-ink-900">Roles & Permissions</h1><p class="text-ink-500 text-sm mt-1">Granular RBAC — create custom roles</p></div>
+        <button class="btn-primary">+ Create role</button>
+      </div>
+
+      <div class="grid md:grid-cols-4 gap-4 mb-6">
+        <div class="card p-5"><div class="flex items-center justify-between"><span class="chip chip-gold">Super Admin</span><span class="text-xs text-ink-500">2 users</span></div><p class="text-xs text-ink-500 mt-3">Full access to everything including billing, security & API keys</p><div class="mt-3 text-xs"><span class="text-green-600 font-bold">✓ All permissions</span></div></div>
+        <div class="card p-5"><div class="flex items-center justify-between"><span class="chip chip-info">Admin</span><span class="text-xs text-ink-500">12 users</span></div><p class="text-xs text-ink-500 mt-3">Manage content, users & social — cannot change billing or delete org</p><div class="mt-3 text-xs"><span class="text-green-600 font-bold">✓ 42 / 48 permissions</span></div></div>
+        <div class="card p-5"><div class="flex items-center justify-between"><span class="chip chip-sky">Editor</span><span class="text-xs text-ink-500">42 users</span></div><p class="text-xs text-ink-500 mt-3">Create, edit & publish posts — manage their own media</p><div class="mt-3 text-xs"><span class="text-green-600 font-bold">✓ 18 / 48 permissions</span></div></div>
+        <div class="card p-5"><div class="flex items-center justify-between"><span class="chip chip-purple">Viewer</span><span class="text-xs text-ink-500">84 users</span></div><p class="text-xs text-ink-500 mt-3">Read-only access to dashboard, reports & content</p><div class="mt-3 text-xs"><span class="text-green-600 font-bold">✓ 8 / 48 permissions</span></div></div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="p-5 border-b border-surface-100"><h3 class="font-extrabold text-ink-900">Permission Matrix</h3></div>
+        <table>
+          <thead><tr><th>Capability</th><th class="text-center">Super Admin</th><th class="text-center">Admin</th><th class="text-center">Editor</th><th class="text-center">Viewer</th></tr></thead>
+          <tbody id="permMatrix"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ AUDIT ============ -->
+    <section id="audit" class="section p-8">
+      <div class="flex items-end justify-between mb-6"><div><h1 class="text-3xl font-extrabold text-ink-900">Audit Log</h1><p class="text-ink-500 text-sm mt-1">Immutable trail of every action</p></div><button class="btn-ghost">📥 Export 30-day CSV</button></div>
+      <div class="card p-4 mb-5 flex gap-3 flex-wrap items-center">
+        <input class="flex-1 rounded-lg px-3 py-2 min-w-[240px]" placeholder="Search actor, action, IP…" />
+        <select class="rounded-lg px-3 py-2"><option>All actors</option><option>Super Admins</option><option>Admins</option><option>System</option></select>
+        <select class="rounded-lg px-3 py-2"><option>All categories</option><option>Auth</option><option>Content</option><option>Social</option><option>Billing</option><option>Security</option></select>
+        <select class="rounded-lg px-3 py-2"><option>Last 24h</option><option>7d</option><option>30d</option></select>
+      </div>
+      <div class="card overflow-hidden">
+        <table>
+          <thead><tr><th>Time</th><th>Actor</th><th>Category</th><th>Action</th><th>Target</th><th>IP</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>12:42:18</td><td class="font-bold">Nazmul F.</td><td><span class="chip chip-purple">Security</span></td><td>Suspended user</td><td>asif@spamco.xyz</td><td class="font-mono text-xs">103.102.*.22</td><td><span class="chip chip-success">Success</span></td></tr>
+            <tr><td>12:11:04</td><td class="font-bold">Nazmul F.</td><td><span class="chip chip-info">Content</span></td><td>Published post</td><td>"Why voice marketing..."</td><td class="font-mono text-xs">103.102.*.22</td><td><span class="chip chip-success">Success</span></td></tr>
+            <tr><td>11:52:41</td><td class="font-bold">Rakib A.</td><td><span class="chip chip-sky">Social</span></td><td>Scheduled FB post</td><td>BC-8841 · Eid Sale</td><td class="font-mono text-xs">115.148.*.88</td><td><span class="chip chip-success">Success</span></td></tr>
+            <tr><td>10:42:09</td><td class="font-bold">Sarah H.</td><td><span class="chip chip-info">Content</span></td><td>Updated category</td><td>Voice Marketing</td><td class="font-mono text-xs">103.48.*.102</td><td><span class="chip chip-success">Success</span></td></tr>
+            <tr><td>10:08:19</td><td class="font-bold">System</td><td><span class="chip chip-warn">System</span></td><td>LinkedIn token expires in 3d</td><td>linkedin-connector</td><td class="font-mono text-xs">internal</td><td><span class="chip chip-warn">Alert</span></td></tr>
+            <tr><td>09:44:02</td><td class="font-bold">Tamim K.</td><td><span class="chip chip-info">Content</span></td><td>Uploaded media</td><td>12 files · 48 MB</td><td class="font-mono text-xs">103.48.*.102</td><td><span class="chip chip-success">Success</span></td></tr>
+            <tr><td>09:12:48</td><td class="font-bold">System</td><td><span class="chip chip-purple">Security</span></td><td>Failed login × 5</td><td>unknown@mail.ru</td><td class="font-mono text-xs">45.148.*.14</td><td><span class="chip chip-fail">Blocked 24h</span></td></tr>
+            <tr><td>08:30:00</td><td class="font-bold">System</td><td><span class="chip chip-warn">System</span></td><td>Nightly backup</td><td>s3://backups/2026-04-23.tar.gz</td><td class="font-mono text-xs">internal</td><td><span class="chip chip-success">248 MB</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ INTEGRATIONS / API ============ -->
+    <section id="integrations" class="section p-8">
+      <div class="flex items-end justify-between mb-6"><div><h1 class="text-3xl font-extrabold text-ink-900">API & Integrations</h1><p class="text-ink-500 text-sm mt-1">Keys, webhooks & third-party connectors</p></div><button class="btn-primary">+ Generate key</button></div>
+
+      <div class="card overflow-hidden mb-6">
+        <div class="p-5 border-b border-surface-100"><h3 class="font-extrabold text-ink-900">API Keys</h3></div>
+        <table>
+          <thead><tr><th>Name</th><th>Key (prefix)</th><th>Scopes</th><th>Last used</th><th>Created</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="font-bold">Production · Main</td><td class="font-mono text-xs">pk_live_8hF2••••klm</td><td><span class="chip chip-info">read</span> <span class="chip chip-info">write</span> <span class="chip chip-info">publish</span></td><td>2 min ago</td><td>Jan 2024</td><td>⋯</td></tr>
+            <tr><td class="font-bold">Staging</td><td class="font-mono text-xs">pk_test_a8Km••••p2q</td><td><span class="chip chip-info">read</span> <span class="chip chip-info">write</span></td><td>2 h ago</td><td>Mar 2024</td><td>⋯</td></tr>
+            <tr><td class="font-bold">Zapier connector</td><td class="font-mono text-xs">pk_live_7xR3••••m4j</td><td><span class="chip chip-info">read</span></td><td>14 h ago</td><td>Feb 2026</td><td>⋯</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-5 mb-6">
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-3">Webhooks</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center justify-between p-3 bg-surface-50 rounded-lg"><div><p class="font-bold">ops.protiddhoni.com/hook</p><p class="text-xs text-ink-500">post.published, post.scheduled · ✓ 1,248 delivered</p></div><span class="chip chip-success">Active</span></div>
+            <div class="flex items-center justify-between p-3 bg-surface-50 rounded-lg"><div><p class="font-bold">slack-webhook-prod</p><p class="text-xs text-ink-500">comment.new, mention.created · ✓ 482 delivered</p></div><span class="chip chip-success">Active</span></div>
+            <div class="flex items-center justify-between p-3 bg-surface-50 rounded-lg"><div><p class="font-bold">zapier.com/hooks/catch/...</p><p class="text-xs text-ink-500">user.created · ⚠ 4 failures</p></div><span class="chip chip-warn">Degraded</span></div>
+          </div>
+          <button class="btn-ghost w-full justify-center mt-4">+ Add webhook</button>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-3">Third-party Keys</h3>
+          <div class="space-y-3">
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Meta App Secret</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" type="password" value="••••••••••••••••••••"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">LinkedIn Client Secret</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" type="password" value="••••••••••••••••••••"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">X API Bearer</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" type="password" value="••••••••••••••••••••"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">SendGrid · Email</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" type="password" value="••••••••••••••••••••"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">AWS S3 Secret (Media)</label><input class="w-full mt-1 rounded-lg px-3 py-2 font-mono text-xs" type="password" value="••••••••••••••••••••"/></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="p-5 border-b border-surface-100"><h3 class="font-extrabold text-ink-900">REST API Reference</h3></div>
+        <table>
+          <thead><tr><th>Method</th><th>Endpoint</th><th>Purpose</th><th>Scope</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip chip-success">POST</span></td><td class="font-mono text-xs">/api/v1/auth/login</td><td>Issue JWT</td><td>public</td></tr>
+            <tr><td><span class="chip chip-info">GET</span></td><td class="font-mono text-xs">/api/v1/posts?status=published</td><td>List posts (paginated)</td><td>read</td></tr>
+            <tr><td><span class="chip chip-success">POST</span></td><td class="font-mono text-xs">/api/v1/posts</td><td>Create post</td><td>write</td></tr>
+            <tr><td><span class="chip chip-warn">PATCH</span></td><td class="font-mono text-xs">/api/v1/posts/:id</td><td>Update post</td><td>write</td></tr>
+            <tr><td><span class="chip chip-fail">DELETE</span></td><td class="font-mono text-xs">/api/v1/posts/:id</td><td>Move to trash</td><td>write</td></tr>
+            <tr><td><span class="chip chip-success">POST</span></td><td class="font-mono text-xs">/api/v1/media/upload</td><td>Upload file (multipart)</td><td>write</td></tr>
+            <tr><td><span class="chip chip-success">POST</span></td><td class="font-mono text-xs">/api/v1/social/facebook/post</td><td>Publish to FB Page</td><td>publish</td></tr>
+            <tr><td><span class="chip chip-success">POST</span></td><td class="font-mono text-xs">/api/v1/social/linkedin/post</td><td>Publish to LinkedIn company</td><td>publish</td></tr>
+            <tr><td><span class="chip chip-info">GET</span></td><td class="font-mono text-xs">/api/v1/analytics/pageviews</td><td>Page view metrics</td><td>read</td></tr>
+            <tr><td><span class="chip chip-info">GET</span></td><td class="font-mono text-xs">/api/v1/users</td><td>List users (admin only)</td><td>admin</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ ARCHITECTURE ============ -->
+    <section id="architecture" class="section p-8">
+      <div class="mb-6"><h1 class="text-3xl font-extrabold text-ink-900">System Architecture</h1><p class="text-ink-500 text-sm mt-1">Reference topology — production SaaS deployment</p></div>
+
+      <div class="grid lg:grid-cols-3 gap-5 mb-6">
+        <div class="card p-6"><p class="text-xs text-ink-500 uppercase font-semibold">Frontend</p><h3 class="font-extrabold text-ink-900 mt-1">Next.js 14 · App Router</h3><ul class="mt-3 text-sm text-ink-500 space-y-1"><li>• React 18 + TypeScript</li><li>• Tailwind CSS</li><li>• TanStack Query</li><li>• Zustand state</li><li>• ISR + Edge caching</li></ul></div>
+        <div class="card p-6"><p class="text-xs text-ink-500 uppercase font-semibold">Backend</p><h3 class="font-extrabold text-ink-900 mt-1">Node.js · Express + Prisma</h3><ul class="mt-3 text-sm text-ink-500 space-y-1"><li>• REST + GraphQL (Apollo)</li><li>• JWT · OAuth 2.0</li><li>• BullMQ queues</li><li>• Zod validation</li><li>• Redis cache layer</li></ul></div>
+        <div class="card p-6"><p class="text-xs text-ink-500 uppercase font-semibold">Data</p><h3 class="font-extrabold text-ink-900 mt-1">PostgreSQL 15 + S3</h3><ul class="mt-3 text-sm text-ink-500 space-y-1"><li>• RDS Multi-AZ</li><li>• Read replica</li><li>• Daily backups</li><li>• AWS S3 for media</li><li>• CloudFront CDN</li></ul></div>
+      </div>
+
+      <div class="card p-6 mb-6">
+        <h3 class="font-extrabold text-ink-900 mb-4">High-level Topology</h3>
+        <div class="bg-surface-50 rounded-xl p-6 font-mono text-xs overflow-x-auto text-ink-700">
+<pre>
+                           ┌──────────────────┐
+    Users  ─────────────▶  │   CloudFront CDN │  ───▶  S3 Static (Next.js build)
+                           └────────┬─────────┘
+                                    │
+                           ┌────────▼─────────┐
+                           │   AWS ALB + WAF  │
+                           └────────┬─────────┘
+                                    │
+                   ┌────────────────┼────────────────┐
+                   │                │                │
+          ┌────────▼──────┐  ┌──────▼──────┐  ┌──────▼──────┐
+          │  Next.js SSR  │  │  API Node.js │  │  Webhook Worker │
+          │  (ECS · 4×)   │  │  (ECS · 6×) │  │  (BullMQ · 2×)  │
+          └───────┬───────┘  └──────┬──────┘  └──────┬──────────┘
+                  │                 │                │
+                  └─────────────────┼────────────────┘
+                                    │
+                 ┌──────────────────┼──────────────────┬──────────────┐
+                 │                  │                  │              │
+        ┌────────▼──────┐  ┌────────▼──────┐  ┌────────▼────┐  ┌─────▼─────┐
+        │ Postgres RDS  │  │   Redis (EL)  │  │  AWS S3     │  │  Meilisearch│
+        │ Multi-AZ      │  │   cache+queue │  │  media + bak│  │  search     │
+        └───────────────┘  └───────────────┘  └─────────────┘  └─────────────┘
+                                    │
+                       External: Meta · LinkedIn · X · IG · SendGrid · Stripe
+</pre>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-5 mb-6">
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-3">Folder Structure</h3>
+          <div class="bg-surface-50 rounded-lg p-4 font-mono text-xs text-ink-700 overflow-x-auto">
+<pre>
+protiddhoni-cms/
+├─ apps/
+│  ├─ web/                  # Next.js storefront
+│  └─ admin/                # Admin SPA (this page)
+├─ packages/
+│  ├─ api/                  # Node · Express
+│  │  ├─ routes/
+│  │  │  ├─ auth.ts
+│  │  │  ├─ posts.ts
+│  │  │  ├─ media.ts
+│  │  │  ├─ social/
+│  │  │  │  ├─ facebook.ts
+│  │  │  │  ├─ linkedin.ts
+│  │  │  │  ├─ twitter.ts
+│  │  │  │  └─ instagram.ts
+│  │  │  └─ analytics.ts
+│  │  ├─ middleware/
+│  │  │  ├─ rbac.ts
+│  │  │  ├─ rateLimit.ts
+│  │  │  └─ validate.ts
+│  │  ├─ services/
+│  │  ├─ workers/            # BullMQ jobs
+│  │  └─ prisma/
+│  │     └─ schema.prisma
+│  ├─ db/
+│  ├─ ui/                    # shared components
+│  └─ config/
+├─ infra/                    # Terraform + Helm
+├─ docker-compose.yml
+└─ turbo.json
+</pre>
+          </div>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-3">Database Schema (excerpt)</h3>
+          <div class="bg-surface-50 rounded-lg p-4 font-mono text-xs text-ink-700 overflow-x-auto">
+<pre>
+users(id, email, password_hash,
+      role, status, 2fa_secret, created_at)
+
+roles(id, name, description)
+permissions(id, capability)
+role_permissions(role_id, permission_id)
+
+posts(id, title, slug, body, status,
+      author_id, category_id, seo_title,
+      seo_desc, seo_keywords, cover_url,
+      published_at, scheduled_for)
+
+tags(id, name, slug)
+post_tags(post_id, tag_id)
+categories(id, name, slug, parent_id)
+
+media(id, type, url, size, folder_id,
+      uploaded_by, created_at)
+folders(id, name, parent_id, created_by)
+
+social_accounts(id, provider, account_id,
+      access_token_enc, refresh_token_enc,
+      expires_at, user_id)
+social_posts(id, post_id, provider,
+      scheduled_for, published_at,
+      platform_post_id, status, stats_json)
+
+analytics_events(id, type, path, user_id,
+      country, device, referrer, ts)
+
+audit_logs(id, actor_id, action, target,
+      ip, user_agent, status, ts)
+
+notifications(id, user_id, type, title,
+      body, link, read_at, created_at)
+
+api_keys(id, name, prefix, hash, scopes,
+      created_by, last_used_at)
+webhooks(id, url, events, secret, status)
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6 mb-6">
+        <h3 class="font-extrabold text-ink-900 mb-4">Deployment Pipeline</h3>
+        <div class="grid md:grid-cols-5 gap-3 text-sm">
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full mesh-blue text-white flex items-center justify-center font-bold">1</div><p class="mt-2 font-bold">Git push</p><p class="text-xs text-ink-500">→ main / release</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-paypal-blue text-white flex items-center justify-center font-bold">2</div><p class="mt-2 font-bold">GitHub Actions</p><p class="text-xs text-ink-500">lint · test · scan</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-paypal-sky text-white flex items-center justify-center font-bold">3</div><p class="mt-2 font-bold">Docker build</p><p class="text-xs text-ink-500">push to ECR</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-paypal-gold text-paypal-navy flex items-center justify-center font-bold">4</div><p class="mt-2 font-bold">ECS deploy</p><p class="text-xs text-ink-500">blue/green</p></div>
+          <div class="text-center p-4 bg-surface-50 rounded-lg"><div class="w-10 h-10 mx-auto rounded-full bg-green-600 text-white flex items-center justify-center font-bold">✓</div><p class="mt-2 font-bold">Smoke test</p><p class="text-xs text-ink-500">+ rollback safety</p></div>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <h3 class="font-extrabold text-ink-900 mb-3">Security & Performance Playbook</h3>
+        <div class="grid md:grid-cols-2 gap-4 text-sm">
+          <div class="p-4 rounded-lg bg-surface-50"><p class="font-bold text-paypal-navy">🔒 Input validation</p><p class="text-xs text-ink-500 mt-1">Zod schemas on every endpoint · escape output · CSP headers</p></div>
+          <div class="p-4 rounded-lg bg-surface-50"><p class="font-bold text-paypal-navy">⏱ Rate limiting</p><p class="text-xs text-ink-500 mt-1">Redis sliding-window · 1,000 rpm / key · auto-block abusers</p></div>
+          <div class="p-4 rounded-lg bg-surface-50"><p class="font-bold text-paypal-navy">📜 Audit logs</p><p class="text-xs text-ink-500 mt-1">Append-only · immutable · 2-year retention · export-ready</p></div>
+          <div class="p-4 rounded-lg bg-surface-50"><p class="font-bold text-paypal-navy">🔐 Encryption</p><p class="text-xs text-ink-500 mt-1">AES-256 at rest for tokens · TLS 1.3 in transit · KMS keys</p></div>
+          <div class="p-4 rounded-lg bg-surface-50"><p class="font-bold text-paypal-navy">⚡ Caching</p><p class="text-xs text-ink-500 mt-1">Edge ISR · Redis · stale-while-revalidate · image CDN</p></div>
+          <div class="p-4 rounded-lg bg-surface-50"><p class="font-bold text-paypal-navy">🛡 2FA enforcement</p><p class="text-xs text-ink-500 mt-1">TOTP (Authenticator apps) · backup codes · SSO for @protiddhoni</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section id="settings" class="section p-8">
+      <div class="mb-6"><h1 class="text-3xl font-extrabold text-ink-900">Settings</h1><p class="text-ink-500 text-sm mt-1">Organization, theme & notification preferences</p></div>
+
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-4">🏢 Organization</h3>
+          <div class="space-y-3">
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Legal name</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="Protiddhoni Limited"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Website</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="https://voicereach.com"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Address</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="Gulshan-1, Dhaka 1212"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">BIN / VAT</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="000-842-1208-0102"/></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Timezone</label><select class="w-full mt-1 rounded-lg px-3 py-2"><option>Asia/Dhaka (UTC+6)</option><option>UTC</option><option>Asia/Kolkata</option></select></div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-4">🎨 Theme</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">Dark mode</p><p class="text-xs text-ink-500">System-wide color scheme</p></div><div class="toggle" id="themeToggle" onclick="toggleTheme()"></div></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Primary color</label><div class="flex gap-2 mt-2"><div class="w-8 h-8 rounded-full bg-paypal-navy ring-2 ring-offset-2 ring-paypal-blue cursor-pointer"></div><div class="w-8 h-8 rounded-full bg-paypal-blue cursor-pointer"></div><div class="w-8 h-8 rounded-full bg-paypal-sky cursor-pointer"></div><div class="w-8 h-8 rounded-full bg-paypal-gold cursor-pointer"></div><div class="w-8 h-8 rounded-full bg-green-500 cursor-pointer"></div><div class="w-8 h-8 rounded-full bg-purple-500 cursor-pointer"></div></div></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Sidebar layout</label><select class="w-full mt-1 rounded-lg px-3 py-2"><option>Collapsed · icons only</option><option>Expanded (default)</option><option>Hidden</option></select></div>
+            <div><label class="text-xs font-bold text-ink-500 uppercase">Font size</label><select class="w-full mt-1 rounded-lg px-3 py-2"><option>Comfortable</option><option>Compact</option><option>Spacious</option></select></div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-4">🔐 Security</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">2FA required</p><p class="text-xs text-ink-500">For all admin roles</p></div><div class="toggle on"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">SSO (Google Workspace)</p><p class="text-xs text-ink-500">Staff @protiddhoni.com</p></div><div class="toggle on"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">IP allow-list</p><p class="text-xs text-ink-500">3 IPs configured</p></div><div class="toggle"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">Session timeout</p><p class="text-xs text-ink-500">Auto-logout · 30 min</p></div><div class="toggle on"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">Password policy</p><p class="text-xs text-ink-500">Min 12 · complexity · 90d</p></div><div class="toggle on"></div></div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="font-extrabold text-ink-900 mb-4">🔔 Notifications</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">Email — revenue digest</p><p class="text-xs text-ink-500">Daily 9 AM</p></div><div class="toggle on"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">In-app — comments</p><p class="text-xs text-ink-500">Realtime</p></div><div class="toggle on"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">Slack alerts (#ops)</p><p class="text-xs text-ink-500">Failures, SLA breaches</p></div><div class="toggle on"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">WhatsApp — critical outages</p><p class="text-xs text-ink-500">Oncall engineer only</p></div><div class="toggle"></div></div>
+            <div class="flex items-center justify-between"><div><p class="font-bold text-sm">SMS fallback</p><p class="text-xs text-ink-500">If email fails</p></div><div class="toggle on"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end mt-6 gap-2"><button class="btn-ghost">Cancel</button><button class="btn-primary">💾 Save changes</button></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Login Modal (demo) -->
+<div class="modal-back" id="loginModal">
+  <div class="card p-8 max-w-md w-full">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-12 h-12 rounded-xl mesh-blue flex items-center justify-center ring-gold text-white text-xl font-extrabold">P</div>
+      <div><p class="font-extrabold text-ink-900">Protiddhoni CMS</p><p class="text-xs text-ink-500">Sign in to continue</p></div>
+    </div>
+    <div class="space-y-3">
+      <div><label class="text-xs font-bold text-ink-500 uppercase">Email</label><input class="w-full mt-1 rounded-lg px-3 py-2" value="nazmul.fahim@softifybd.com"/></div>
+      <div><label class="text-xs font-bold text-ink-500 uppercase">Password</label><input type="password" class="w-full mt-1 rounded-lg px-3 py-2" value="••••••••••••"/></div>
+      <div class="flex items-center justify-between text-xs"><label class="flex items-center gap-1"><input type="checkbox" class="check" checked/> Remember me</label><a href="#" class="text-paypal-blue font-bold">Forgot?</a></div>
+      <button class="btn-primary w-full justify-center !py-3" onclick="document.getElementById('loginModal').classList.remove('show')">Sign in with 2FA →</button>
+      <div class="text-center text-xs text-ink-500">or</div>
+      <button class="btn-ghost w-full justify-center !py-3">Continue with Google Workspace</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Navigation
+function goto(id) {
+  document.querySelectorAll('.side-link').forEach(l => l.classList.toggle('active', l.dataset.target === id));
+  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.side-link').forEach(link => link.addEventListener('click', () => goto(link.dataset.target)));
+
+// Toggle toggles
+document.querySelectorAll('.toggle').forEach(t => t.addEventListener('click', (e) => {
+  if (t.id !== 'themeToggle') t.classList.toggle('on');
+}));
+
+// Theme
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  document.getElementById('themeToggle')?.classList.toggle('on');
+}
+
+// ----- Charts -----
+const palette = { navy:'#003087', blue:'#0070BA', sky:'#009CDE', gold:'#FFC439' };
+
+new Chart(document.getElementById('trafficChart'), {
+  type:'line',
+  data:{ labels:Array.from({length:30},(_,i)=>`Apr ${i+1}`),
+    datasets:[
+      { label:'Page views (k)', data:[42,48,52,49,58,62,68,74,72,82,88,92,98,104,112,118,124,132,138,142,148,152,158,164,172,178,184,194,208,224], borderColor:palette.blue, backgroundColor:'rgba(0,112,186,.12)', fill:true, tension:.35, pointRadius:0, borderWidth:3 },
+      { label:'Engagement (k)', data:[3,4,4,4,5,5,6,7,7,8,9,9,10,11,12,12,13,14,15,15,16,17,18,18,19,20,21,22,24,26], borderColor:palette.gold, backgroundColor:'rgba(255,196,57,.12)', fill:true, tension:.35, pointRadius:0, borderWidth:3, borderDash:[5,5] }
+    ]},
+  options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom', labels:{usePointStyle:true, font:{size:11,weight:'600'}}}}, scales:{y:{grid:{color:'#eef3f9'}, ticks:{font:{size:10}}}, x:{grid:{display:false}, ticks:{font:{size:9}, maxTicksLimit:10}}}}
+});
+
+new Chart(document.getElementById('sourceChart'), {
+  type:'doughnut',
+  data:{ labels:['Direct','Organic','Social','Referral'], datasets:[{ data:[38.2,28.6,21.4,11.8], backgroundColor:[palette.navy,palette.blue,palette.sky,palette.gold], borderWidth:0 }]},
+  options:{ cutout:'72%', plugins:{legend:{display:false}}}
+});
+
+new Chart(document.getElementById('deviceChart'), {
+  type:'polarArea',
+  data:{ labels:['Mobile','Desktop','Tablet','Smart TV'], datasets:[{ data:[62,28,8,2], backgroundColor:['rgba(0,48,135,.8)','rgba(0,112,186,.8)','rgba(0,156,222,.8)','rgba(255,196,57,.8)'], borderWidth:0 }]},
+  options:{plugins:{legend:{position:'bottom', labels:{font:{size:10}}}}}
+});
+
+new Chart(document.getElementById('pvChart'), {
+  type:'bar',
+  data:{ labels:['W1','W2','W3','W4'], datasets:[{ label:'Views', data:[482,548,612,702], backgroundColor:palette.blue, borderRadius:8 }]},
+  options:{plugins:{legend:{display:false}}, scales:{y:{grid:{color:'#eef3f9'}, ticks:{callback:v=>v+'k'}}, x:{grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('funnelChart'), {
+  type:'bar',
+  data:{ labels:['Visits','Signup','Trial','Paid'], datasets:[{ data:[10000,2800,1200,420], backgroundColor:[palette.sky,palette.blue,palette.navy,palette.gold], borderRadius:8 }]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{grid:{color:'#eef3f9'}}, y:{grid:{display:false}}}}
+});
+
+// ----- Posts table -----
+const posts = [
+  ['Why voice marketing is the next $1B opportunity','Voice Marketing','Rakib Ahmed','12.8k','94','Apr 18','Published','success'],
+  ['How Daraz BD lifted repeat orders 23%','Case Study','Sarah Haque','8.4k','91','Apr 12','Published','success'],
+  ['Voice OTP vs SMS OTP: security breakdown','Security','Rakib Ahmed','6.8k','89','Apr 10','Published','success'],
+  ['Scaling to 50,000 concurrent voice calls','Engineering','Tamim Khan','6.2k','92','Mar 28','Published','success'],
+  ['A/B testing voice messages — what works','Product','Sarah Haque','4.1k','86','Mar 20','Published','success'],
+  ['Running a nationwide voice poll in 4 hours','Playbook','Rakib Ahmed','3.8k','88','Mar 14','Published','success'],
+  ['The 7 voice-script templates that convert','Voice Marketing','Rakib Ahmed','—','76','—','Draft','warn'],
+  ['Voice for election-day GOTV campaigns','Case Study','Sarah Haque','—','82','Apr 26','Scheduled','info'],
+  ['Engineering our real-time transcription pipeline','Engineering','Tamim Khan','—','79','—','Draft','warn'],
+  ['2026 State of Voice Marketing — Bangladesh','Voice Marketing','Rakib Ahmed','—','95','Apr 30','Scheduled','info']
+];
+const postsTbody = document.getElementById('postsTable');
+posts.forEach(p => {
+  postsTbody.insertAdjacentHTML('beforeend',`
+    <tr>
+      <td><input type="checkbox" class="check"/></td>
+      <td class="font-bold max-w-xs truncate">${p[0]}</td>
+      <td>${p[1]}</td>
+      <td>${p[2]}</td>
+      <td>${p[3]}</td>
+      <td><div class="flex items-center gap-2"><div class="progress w-12"><div style="width:${p[4]}%;background:${p[4]>=90?'#22c55e':p[4]>=80?'#FFC439':'#ef4444'}"></div></div><span class="text-xs font-bold">${p[4]}</span></div></td>
+      <td>${p[5]}</td>
+      <td><span class="chip chip-${p[7]}">${p[6]}</span></td>
+      <td><button class="text-ink-500 hover:text-paypal-blue">⋯</button></td>
+    </tr>`);
+});
+
+// ----- Media grid -----
+const mediaItems = [
+  {g:'linear-gradient(135deg,#003087,#0070BA)',icon:'🎙️'},
+  {g:'linear-gradient(135deg,#0070BA,#009CDE)',icon:'📱'},
+  {g:'linear-gradient(135deg,#FFC439,#f59e0b)',icon:'🛒'},
+  {g:'linear-gradient(135deg,#009CDE,#06b6d4)',icon:'⚡'},
+  {g:'linear-gradient(135deg,#7e22ce,#a855f7)',icon:'🎨'},
+  {g:'linear-gradient(135deg,#0f766e,#14b8a6)',icon:'📊'},
+  {g:'linear-gradient(135deg,#b45309,#f59e0b)',icon:'🔒'},
+  {g:'linear-gradient(135deg,#be123c,#e11d48)',icon:'❤️'},
+  {g:'linear-gradient(135deg,#1e40af,#3b82f6)',icon:'🌐'},
+  {g:'linear-gradient(135deg,#047857,#10b981)',icon:'✅'},
+  {g:'linear-gradient(135deg,#4338ca,#6366f1)',icon:'🚀'},
+  {g:'linear-gradient(135deg,#0a1f44,#0070BA)',icon:'🗳️'},
+  {g:'linear-gradient(135deg,#E1306C,#FCAF45)',icon:'📸'},
+  {g:'linear-gradient(135deg,#0A66C2,#0070BA)',icon:'💼'},
+  {g:'linear-gradient(135deg,#1877F2,#003087)',icon:'📣'},
+  {g:'linear-gradient(135deg,#7e22ce,#E1306C)',icon:'🎬'},
+  {g:'linear-gradient(135deg,#FFC439,#0070BA)',icon:'🎯'},
+  {g:'linear-gradient(135deg,#0a1f44,#7e22ce)',icon:'🔧'}
+];
+const mediaGrid = document.getElementById('mediaGrid');
+mediaItems.forEach((m,i)=>{
+  mediaGrid.insertAdjacentHTML('beforeend',`
+    <div class="media-thumb flex items-center justify-center text-4xl" style="background:${m.g}">
+      <span>${m.icon}</span>
+      <span class="absolute bottom-1 left-1 right-1 text-[10px] text-white font-bold truncate bg-black/40 rounded px-1">image-${(1000+i).toString()}.jpg</span>
+    </div>`);
+});
+
+// ----- Permission matrix -----
+const caps = [
+  ['View dashboard',['✓','✓','✓','✓']],
+  ['Create posts',['✓','✓','✓','—']],
+  ['Publish posts',['✓','✓','✓','—']],
+  ['Delete posts',['✓','✓','—','—']],
+  ['Upload media',['✓','✓','✓','—']],
+  ['Manage categories',['✓','✓','—','—']],
+  ['Manage social accounts',['✓','✓','—','—']],
+  ['Schedule posts',['✓','✓','✓','—']],
+  ['View analytics',['✓','✓','✓','✓']],
+  ['Invite users',['✓','✓','—','—']],
+  ['Assign roles',['✓','—','—','—']],
+  ['Manage billing',['✓','—','—','—']],
+  ['View API keys',['✓','✓','—','—']],
+  ['Rotate API keys',['✓','—','—','—']],
+  ['View audit log',['✓','✓','—','—']],
+  ['Export data',['✓','✓','✓','✓']],
+  ['Delete organization',['✓','—','—','—']]
+];
+const permBody = document.getElementById('permMatrix');
+caps.forEach(([c,v]) => {
+  permBody.insertAdjacentHTML('beforeend',`
+    <tr>
+      <td class="font-bold">${c}</td>
+      ${v.map(x=>`<td class="text-center"><span class="${x==='✓'?'text-green-600':'text-ink-300'} font-bold">${x}</span></td>`).join('')}
+    </tr>`);
+});
+
+// ----- Activity feed -----
+const activity = [
+  {icon:'📝',c:'bg-blue-100',t:'Rakib A. published "Why voice marketing..."',when:'2m ago'},
+  {icon:'📤',c:'bg-green-100',t:'Sarah H. posted to LinkedIn',when:'14m ago'},
+  {icon:'👤',c:'bg-purple-100',t:'Rifat K. joined as Editor',when:'48m ago'},
+  {icon:'💬',c:'bg-amber-100',t:'New FB comment on "Eid Sale"',when:'1h ago'},
+  {icon:'🛡️',c:'bg-red-100',t:'5 failed logins blocked',when:'2h ago'},
+  {icon:'📅',c:'bg-sky-100',t:'Tamim K. scheduled 3 posts',when:'3h ago'},
+  {icon:'✏️',c:'bg-blue-100',t:'Nazmul F. updated SEO settings',when:'4h ago'},
+  {icon:'📷',c:'bg-purple-100',t:'12 media files uploaded',when:'5h ago'}
+];
+const feed = document.getElementById('activityFeed');
+activity.forEach(a => feed.insertAdjacentHTML('beforeend',`
+  <div class="flex gap-3 items-start text-sm">
+    <span class="w-8 h-8 rounded-xl ${a.c} flex items-center justify-center flex-shrink-0">${a.icon}</span>
+    <div class="flex-1"><p class="text-ink-900">${a.t}</p><p class="text-xs text-ink-500">${a.when}</p></div>
+  </div>`));
+
+// ----- CAPI Chart -----
+new Chart(document.getElementById('capiChart'), {
+  type:'bar',
+  data:{ labels:['Apr 10','Apr 11','Apr 12','Apr 13','Apr 14','Apr 15','Apr 16','Apr 17','Apr 18','Apr 19','Apr 20','Apr 21','Apr 22','Apr 23'],
+    datasets:[
+      { label:'Pixel only (browser)', data:[18,19,17,20,21,19,18,22,24,23,25,26,24,26], backgroundColor:'rgba(0,112,186,.35)', borderRadius:6, stack:'e' },
+      { label:'CAPI only (server)', data:[42,44,46,45,48,51,50,54,58,62,66,70,74,78], backgroundColor:palette.navy, borderRadius:6, stack:'e' },
+      { label:'Both (deduped)', data:[48,50,52,54,56,58,60,64,68,72,76,80,84,88], backgroundColor:palette.gold, borderRadius:6, stack:'e' }
+    ]},
+  options:{responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom', labels:{usePointStyle:true, font:{size:11,weight:'600'}}}},
+    scales:{ y:{ stacked:true, grid:{color:'#eef3f9'}, ticks:{callback:v=>v+'k', font:{size:10}}}, x:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}}}}
+  }
+});
+
+// ----- CAPI Live Stream -----
+const capiFeed = document.getElementById('capiFeed');
+const capiTemplates = [
+  {t:'PageView', c:'text-paypal-blue', urls:['/blog/voice-marketing-2026','/pricing','/voice-broadcasting','/api-docs','/']},
+  {t:'ViewContent', c:'text-paypal-sky', urls:['/blog/voice-otp-vs-sms','/case-studies/daraz-bd','/blog/7-voice-scripts']},
+  {t:'Lead', c:'text-green-600', urls:['/contact','/demo-request']},
+  {t:'Purchase', c:'text-green-700', urls:['/checkout/success?plan=growth','/checkout/success?plan=enterprise']},
+  {t:'CompleteRegistration', c:'text-paypal-navy', urls:['/signup/complete']},
+  {t:'InitiateCheckout', c:'text-amber-600', urls:['/checkout']}
+];
+function hashIp(){ return 'sha('+Math.random().toString(36).slice(2,10)+'...)'; }
+function addCapiEvent() {
+  const ev = capiTemplates[Math.floor(Math.random()*capiTemplates.length)];
+  const url = ev.urls[Math.floor(Math.random()*ev.urls.length)];
+  const ts = new Date().toLocaleTimeString('en-US',{hour12:false});
+  const eid = 'evt_'+Math.random().toString(36).slice(2,10);
+  const src = Math.random() > .35 ? 'CAPI' : 'PIXEL';
+  const emq = (8.2 + Math.random()*1.6).toFixed(1);
+  const line = document.createElement('div');
+  line.className = 'px-5 py-2 border-b border-surface-100 flex gap-3 hover:bg-surface-50 items-center';
+  line.innerHTML = `
+    <span class="text-ink-500">${ts}</span>
+    <span class="${ev.c} font-bold uppercase text-[10px] w-24 truncate">${ev.t}</span>
+    <span class="chip ${src==='CAPI'?'chip-sky':'chip-info'} !text-[9px] !py-0.5">${src}</span>
+    <span class="flex-1 text-ink-700 truncate">${url}</span>
+    <span class="text-ink-500 hidden md:inline">em:${hashIp()}</span>
+    <span class="font-bold ${emq>=9?'text-green-600':emq>=8?'text-amber-600':'text-red-600'}">EMQ ${emq}</span>
+    <span class="text-green-600 font-bold">✓</span>`;
+  capiFeed.insertBefore(line, capiFeed.firstChild);
+  if (capiFeed.children.length > 30) capiFeed.removeChild(capiFeed.lastChild);
+}
+for (let i=0;i<12;i++) addCapiEvent();
+setInterval(addCapiEvent, 1600);
+
+// Keyboard shortcut
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); document.querySelector('.topbar input').focus(); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VoiceReach — Voice Broadcasting Platform for Bangladesh</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'], mono: ['JetBrains Mono','monospace'] },
+    colors: {
+      paypal: { navy:'#003087', blue:'#0070BA', sky:'#009CDE', gold:'#FFC439', cream:'#FFF9E6' },
+      ink: { 900:'#0a1f44', 700:'#2c2e2f', 500:'#687173', 300:'#c3cad9' },
+      surface: { 0:'#ffffff', 50:'#f7f9fc', 100:'#eef3f9', 200:'#e1e8f0' }
+    }
+  }}}
+</script>
+<style>
+  body { font-family:'Plus Jakarta Sans', sans-serif; background:#ffffff; color:#2c2e2f; }
+  .hero-gradient { background: radial-gradient(1200px 600px at 10% -10%, rgba(0,156,222,.25), transparent 60%), radial-gradient(900px 500px at 90% 10%, rgba(255,196,57,.25), transparent 60%), linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%); }
+  .mesh-blue { background: linear-gradient(135deg, #003087 0%, #0070BA 55%, #009CDE 100%); }
+  .btn-primary { background:#0070BA; color:#fff; padding:.85rem 1.6rem; border-radius:999px; font-weight:700; display:inline-flex; align-items:center; gap:.5rem; transition:.2s; box-shadow: 0 10px 24px -10px rgba(0,112,186,.6); }
+  .btn-primary:hover { background:#003087; transform:translateY(-1px); }
+  .btn-gold { background:#FFC439; color:#0a1f44; padding:.85rem 1.6rem; border-radius:999px; font-weight:700; display:inline-flex; align-items:center; gap:.5rem; transition:.2s; box-shadow: 0 10px 24px -10px rgba(255,196,57,.6); }
+  .btn-gold:hover { background:#ffb300; transform:translateY(-1px); }
+  .btn-outline { border:1.5px solid #003087; color:#003087; padding:.8rem 1.5rem; border-radius:999px; font-weight:700; display:inline-flex; align-items:center; gap:.5rem; transition:.2s; background:#fff; }
+  .btn-outline:hover { background:#003087; color:#fff; }
+  .card { background:#fff; border:1px solid #e1e8f0; border-radius:20px; transition:.25s; }
+  .card:hover { border-color:#009CDE; box-shadow: 0 20px 50px -20px rgba(0,112,186,.2); transform:translateY(-2px); }
+  .chip { display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .8rem; border-radius:999px; background:#eef3f9; color:#003087; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+  .chip-gold { background:#FFF9E6; color:#8b6b00; }
+  .chip-sky { background:#E0F4FB; color:#0070BA; }
+  .nav-link { color:#2c2e2f; font-size:.9rem; font-weight:600; padding:.4rem .8rem; border-radius:10px; transition:.2s; }
+  .nav-link:hover { background:#eef3f9; color:#003087; }
+  .nav-link.active { color:#0070BA; }
+  .text-gradient { background: linear-gradient(135deg, #003087 0%, #0070BA 50%, #009CDE 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .stat-big { font-size:3rem; font-weight:800; color:#003087; line-height:1; }
+  .float-1 { animation: float 6s ease-in-out infinite; }
+  .float-2 { animation: float 7s ease-in-out infinite 1s; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .glow-ring { box-shadow: 0 0 0 0 rgba(0,156,222,.6); animation: glow 2.5s infinite; }
+  @keyframes glow { 0%{box-shadow:0 0 0 0 rgba(0,156,222,.5)} 70%{box-shadow:0 0 0 18px rgba(0,156,222,0)} 100%{box-shadow:0 0 0 0 rgba(0,156,222,0)} }
+  .marquee { display:flex; gap:4rem; animation: scroll 30s linear infinite; }
+  @keyframes scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .feature-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#eef3f9,#E0F4FB); color:#0070BA; }
+  .dot-grid { background-image: radial-gradient(#c3cad9 1px, transparent 1px); background-size:20px 20px; }
+  details > summary { list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker { display:none; }
+  .ring-gold { box-shadow: 0 0 0 4px #FFF9E6, 0 0 0 5px #FFC439; }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- NAV -->
+<header class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-surface-200">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl mesh-blue flex items-center justify-center ring-gold">
+        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3zM5 10a1 1 0 112 0 5 5 0 0010 0 1 1 0 112 0 7 7 0 01-6 6.92V20h3a1 1 0 110 2H8a1 1 0 110-2h3v-3.08A7 7 0 015 10z"/></svg>
+      </div>
+      <div>
+        <p class="font-extrabold text-paypal-navy leading-none text-lg">VoiceReach</p>
+        <p class="text-[10px] text-ink-500 font-semibold">by Protiddhoni</p>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="index.html" class="nav-link active">Broadcast</a>
+      <a href="voice-otp.html" class="nav-link">Voice OTP</a>
+      <a href="voice-survey.html" class="nav-link">Voice Survey</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="api-docs.html" class="nav-link">API Docs</a>
+      <a href="blog.html" class="nav-link">Blog</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="admin.html" class="hidden md:inline-flex nav-link">Sign in</a>
+      <a href="#" class="btn-primary !py-2 !px-4 !text-sm">Get Started →</a>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero-gradient pt-32 pb-20 relative overflow-hidden">
+  <div class="absolute inset-0 dot-grid opacity-30"></div>
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative">
+    <div>
+      <span class="chip"><span class="w-2 h-2 rounded-full bg-paypal-sky animate-pulse"></span> Now serving 5,000+ Bangladeshi businesses</span>
+      <h1 class="mt-5 text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-ink-900 leading-[1.05]">
+        Reach every customer in <span class="text-gradient">Bangladesh</span> with voice.
+      </h1>
+      <p class="mt-6 text-lg text-ink-500 max-w-xl leading-relaxed">The most intuitive voice broadcasting platform — best-in-class delivery across Grameenphone, Robi, Banglalink & Airtel with real-time analytics.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#" class="btn-primary">Start Broadcasting Free →</a>
+        <a href="#" class="btn-outline">▶ Watch 2-min demo</a>
+      </div>
+      <div class="mt-10 flex items-center gap-8">
+        <div><p class="text-2xl font-extrabold text-paypal-navy">99.9%</p><p class="text-xs text-ink-500 font-semibold">Uptime SLA</p></div>
+        <div class="w-px h-10 bg-surface-200"></div>
+        <div><p class="text-2xl font-extrabold text-paypal-navy">All</p><p class="text-xs text-ink-500 font-semibold">Major Carriers</p></div>
+        <div class="w-px h-10 bg-surface-200"></div>
+        <div><p class="text-2xl font-extrabold text-paypal-navy">10M+</p><p class="text-xs text-ink-500 font-semibold">Minutes Sent</p></div>
+      </div>
+    </div>
+
+    <!-- Dashboard mock -->
+    <div class="relative">
+      <div class="absolute -top-6 -left-6 w-72 h-72 bg-paypal-gold/30 rounded-full blur-3xl float-1"></div>
+      <div class="absolute -bottom-6 -right-6 w-72 h-72 bg-paypal-sky/30 rounded-full blur-3xl float-2"></div>
+      <div class="relative card p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-4 border-b border-surface-200">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-400"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+            <span class="w-3 h-3 rounded-full bg-green-400"></span>
+            <span class="ml-3 text-xs text-ink-500 font-mono">dashboard.voicereach.com</span>
+          </div>
+          <span class="chip-sky chip">Live</span>
+        </div>
+        <div class="mt-5">
+          <p class="text-sm text-ink-500">Welcome back, Fahim 👋</p>
+          <p class="text-2xl font-extrabold text-paypal-navy">Ready to broadcast?</p>
+        </div>
+        <div class="mt-5 grid grid-cols-3 gap-3">
+          <div class="p-3 rounded-xl bg-surface-50"><p class="text-[10px] font-bold text-ink-500 uppercase">Balance</p><p class="text-lg font-extrabold text-paypal-navy">৳12,450</p></div>
+          <div class="p-3 rounded-xl bg-gradient-to-br from-paypal-blue to-paypal-sky text-white"><p class="text-[10px] font-bold uppercase opacity-80">Broadcasts</p><p class="text-lg font-extrabold">1,247</p></div>
+          <div class="p-3 rounded-xl bg-paypal-cream"><p class="text-[10px] font-bold text-[#8b6b00] uppercase">Reach</p><p class="text-lg font-extrabold text-paypal-navy">52K</p></div>
+        </div>
+        <div class="mt-4 space-y-2">
+          <div class="flex items-center justify-between p-3 rounded-xl border border-surface-200">
+            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center">✓</div><div><p class="text-sm font-semibold text-ink-700">Eid Product Launch</p><p class="text-[11px] text-ink-500">2,450 reached · 98% delivered</p></div></div>
+            <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Completed</span>
+          </div>
+          <div class="flex items-center justify-between p-3 rounded-xl border border-surface-200">
+            <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-paypal-cream flex items-center justify-center">⏱</div><div><p class="text-sm font-semibold text-ink-700">Payment Reminder</p><p class="text-[11px] text-ink-500">Tomorrow · 9:00 AM</p></div></div>
+            <span class="text-[10px] font-bold text-[#8b6b00] bg-paypal-cream px-2 py-1 rounded">Scheduled</span>
+          </div>
+        </div>
+        <button class="mt-4 w-full btn-gold !py-2.5 justify-center">+ Create New Broadcast</button>
+      </div>
+      <div class="absolute -right-4 -bottom-6 card px-4 py-3 shadow-xl flex items-center gap-3 float-2">
+        <div class="flex -space-x-2"><div class="w-7 h-7 rounded-full bg-paypal-navy text-white text-xs font-bold flex items-center justify-center ring-2 ring-white">GP</div><div class="w-7 h-7 rounded-full bg-paypal-blue text-white text-xs font-bold flex items-center justify-center ring-2 ring-white">RB</div><div class="w-7 h-7 rounded-full bg-paypal-sky text-white text-xs font-bold flex items-center justify-center ring-2 ring-white">AT</div></div>
+        <div><p class="text-xs font-bold text-paypal-navy">All carriers</p><p class="text-[10px] text-ink-500">supported</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARRIER MARQUEE -->
+<section class="py-10 border-y border-surface-200 bg-surface-50 overflow-hidden">
+  <p class="text-center text-xs font-bold text-ink-500 uppercase tracking-widest mb-6">Trusted across Bangladesh</p>
+  <div class="marquee whitespace-nowrap text-lg font-bold text-ink-500">
+    <span>Grameenphone</span><span>•</span><span>BRAC Bank</span><span>•</span><span>Square Group</span><span>•</span><span>Banglalink</span><span>•</span><span>Robi</span><span>•</span><span>Airtel</span><span>•</span><span>Transcom</span><span>•</span><span>Bashundhara</span><span>•</span><span>Daraz</span><span>•</span><span>bKash</span><span>•</span>
+    <span>Grameenphone</span><span>•</span><span>BRAC Bank</span><span>•</span><span>Square Group</span><span>•</span><span>Banglalink</span><span>•</span><span>Robi</span><span>•</span><span>Airtel</span><span>•</span><span>Transcom</span><span>•</span><span>Bashundhara</span><span>•</span><span>Daraz</span><span>•</span><span>bKash</span><span>•</span>
+  </div>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section class="py-24 max-w-7xl mx-auto px-6">
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="card p-10 bg-surface-50">
+      <span class="chip !bg-red-50 !text-red-600">The Problem</span>
+      <h2 class="mt-4 text-3xl font-extrabold text-ink-900">Your messages are getting ignored</h2>
+      <ul class="mt-6 space-y-4 text-ink-500">
+        <li class="flex gap-3"><span class="text-red-500">✕</span> SMS and emails get buried in crowded inboxes</li>
+        <li class="flex gap-3"><span class="text-red-500">✕</span> Customers miss critical updates — payments, deliveries, OTPs</li>
+        <li class="flex gap-3"><span class="text-red-500">✕</span> Your message gets lost in the noise of 200+ daily notifications</li>
+        <li class="flex gap-3"><span class="text-red-500">✕</span> Average SMS open rate in Bangladesh has fallen below 15%</li>
+      </ul>
+    </div>
+    <div class="card p-10 mesh-blue text-white relative overflow-hidden">
+      <div class="absolute -top-20 -right-20 w-64 h-64 bg-paypal-gold/30 rounded-full blur-3xl"></div>
+      <span class="chip !bg-white/20 !text-white">The Solution</span>
+      <h2 class="mt-4 text-3xl font-extrabold">Voice cuts through the noise</h2>
+      <ul class="mt-6 space-y-4 opacity-95">
+        <li class="flex gap-3"><span class="text-paypal-gold">✓</span> Direct to customer's phone — impossible to ignore</li>
+        <li class="flex gap-3"><span class="text-paypal-gold">✓</span> Personal, immediate, with guaranteed delivery tracking</li>
+        <li class="flex gap-3"><span class="text-paypal-gold">✓</span> Reach thousands in seconds with full real-time analytics</li>
+        <li class="flex gap-3"><span class="text-paypal-gold">✓</span> 98% average answer rate in the first hour after broadcast</li>
+      </ul>
+      <div class="mt-8 relative inline-flex items-center gap-4 p-4 rounded-2xl bg-white/10 backdrop-blur">
+        <div class="w-14 h-14 rounded-full bg-paypal-gold text-paypal-navy font-extrabold flex items-center justify-center text-xl glow-ring">98%</div>
+        <div><p class="font-bold">Average answer rate</p><p class="text-sm opacity-80">in the first hour</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-24 bg-surface-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-3xl">
+      <span class="chip">Features</span>
+      <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold text-ink-900 tracking-tight">Everything you need to <span class="text-gradient">broadcast at scale</span></h2>
+      <p class="mt-4 text-ink-500">Powerful features designed for seamless voice broadcasting. From upload to delivery analytics, we've got you covered.</p>
+    </div>
+
+    <div class="mt-10 card p-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <div class="feature-icon !bg-paypal-navy !text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l3-3 4 4 5-6"/></svg></div>
+        <h3 class="mt-4 text-2xl font-extrabold text-ink-900">Real-time Dashboard</h3>
+        <p class="mt-2 text-ink-500">Track broadcasts, delivery rates, and customer engagement in real-time. Monitor live campaign performance with detailed analytics across every carrier.</p>
+        <div class="mt-6 grid grid-cols-4 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-surface-50"><p class="text-xl font-extrabold text-paypal-navy">99.8%</p><p class="text-[10px] text-ink-500">Delivery</p></div>
+          <div class="p-3 rounded-xl bg-surface-50"><p class="text-xl font-extrabold text-paypal-navy">2.5s</p><p class="text-[10px] text-ink-500">Avg. time</p></div>
+          <div class="p-3 rounded-xl bg-surface-50"><p class="text-xl font-extrabold text-paypal-navy">98%</p><p class="text-[10px] text-ink-500">Answered</p></div>
+          <div class="p-3 rounded-xl bg-surface-50"><p class="text-xl font-extrabold text-paypal-navy">52K</p><p class="text-[10px] text-ink-500">Reach</p></div>
+        </div>
+      </div>
+      <div class="relative bg-surface-50 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3"><p class="font-bold text-ink-900">Live Broadcast Activity</p><span class="chip-sky chip"><span class="w-1.5 h-1.5 rounded-full bg-paypal-sky animate-pulse"></span> Live</span></div>
+        <canvas id="heroChart" height="160"></canvas>
+      </div>
+    </div>
+
+    <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="card p-6"><div class="feature-icon">📞</div><h3 class="mt-4 font-extrabold text-ink-900">Live Agent Transfer</h3><p class="mt-2 text-sm text-ink-500">Press 2 to connect customers to your live support team instantly during a broadcast.</p></div>
+      <div class="card p-6"><div class="feature-icon">📥</div><h3 class="mt-4 font-extrabold text-ink-900">Bulk Upload</h3><p class="mt-2 text-sm text-ink-500">Import thousands of contacts via CSV or Excel. Auto-dedupe & validate numbers.</p></div>
+      <div class="card p-6"><div class="feature-icon">🗓</div><h3 class="mt-4 font-extrabold text-ink-900">Smart Scheduling</h3><p class="mt-2 text-sm text-ink-500">Schedule in your timezone. Avoid DND hours automatically (Mon–Fri 10am–8pm).</p></div>
+      <div class="card p-6"><div class="feature-icon">🎵</div><h3 class="mt-4 font-extrabold text-ink-900">Multiple Audio</h3><p class="mt-2 text-sm text-ink-500">MP3, WAV, OGG, M4A. Record in-browser or upload up to 60s of audio.</p></div>
+      <div class="card p-6"><div class="feature-icon !bg-paypal-cream !text-[#8b6b00]">🤖</div><h3 class="mt-4 font-extrabold text-ink-900">Text to Speech <span class="chip-gold chip !px-1.5 !py-0.5 !text-[9px]">Soon</span></h3><p class="mt-2 text-sm text-ink-500">Natural Bengali & English voices powered by neural TTS.</p></div>
+      <div class="card p-6"><div class="feature-icon">📊</div><h3 class="mt-4 font-extrabold text-ink-900">Export Reports</h3><p class="mt-2 text-sm text-ink-500">Download CSV/Excel reports per campaign with delivery, answer & DTMF data.</p></div>
+      <div class="card p-6"><div class="feature-icon">🔁</div><h3 class="mt-4 font-extrabold text-ink-900">Auto Retry</h3><p class="mt-2 text-sm text-ink-500">Missed calls are retried up to 3 times at optimal intervals — free.</p></div>
+      <div class="card p-6"><div class="feature-icon">🛡</div><h3 class="mt-4 font-extrabold text-ink-900">DND Compliance</h3><p class="mt-2 text-sm text-ink-500">Built-in BTRC DND list checking on every contact you upload.</p></div>
+    </div>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-5">
+      <a href="voice-otp.html" class="card p-8 group">
+        <span class="chip-sky chip">Secure</span>
+        <h3 class="mt-4 text-2xl font-extrabold text-ink-900">Voice OTP API</h3>
+        <p class="mt-3 text-ink-500">Send secure OTPs via voice calls. More secure than SMS — prevents SIM swap, SS7 interception, and phishing leaks.</p>
+        <p class="mt-5 text-paypal-blue font-bold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Learn more →</p>
+      </a>
+      <a href="voice-survey.html" class="card p-8 group">
+        <span class="chip-gold chip">New</span>
+        <h3 class="mt-4 text-2xl font-extrabold text-ink-900">Voice Survey</h3>
+        <p class="mt-3 text-ink-500">Create interactive voice surveys with keypad responses. Collect real-time feedback via phone with 78% response rate.</p>
+        <p class="mt-5 text-paypal-blue font-bold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Learn more →</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPER -->
+<section class="py-24 bg-ink-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 20% 30%, #0070BA 0, transparent 40%), radial-gradient(circle at 80% 70%, #009CDE 0, transparent 40%)"></div>
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative">
+    <div>
+      <span class="chip !bg-paypal-gold/20 !text-paypal-gold">Developer First</span>
+      <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight">Best-in-class <span class="text-paypal-gold">developer experience</span></h2>
+      <p class="mt-4 text-ink-300">Our REST API is designed for developers. Simple, powerful, extensively documented. Integrate voice broadcasting in minutes, not days.</p>
+      <div class="mt-8 space-y-4">
+        <div class="flex gap-4"><div class="w-10 h-10 rounded-lg bg-paypal-gold text-paypal-navy font-extrabold flex items-center justify-center">01</div><div><p class="font-bold">Simple REST API</p><p class="text-sm text-ink-300">Intuitive JSON endpoints. Full API in under 20 calls.</p></div></div>
+        <div class="flex gap-4"><div class="w-10 h-10 rounded-lg bg-paypal-sky text-white font-extrabold flex items-center justify-center">02</div><div><p class="font-bold">SDKs & Libraries</p><p class="text-sm text-ink-300">Node.js, Python, PHP, Go. Drop-in for Laravel, Django, Express.</p></div></div>
+        <div class="flex gap-4"><div class="w-10 h-10 rounded-lg bg-white text-paypal-navy font-extrabold flex items-center justify-center">03</div><div><p class="font-bold">Webhooks & Real-time</p><p class="text-sm text-ink-300">Instant delivery notifications. Track every call event.</p></div></div>
+      </div>
+      <div class="mt-8 flex gap-3">
+        <a href="api-docs.html" class="btn-gold">View API Docs →</a>
+        <a href="#" class="btn-outline !border-white/30 !text-white !bg-transparent hover:!bg-white hover:!text-paypal-navy">GitHub</a>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="bg-ink-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+        <div class="px-5 py-3 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+            <span class="ml-3 text-xs font-mono text-ink-300">send_broadcast.py</span>
+          </div>
+          <span class="chip-gold chip">Python</span>
+        </div>
+<pre class="p-5 text-xs overflow-x-auto font-mono leading-relaxed"><span class="text-ink-300"># Install: pip install voicereach</span>
+<span class="text-paypal-sky">import</span> voicereach
+
+<span class="text-ink-300"># Initialize client</span>
+client = voicereach.Client(<span class="text-paypal-gold">"your_api_key_here"</span>)
+
+<span class="text-ink-300"># Send a voice broadcast</span>
+response = client.broadcasts.create(
+    audio_url=<span class="text-paypal-gold">"https://your-audio.mp3"</span>,
+    contacts=[<span class="text-paypal-gold">"+8801711111111"</span>, <span class="text-paypal-gold">"+8801822222222"</span>],
+    caller_id=<span class="text-paypal-gold">"VOICEREACH"</span>,
+    schedule=<span class="text-paypal-sky">None</span>
+)
+
+<span class="text-ink-300"># Check delivery status</span>
+<span class="text-paypal-sky">print</span>(<span class="text-paypal-gold">f"Broadcast ID: {response.id}"</span>)
+<span class="text-paypal-sky">print</span>(<span class="text-paypal-gold">f"Status: {response.status}"</span>)
+<span class="text-paypal-sky">print</span>(<span class="text-paypal-gold">f"Reach: {response.reach_count}"</span>)
+</pre>
+      </div>
+      <div class="absolute -bottom-5 -left-5 bg-white text-paypal-navy px-4 py-3 rounded-xl shadow-xl">
+        <p class="text-[10px] font-bold text-ink-500 uppercase">API Latency</p>
+        <p class="text-2xl font-extrabold">45ms <span class="text-xs font-semibold text-ink-500">avg</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="py-24 max-w-7xl mx-auto px-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="chip">Industries</span>
+    <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold text-ink-900 tracking-tight">Built for every <span class="text-gradient">Bangladeshi business</span></h2>
+    <p class="mt-4 text-ink-500">From startups to enterprises, we help every industry connect with customers in the most human way possible.</p>
+  </div>
+  <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="card p-7"><div class="w-12 h-12 rounded-xl bg-paypal-navy text-white flex items-center justify-center text-xl">🛒</div><h3 class="mt-4 text-xl font-extrabold text-ink-900">E-commerce</h3><p class="mt-2 text-sm text-ink-500">Order confirmations, delivery updates, and campaigns that drive repeat sales.</p><div class="mt-4 flex gap-2"><span class="chip">Order Updates</span><span class="chip">Promotions</span></div></div>
+    <div class="card p-7"><div class="w-12 h-12 rounded-xl bg-paypal-blue text-white flex items-center justify-center text-xl">🏦</div><h3 class="mt-4 text-xl font-extrabold text-ink-900">Banking & Finance</h3><p class="mt-2 text-sm text-ink-500">Transaction alerts, fraud notifications, and loan reminders — 99.9% delivered.</p><div class="mt-4 flex gap-2"><span class="chip">Fraud Alerts</span><span class="chip">EMI Reminders</span></div></div>
+    <div class="card p-7"><div class="w-12 h-12 rounded-xl bg-paypal-sky text-white flex items-center justify-center text-xl">🏥</div><h3 class="mt-4 text-xl font-extrabold text-ink-900">Healthcare</h3><p class="mt-2 text-sm text-ink-500">Appointment reminders, test results, and health awareness campaigns.</p><div class="mt-4 flex gap-2"><span class="chip">Reminders</span><span class="chip">Results</span></div></div>
+    <div class="card p-7"><div class="w-12 h-12 rounded-xl bg-paypal-gold text-paypal-navy flex items-center justify-center text-xl">🎓</div><h3 class="mt-4 text-xl font-extrabold text-ink-900">Education</h3><p class="mt-2 text-sm text-ink-500">Admission notifications, exam results, and fee reminders to parents.</p><div class="mt-4 flex gap-2"><span class="chip">Results</span><span class="chip">Fees</span></div></div>
+    <div class="card p-7"><div class="w-12 h-12 rounded-xl bg-paypal-navy text-white flex items-center justify-center text-xl">🏛</div><h3 class="mt-4 text-xl font-extrabold text-ink-900">Government</h3><p class="mt-2 text-sm text-ink-500">Public announcements, emergency alerts, and citizen notifications at scale.</p><div class="mt-4 flex gap-2"><span class="chip">Alerts</span><span class="chip">Announcements</span></div></div>
+    <div class="card p-7"><div class="w-12 h-12 rounded-xl bg-paypal-blue text-white flex items-center justify-center text-xl">🤝</div><h3 class="mt-4 text-xl font-extrabold text-ink-900">NGOs</h3><p class="mt-2 text-sm text-ink-500">Program updates, donation drives, and community outreach campaigns.</p><div class="mt-4 flex gap-2"><span class="chip">Updates</span><span class="chip">Outreach</span></div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-24 bg-surface-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto">
+      <span class="chip">How It Works</span>
+      <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold text-ink-900 tracking-tight">Launch your first broadcast in <span class="text-gradient">3 minutes</span></h2>
+      <p class="mt-4 text-ink-500">No setup. No technical skills. Just three simple steps to reach thousands.</p>
+    </div>
+    <div class="mt-14 grid md:grid-cols-3 gap-6">
+      <div class="card p-8 relative">
+        <span class="absolute -top-4 left-8 chip-gold chip !px-3">Step 01</span>
+        <h3 class="mt-3 text-xl font-extrabold text-ink-900">Upload your contacts</h3>
+        <p class="mt-2 text-sm text-ink-500">Import via CSV/Excel or select from your organized directory. Segment for targeted messaging.</p>
+        <div class="mt-5 p-4 rounded-xl bg-surface-50 border border-dashed border-surface-200">
+          <p class="text-xs font-mono text-ink-500">contacts.csv</p>
+          <div class="mt-2 flex items-center justify-between"><p class="text-sm font-bold text-paypal-navy">2,450 contacts</p><span class="chip-sky chip">Validated</span></div>
+        </div>
+      </div>
+      <div class="card p-8 relative">
+        <span class="absolute -top-4 left-8 chip-gold chip !px-3">Step 02</span>
+        <h3 class="mt-3 text-xl font-extrabold text-ink-900">Create your message</h3>
+        <p class="mt-2 text-sm text-ink-500">Record directly in-browser or upload MP3/WAV/OGG. Max 60 seconds recommended.</p>
+        <div class="mt-5 p-4 rounded-xl bg-surface-50">
+          <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-paypal-gold flex items-center justify-center text-paypal-navy">▶</div><div class="flex-1"><div class="h-2 rounded-full bg-surface-200 overflow-hidden"><div class="h-full w-3/5 bg-gradient-to-r from-paypal-blue to-paypal-sky"></div></div><p class="mt-1 text-xs text-ink-500">0:18 / 0:30</p></div></div>
+        </div>
+      </div>
+      <div class="card p-8 relative">
+        <span class="absolute -top-4 left-8 chip-gold chip !px-3">Step 03</span>
+        <h3 class="mt-3 text-xl font-extrabold text-ink-900">Launch & monitor</h3>
+        <p class="mt-2 text-sm text-ink-500">Schedule for perfect timing. Watch real-time delivery stats as your message reaches thousands.</p>
+        <div class="mt-5 p-4 rounded-xl mesh-blue text-white">
+          <p class="text-xs opacity-80">Live delivery rate</p>
+          <p class="text-3xl font-extrabold">99.8%</p>
+          <div class="mt-2 h-1.5 rounded-full bg-white/20"><div class="h-full w-[99%] bg-paypal-gold rounded-full"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-4 gap-5">
+      <div class="card p-6 text-center"><p class="stat-big">10M+</p><p class="mt-2 text-xs font-bold text-ink-500 uppercase">Minutes Broadcast</p></div>
+      <div class="card p-6 text-center"><p class="stat-big">99.8%</p><p class="mt-2 text-xs font-bold text-ink-500 uppercase">Delivery Rate</p></div>
+      <div class="card p-6 text-center"><p class="stat-big">5,000+</p><p class="mt-2 text-xs font-bold text-ink-500 uppercase">Active Businesses</p></div>
+      <div class="card p-6 text-center"><p class="stat-big">24/7</p><p class="mt-2 text-xs font-bold text-ink-500 uppercase">Support</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-24 max-w-7xl mx-auto px-6">
+  <div class="text-center max-w-2xl mx-auto">
+    <span class="chip">Testimonials</span>
+    <h2 class="mt-4 text-4xl sm:text-5xl font-extrabold text-ink-900 tracking-tight">Loved by <span class="text-gradient">5,000+ businesses</span></h2>
+  </div>
+  <div class="mt-12 grid md:grid-cols-3 gap-5">
+    <div class="card p-7">
+      <div class="flex gap-1 text-paypal-gold">★★★★★</div>
+      <p class="mt-4 text-ink-700 leading-relaxed">"VoiceReach has completely transformed how we reach our customers. Delivery rate is exceptional and the analytics dashboard is world-class."</p>
+      <div class="mt-5 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-paypal-navy text-white font-bold flex items-center justify-center">FR</div><div><p class="font-bold text-ink-900 text-sm">Fatima Rahman</p><p class="text-xs text-ink-500">Marketing Director, Shwapno</p></div></div>
+    </div>
+    <div class="card p-7 mesh-blue text-white">
+      <div class="flex gap-1 text-paypal-gold">★★★★★</div>
+      <p class="mt-4 leading-relaxed">"We tried three other platforms — VoiceReach is by far the most reliable for Bangladesh. Scheduling helps us reach customers at the perfect moment."</p>
+      <div class="mt-5 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-paypal-gold text-paypal-navy font-bold flex items-center justify-center">AH</div><div><p class="font-bold text-sm">Ahmed Hossain</p><p class="text-xs opacity-80">CEO, Pickaboo</p></div></div>
+    </div>
+    <div class="card p-7">
+      <div class="flex gap-1 text-paypal-gold">★★★★★</div>
+      <p class="mt-4 text-ink-700 leading-relaxed">"Voice broadcasting is a game-changer for Bangladesh. Thousands of customers reached instantly with campaigns that actually convert."</p>
+      <div class="mt-5 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-paypal-blue text-white font-bold flex items-center justify-center">NJ</div><div><p class="font-bold text-ink-900 text-sm">Nusrat Jahan</p><p class="text-xs text-ink-500">Ops Manager, Robi</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-24 bg-surface-50">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-10"><span class="chip">FAQ</span><h2 class="mt-3 text-4xl font-extrabold text-ink-900">Questions, answered</h2></div>
+    <div class="space-y-3">
+      <details class="card p-5 group" open><summary class="flex items-center justify-between font-bold text-ink-900"><span>How fast can I launch my first broadcast?</span><span class="text-paypal-blue group-open:rotate-45 transition">+</span></summary><p class="mt-3 text-ink-500 text-sm">Under 3 minutes. Sign up, upload a contacts CSV, record a 15-second audio, and hit send — we handle the rest.</p></details>
+      <details class="card p-5 group"><summary class="flex items-center justify-between font-bold text-ink-900"><span>Which carriers do you support?</span><span class="text-paypal-blue group-open:rotate-45 transition">+</span></summary><p class="mt-3 text-ink-500 text-sm">All four major Bangladeshi carriers: Grameenphone, Robi, Banglalink, and Airtel — plus landlines via BTCL.</p></details>
+      <details class="card p-5 group"><summary class="flex items-center justify-between font-bold text-ink-900"><span>How is pricing calculated?</span><span class="text-paypal-blue group-open:rotate-45 transition">+</span></summary><p class="mt-3 text-ink-500 text-sm">One pulse = 30 seconds of successful call. You only pay for answered calls. Free retries. Starter ৳0.40/pulse, Growth ৳0.35/pulse.</p></details>
+      <details class="card p-5 group"><summary class="flex items-center justify-between font-bold text-ink-900"><span>Is Voice OTP really more secure than SMS?</span><span class="text-paypal-blue group-open:rotate-45 transition">+</span></summary><p class="mt-3 text-ink-500 text-sm">Yes. Voice OTP is immune to SIM swap attacks, SS7 interception, and message forwarding — three vectors that plague SMS OTP globally.</p></details>
+      <details class="card p-5 group"><summary class="flex items-center justify-between font-bold text-ink-900"><span>Can I try it free?</span><span class="text-paypal-blue group-open:rotate-45 transition">+</span></summary><p class="mt-3 text-ink-500 text-sm">Absolutely. Every new account gets 15 free voice credits on signup — no credit card required.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="mesh-blue rounded-3xl p-12 text-center text-white relative overflow-hidden">
+      <div class="absolute -top-32 -right-32 w-96 h-96 bg-paypal-gold/20 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-paypal-sky/30 rounded-full blur-3xl"></div>
+      <h2 class="relative text-4xl sm:text-5xl font-extrabold tracking-tight">Ready to amplify your<br>customer communication?</h2>
+      <p class="relative mt-4 opacity-90">Join 5,000+ Bangladeshi businesses using VoiceReach. Start free today.</p>
+      <div class="relative mt-8 flex flex-wrap justify-center gap-3">
+        <a href="#" class="btn-gold">Start Broadcasting Free →</a>
+        <a href="#" class="btn-outline !border-white/40 !text-white !bg-transparent hover:!bg-white hover:!text-paypal-navy">▶ Watch Demo</a>
+      </div>
+      <p class="relative mt-6 text-xs opacity-80">15 free voice credits · No credit card · Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-ink-900 text-white pt-16 pb-10">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-5 gap-10">
+    <div class="lg:col-span-2">
+      <a href="index.html" class="flex items-center gap-2"><div class="w-9 h-9 rounded-xl mesh-blue flex items-center justify-center ring-gold"><svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/></svg></div><p class="font-extrabold text-lg">VoiceReach</p></a>
+      <p class="mt-4 text-ink-300 text-sm max-w-xs">Voice broadcasting made effortless for modern Bangladeshi businesses. Reach thousands in seconds.</p>
+      <div class="mt-6 flex gap-3"><a href="#" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-paypal-gold hover:text-paypal-navy flex items-center justify-center">f</a><a href="#" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-paypal-gold hover:text-paypal-navy flex items-center justify-center">𝕏</a><a href="#" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-paypal-gold hover:text-paypal-navy flex items-center justify-center">in</a></div>
+    </div>
+    <div><p class="font-bold mb-4">Product</p><ul class="space-y-2 text-sm text-ink-300"><li><a href="index.html" class="hover:text-paypal-gold">Voice Broadcast</a></li><li><a href="voice-otp.html" class="hover:text-paypal-gold">Voice OTP</a></li><li><a href="voice-survey.html" class="hover:text-paypal-gold">Voice Survey</a></li><li><a href="pricing.html" class="hover:text-paypal-gold">Pricing</a></li><li><a href="api-docs.html" class="hover:text-paypal-gold">API Docs</a></li></ul></div>
+    <div><p class="font-bold mb-4">Company</p><ul class="space-y-2 text-sm text-ink-300"><li><a href="about.html" class="hover:text-paypal-gold">About</a></li><li><a href="#" class="hover:text-paypal-gold">Careers</a></li><li><a href="blog.html" class="hover:text-paypal-gold">Blog</a></li><li><a href="contact.html" class="hover:text-paypal-gold">Contact</a></li></ul></div>
+    <div><p class="font-bold mb-4">Support</p><ul class="space-y-2 text-sm text-ink-300"><li><a href="#" class="hover:text-paypal-gold">Help Center</a></li><li><a href="api-docs.html" class="hover:text-paypal-gold">Documentation</a></li><li><a href="#" class="hover:text-paypal-gold">Status</a></li><li><a href="admin.html" class="hover:text-paypal-gold">Admin</a></li></ul></div>
+  </div>
+  <div class="mt-12 pt-6 border-t border-white/10 max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-ink-300">
+    <p>© 2026 VoiceReach · Powered by Protiddhoni · All rights reserved.</p>
+    <div class="flex gap-4"><a href="#" class="hover:text-paypal-gold">Privacy</a><a href="#" class="hover:text-paypal-gold">Terms</a><a href="#" class="hover:text-paypal-gold">Cookies</a></div>
+  </div>
+</footer>
+
+<script>
+  const ctx = document.getElementById('heroChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+          label: 'Calls',
+          data: [4200, 5800, 7100, 6400, 9200, 11500, 8800],
+          backgroundColor: ctx => {
+            const c = ctx.chart.ctx.createLinearGradient(0,0,0,200);
+            c.addColorStop(0,'#009CDE'); c.addColorStop(1,'#0070BA');
+            return c;
+          },
+          borderRadius: 8, borderSkipped:false
+        }]
+      },
+      options: {
+        plugins: { legend:{display:false} },
+        scales: { x:{grid:{display:false}}, y:{grid:{color:'#eef3f9'}, ticks:{color:'#687173'}} }
+      }
+    });
+  }
+</script>
+</body>
+</html>

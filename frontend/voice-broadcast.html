@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Voice Broadcast — Reach lakhs across Bangladesh in minutes | VoiceReach</title>
+<meta name="description" content="Send personalized voice broadcasts to lakhs of customers across Bangladesh — Bangla TTS, smart carrier routing, BTRC-compliant scheduling, and live delivery analytics." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#003087;--blue:#0070BA;--sky:#009CDE;--gold:#FFC439;--cream:#FFF9E6;
+  --ink:#0a1230;--ink2:#3a4566;--mute:#6b7593;--line:#e5e9f2;--bg:#f7f9fc;--white:#fff;
+  --shadow-md:0 8px 24px rgba(0,48,135,.10);
+  --shadow-lg:0 24px 64px rgba(0,48,135,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.bn{font-family:'Hind Siliguri','Plus Jakarta Sans',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--navy)}
+.logo-mark{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(0,48,135,.30)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{font-size:14.5px;font-weight:600;color:var(--ink2);transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--navy)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s;border:none;text-decoration:none;font-family:inherit}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 8px 20px rgba(0,48,135,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,48,135,.4)}
+.btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 8px 20px rgba(255,196,57,.4)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,196,57,.55)}
+.btn-ghost{background:transparent;color:var(--navy);border:2px solid var(--line)}
+.btn-ghost:hover{border-color:var(--navy);background:#fff}
+.menu-tog{display:none;background:none;border:0;font-size:26px;color:var(--navy);cursor:pointer}
+
+/* hero */
+.hero{padding:60px 0 64px;position:relative;overflow:hidden;background:
+  radial-gradient(900px 500px at 0% 0%,rgba(0,156,222,.12),transparent),
+  radial-gradient(700px 400px at 100% 0%,rgba(255,196,57,.10),transparent),
+  linear-gradient(180deg,#fff 0%,var(--bg) 100%)}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:54px;align-items:center}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,112,186,.10);border:1px solid rgba(0,112,186,.25);padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;color:var(--navy);margin-bottom:18px}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(0,156,222,.20);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.hero h1{font-size:clamp(34px,5.2vw,58px);font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--navy)}
+.hero h1 .grad{background:linear-gradient(135deg,var(--blue),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p.lede{font-size:18px;color:var(--ink2);margin:18px 0 26px;max-width:560px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:22px;color:var(--mute);font-size:13.5px;font-weight:600}
+.hero-meta span{display:inline-flex;align-items:center;gap:6px}
+
+/* hero broadcast visual */
+.broadcast-wrap{position:relative}
+.broadcast-vis{position:relative;background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:24px;padding:32px;color:#fff;box-shadow:var(--shadow-lg);overflow:hidden;min-height:520px}
+.broadcast-vis::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(500px 400px at 80% 100%,rgba(255,196,57,.30),transparent),
+  radial-gradient(400px 300px at 0% 0%,rgba(0,156,222,.40),transparent)}
+.bv-head{position:relative;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.bv-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.bv-live{background:#22c55e;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.bv-live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
+
+/* tower with concentric pulse waves */
+.bv-tower{position:relative;display:grid;place-items:center;height:240px;margin-bottom:22px}
+.bv-tower svg{position:absolute;width:100%;height:100%}
+.tower-icon{position:relative;width:80px;height:90px;display:grid;place-items:end center;z-index:3}
+.tower-icon::before{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:48px;height:6px;background:var(--gold);border-radius:3px}
+.tower-icon::after{content:"";width:14px;height:80px;background:linear-gradient(180deg,var(--gold) 0%,#fff 100%);clip-path:polygon(35% 0,65% 0,100% 100%,0 100%)}
+.tower-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:var(--gold);box-shadow:0 0 18px var(--gold);z-index:4}
+
+/* delivery rows */
+.bv-rows{position:relative;display:flex;flex-direction:column;gap:10px}
+.bv-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:11px 14px;backdrop-filter:blur(8px);font-size:12.5px;font-weight:600}
+.bv-flag{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#fff);color:var(--navy);display:grid;place-items:center;font-size:13px;font-weight:800;flex-shrink:0}
+.bv-bar{height:6px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden}
+.bv-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#fff);border-radius:3px;animation:fillProg 2.4s ease-out forwards}
+@keyframes fillProg{from{width:0}}
+.bv-pct{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:800;font-size:13px;min-width:46px;text-align:right}
+.bv-meta{font-size:11.5px;opacity:.85;line-height:1.4}
+
+/* hero floating stat cards */
+.float-card{position:absolute;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-radius:14px;padding:14px 16px;color:var(--ink);box-shadow:var(--shadow-md);font-weight:700;font-size:13px;animation:floatY 5s ease-in-out infinite}
+.float-card.fc1{top:-22px;right:-10px;animation-delay:0s}
+.float-card.fc2{bottom:-22px;left:-10px;animation-delay:.8s}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.float-card .fc-num{font-size:18px;color:var(--navy);font-weight:800;line-height:1}
+.float-card .fc-lbl{font-size:11px;color:var(--mute);font-weight:600;margin-top:4px}
+
+/* stats banner */
+.stats-banner{padding:50px 0;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
+.stat-num{font-size:42px;font-weight:800;color:var(--navy);line-height:1;letter-spacing:-.02em}
+.stat-num .gold{color:var(--gold)}
+.stat-lbl{font-size:13px;color:var(--mute);font-weight:600;margin-top:8px;letter-spacing:.05em;text-transform:uppercase}
+
+/* sections */
+section{padding:80px 0}
+.section-head{text-align:center;margin-bottom:48px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,196,57,.18);color:#a86b00;border:1px solid rgba(255,196,57,.4);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.section-head h2{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.12;letter-spacing:-.02em;color:var(--navy);max-width:820px;margin:0 auto}
+.section-head p{font-size:17px;color:var(--ink2);margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+
+/* use cases */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.case-card{background:#fff;border-radius:18px;padding:28px;border:1.5px solid var(--line);transition:.3s;position:relative;overflow:hidden}
+.case-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--blue),var(--sky));transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.case-card:hover::before{transform:scaleX(1)}
+.case-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.case-icon{width:54px;height:54px;border-radius:13px;background:linear-gradient(135deg,rgba(0,112,186,.1),rgba(0,156,222,.18));color:var(--blue);display:grid;place-items:center;font-size:24px;margin-bottom:16px}
+.case-card h4{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.01em}
+.case-card p{font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:14px}
+.case-list{list-style:none;font-size:13px;color:var(--ink2)}
+.case-list li{padding:5px 0;display:flex;align-items:flex-start;gap:8px}
+.case-list li::before{content:"✓";color:var(--blue);font-weight:800;flex-shrink:0}
+
+/* how it works (4 steps) */
+.steps{background:#fff}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px;position:relative}
+.steps-grid::before{content:"";position:absolute;top:38px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,var(--blue),var(--sky),var(--gold));opacity:.35;z-index:0}
+.step{position:relative;text-align:center;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:30px 22px;z-index:1;transition:.3s}
+.step:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--blue)}
+.step-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;margin:0 auto 16px;box-shadow:0 6px 16px rgba(0,48,135,.30)}
+.step h4{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.step p{font-size:13.5px;color:var(--ink2);line-height:1.6}
+
+/* composer mockup */
+.composer-band{background:linear-gradient(135deg,var(--cream),#fff);padding:80px 0}
+.composer-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:center}
+.comp-mock{background:#fff;border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid var(--line)}
+.comp-bar{background:#06112d;color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700}
+.comp-bar .dots{display:flex;gap:6px}
+.comp-bar .dots i{width:9px;height:9px;border-radius:50%;background:#3a4566}
+.comp-bar .dots i:nth-child(1){background:#ff5f57}
+.comp-bar .dots i:nth-child(2){background:#febc2e}
+.comp-bar .dots i:nth-child(3){background:#28c840}
+.comp-body{padding:24px}
+.comp-tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:2px solid var(--line)}
+.comp-tab{padding:10px 14px;font-size:12.5px;font-weight:700;color:var(--mute);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.comp-tab.active{color:var(--navy);border-color:var(--gold)}
+.comp-field{margin-bottom:14px}
+.comp-field label{font-size:11.5px;font-weight:800;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:block}
+.comp-input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;color:var(--ink);background:#f7f9fc}
+.comp-script{background:#f7f9fc;border:1.5px dashed var(--blue);border-radius:10px;padding:14px;font-family:'Hind Siliguri','Plus Jakarta Sans',sans-serif;font-size:13.5px;color:var(--ink);line-height:1.65;position:relative}
+.comp-script .placeholder{background:rgba(255,196,57,.4);padding:1px 6px;border-radius:5px;font-weight:700;color:#a86b00}
+.comp-script .play-btn{position:absolute;bottom:10px;right:10px;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:13px;cursor:pointer;border:0}
+.comp-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.comp-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgba(0,156,222,.12);color:var(--navy);font-size:11.5px;font-weight:700;margin-right:6px;margin-bottom:6px}
+.comp-foot{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#f7f9fc;border-top:1px solid var(--line)}
+.comp-cost{font-size:12.5px;color:var(--mute);font-weight:600}
+.comp-cost b{color:var(--navy);font-size:15px}
+
+/* dashboard mockup */
+.dashboard-band{padding:80px 0}
+.dash-mock{background:#fff;border-radius:20px;box-shadow:var(--shadow-lg);border:1px solid var(--line);overflow:hidden;margin-top:30px}
+.dash-bar{background:#06112d;color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between}
+.dash-bar h5{font-size:14px;font-weight:800;display:flex;align-items:center;gap:10px}
+.dash-bar .live{background:#22c55e;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.dash-bar .live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
+.dash-body{padding:30px}
+.dash-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.kpi{background:#f7f9fc;border:1px solid var(--line);border-radius:14px;padding:18px}
+.kpi .lbl{font-size:11px;color:var(--mute);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.kpi .val{font-size:26px;font-weight:800;color:var(--navy);line-height:1.05;margin-top:6px}
+.kpi .delta{font-size:11.5px;color:#0d8b3e;font-weight:700;margin-top:4px}
+.kpi.gold .val{color:#a86b00}
+.dash-chart{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}
+.chart-box{background:#f7f9fc;border:1px solid var(--line);border-radius:14px;padding:18px}
+.chart-box h6{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.chart-box h6 small{font-size:11px;color:var(--mute);font-weight:600}
+.chart-svg{width:100%;height:160px}
+.carrier-row{display:grid;grid-template-columns:80px 1fr 60px;gap:10px;align-items:center;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:10px}
+.carrier-row .name{color:var(--navy)}
+.carrier-bar{height:8px;background:#e5e9f2;border-radius:4px;overflow:hidden}
+.carrier-bar i{display:block;height:100%;border-radius:4px}
+
+/* compliance band */
+.compliance{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:80px 0;position:relative;overflow:hidden}
+.compliance::before{content:"";position:absolute;top:-100px;right:-100px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.20),transparent)}
+.compliance-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;position:relative}
+.compliance .section-head{text-align:left;margin:0}
+.compliance h2{color:#fff;text-align:left}
+.compliance p{color:rgba(255,255,255,.92);text-align:left}
+.comp-shield{position:relative;display:grid;place-items:center}
+.shield-svg{width:100%;max-width:340px;filter:drop-shadow(0 20px 40px rgba(0,0,0,.3))}
+.comp-rules{display:grid;gap:12px}
+.comp-rule{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:18px 20px;backdrop-filter:blur(6px);display:flex;gap:14px;align-items:center}
+.comp-rule .ic{width:40px;height:40px;border-radius:10px;background:rgba(255,196,57,.95);color:var(--ink);display:grid;place-items:center;font-size:18px;flex-shrink:0;font-weight:800}
+.comp-rule h5{font-size:14.5px;font-weight:800;margin-bottom:3px}
+.comp-rule p{font-size:12.5px;color:rgba(255,255,255,.85);margin:0}
+
+/* code samples */
+.code-band{padding:80px 0;background:#fff}
+.code-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:flex-start}
+.code-feats{display:flex;flex-direction:column;gap:18px}
+.code-feat{padding:20px;border-radius:14px;border:1.5px solid var(--line);background:#fff;transition:.3s}
+.code-feat:hover{border-color:var(--blue);box-shadow:var(--shadow-md)}
+.code-feat .h{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.code-feat .h .ic{width:42px;height:42px;border-radius:11px;background:rgba(0,112,186,.1);color:var(--blue);display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.code-feat h5{font-size:15.5px;font-weight:800;color:var(--navy)}
+.code-feat p{font-size:13.5px;color:var(--ink2);line-height:1.6}
+.code-window{background:#0a1230;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,.06)}
+.code-bar{background:#0e1840;padding:12px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.code-bar .dots{display:flex;gap:6px}
+.code-bar .dots i{width:10px;height:10px;border-radius:50%;background:#3a4566}
+.code-bar .dots i:nth-child(1){background:#ff5f57}
+.code-bar .dots i:nth-child(2){background:#febc2e}
+.code-bar .dots i:nth-child(3){background:#28c840}
+.code-bar .file{color:#a8b1cf;font-size:12.5px;font-weight:600;margin-left:8px}
+.code-bar .lang{margin-left:auto;background:rgba(255,196,57,.18);color:var(--gold);padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:700}
+.code-window pre{padding:22px;margin:0;color:#e5e9f2;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.75;overflow-x:auto}
+.tk-com{color:#7886a8}
+.tk-key{color:#ff8eb1}
+.tk-str{color:#ffc77a}
+.tk-fn{color:#5fd4ff}
+.tk-num{color:#a4f7a7}
+.tk-prop{color:#e9b3ff}
+
+/* testimonial */
+.testimonial-band{padding:80px 0;background:#f7f9fc}
+.testi-card{background:#fff;border-radius:20px;padding:48px;box-shadow:var(--shadow-md);border:1px solid var(--line);position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 250px;gap:40px;align-items:center}
+.testi-card::before{content:"\""; position:absolute;top:-40px;left:30px;font-size:200px;font-weight:800;color:var(--gold);opacity:.18;font-family:Georgia;line-height:1}
+.testi-quote{font-size:22px;line-height:1.5;color:var(--ink);font-weight:600;letter-spacing:-.01em;position:relative;margin-bottom:22px}
+.testi-quote .bn-q{font-family:'Hind Siliguri','Plus Jakarta Sans',sans-serif}
+.testi-meta{display:flex;align-items:center;gap:14px}
+.testi-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.testi-name{font-size:15.5px;font-weight:800;color:var(--navy)}
+.testi-role{font-size:13px;color:var(--mute);font-weight:600}
+.testi-stat{background:linear-gradient(135deg,var(--cream),#fff);border:1.5px solid rgba(255,196,57,.4);border-radius:18px;padding:24px;text-align:center}
+.testi-stat .n{font-size:38px;font-weight:800;color:var(--navy);line-height:1}
+.testi-stat .l{font-size:12px;color:var(--mute);font-weight:700;margin-top:6px;letter-spacing:.05em;text-transform:uppercase}
+
+/* faq */
+.faq{padding:80px 0;background:#fff}
+.faq-grid{max-width:840px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:#fff;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;transition:.3s}
+.faq-item:hover{border-color:var(--blue)}
+.faq-item.open{border-color:var(--blue);box-shadow:var(--shadow-md)}
+.faq-q{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:15.5px;color:var(--navy);gap:14px}
+.faq-q .arrow{width:30px;height:30px;border-radius:50%;background:#f1f4fb;color:var(--navy);display:grid;place-items:center;font-size:14px;font-weight:800;flex-shrink:0;transition:.3s}
+.faq-item.open .faq-q .arrow{background:var(--navy);color:#fff;transform:rotate(45deg)}
+.faq-a{padding:0 24px;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;font-size:14.5px;color:var(--ink2);line-height:1.7}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 22px}
+
+/* CTA */
+.cta{background:radial-gradient(800px 400px at 100% 0%,rgba(255,196,57,.18),transparent),linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:#fff;padding:80px 0;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;top:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,156,222,.30),transparent)}
+.cta-inner{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;position:relative}
+.cta h2{font-size:42px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+.cta h2 .gold{color:var(--gold)}
+.cta p{font-size:17px;opacity:.92;max-width:560px;margin-bottom:26px}
+.cta-actions{display:flex;flex-wrap:wrap;gap:12px}
+.cta-stat-card{background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cs-num{font-size:30px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:6px}
+.cs-lbl{font-size:12px;opacity:.8;font-weight:600;line-height:1.4}
+
+/* footer */
+.footer{background:#06112d;color:#a8b1cf;padding:64px 0 30px}
+.footer-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:36px;margin-bottom:40px}
+.footer h5{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase}
+.footer .logo{color:#fff;margin-bottom:16px}
+.footer p{font-size:13.5px;line-height:1.7;color:#a8b1cf}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:10px}
+.footer ul a{font-size:13.5px;color:#a8b1cf;transition:.2s}
+.footer ul a:hover{color:var(--gold)}
+.footer .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.footer .badges span{background:rgba(255,255,255,.08);padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:600;color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px}
+.footer-bottom .links{display:flex;gap:22px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:980px){
+  .nav-links{display:none}
+  .menu-tog{display:block}
+  .hero-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:24px}
+  .cases-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr}
+  .steps-grid::before{display:none}
+  .composer-grid,.code-grid,.compliance-grid{grid-template-columns:1fr}
+  .dash-kpi{grid-template-columns:repeat(2,1fr)}
+  .dash-chart{grid-template-columns:1fr}
+  .testi-card{grid-template-columns:1fr;padding:32px}
+  .cta-inner{grid-template-columns:1fr}
+  .cta-stat-card{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="frontend.html">
+      <span class="logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M5.6 5.6l4.2 4.2M2 12h6M5.6 18.4l4.2-4.2M12 16v6M18.4 18.4l-4.2-4.2M16 12h6M18.4 5.6l-4.2 4.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </span>
+      VoiceReach<span style="color:var(--gold);margin-left:2px">.</span>
+    </a>
+    <div class="nav-links">
+      <a href="voice-otp.html">Voice OTP</a>
+      <a href="voice-survey.html">Surveys</a>
+      <a href="voice-broadcast.html" class="active">Broadcast</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="api-docs.html">API Docs</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="contact.html">Sign in</a>
+      <a class="btn btn-primary" href="contact.html">Start free</a>
+    </div>
+    <button class="menu-tog">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <span class="hero-pill"><span class="dot"></span><span data-cms="voice-broadcast.hero.pill">Live now · 12,400 broadcasts running across BD</span></span>
+      <h1 data-cms-html="voice-broadcast.hero.headline">Reach lakhs of customers <span class="grad">in one announcement.</span></h1>
+      <p class="lede" data-cms-html="voice-broadcast.hero.subhead">Voice broadcasts that ring on every BD carrier — Bangla or English — with smart pacing, BTRC-compliant scheduling, and live delivery analytics by district. Unlike SMS, people actually hear it and remember.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="contact.html">Start a broadcast →</a>
+        <a class="btn btn-ghost" href="pricing.html">See pricing</a>
+      </div>
+      <div class="hero-meta">
+        <span>📡 4 BD carriers</span>
+        <span>🇧🇩 64 districts</span>
+        <span>⏱ Avg pickup 67%</span>
+        <span>🛡 BTRC compliant</span>
+      </div>
+    </div>
+
+    <!-- Broadcast visual -->
+    <div class="broadcast-wrap reveal">
+    <div class="broadcast-vis">
+      <div class="bv-head">
+        <div class="bv-title">📢 Eid sale broadcast · running</div>
+        <span class="bv-live"><i></i> LIVE</span>
+      </div>
+
+      <!-- Tower with pulse rings -->
+      <div class="bv-tower">
+        <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="rgba(255,196,57,.55)" stroke-width="2">
+            <circle cx="200" cy="120" r="40">
+              <animate attributeName="r" from="40" to="160" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="1" to="0" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="200" cy="120" r="40">
+              <animate attributeName="r" from="40" to="160" dur="2s" begin=".7s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="1" to="0" dur="2s" begin=".7s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="200" cy="120" r="40">
+              <animate attributeName="r" from="40" to="160" dur="2s" begin="1.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="1" to="0" dur="2s" begin="1.4s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <!-- little phones around -->
+          <g fill="rgba(255,255,255,.95)">
+            <rect x="60" y="100" width="22" height="34" rx="4"/>
+            <rect x="320" y="100" width="22" height="34" rx="4"/>
+            <rect x="80" y="180" width="22" height="34" rx="4"/>
+            <rect x="300" y="180" width="22" height="34" rx="4"/>
+            <rect x="180" y="20" width="22" height="34" rx="4"/>
+            <rect x="200" y="20" width="22" height="34" rx="4" opacity=".7"/>
+          </g>
+        </svg>
+        <div class="tower-icon"><div class="tower-dot"></div></div>
+      </div>
+
+      <!-- Live delivery rows -->
+      <div class="bv-rows">
+        <div class="bv-row">
+          <div class="bv-flag">GP</div>
+          <div>
+            <div class="bv-meta">Grameenphone · Dhaka, Chattogram, Sylhet</div>
+            <div class="bv-bar"><i style="width:88%"></i></div>
+          </div>
+          <div class="bv-pct">88%</div>
+        </div>
+        <div class="bv-row">
+          <div class="bv-flag" style="background:linear-gradient(135deg,#ff3a3a,#fff)">RB</div>
+          <div>
+            <div class="bv-meta">Robi · 22 districts active</div>
+            <div class="bv-bar"><i style="width:74%;animation-delay:.2s"></i></div>
+          </div>
+          <div class="bv-pct">74%</div>
+        </div>
+        <div class="bv-row">
+          <div class="bv-flag" style="background:linear-gradient(135deg,#ffc439,#fff)">BL</div>
+          <div>
+            <div class="bv-meta">Banglalink · Pacing 1,200/sec</div>
+            <div class="bv-bar"><i style="width:62%;animation-delay:.4s"></i></div>
+          </div>
+          <div class="bv-pct">62%</div>
+        </div>
+        <div class="bv-row">
+          <div class="bv-flag" style="background:linear-gradient(135deg,#ff0066,#fff)">AT</div>
+          <div>
+            <div class="bv-meta">Airtel · Northern divisions</div>
+            <div class="bv-bar"><i style="width:71%;animation-delay:.6s"></i></div>
+          </div>
+          <div class="bv-pct">71%</div>
+        </div>
+      </div>
+
+    </div><!-- /.broadcast-vis -->
+
+      <div class="float-card fc1">
+        <div class="fc-num">2,84,621</div>
+        <div class="fc-lbl">Calls placed</div>
+      </div>
+      <div class="float-card fc2">
+        <div class="fc-num">73.4%</div>
+        <div class="fc-lbl">Pickup rate · live</div>
+      </div>
+    </div><!-- /.broadcast-wrap -->
+  </div>
+</section>
+
+<!-- STATS BANNER -->
+<section class="stats-banner">
+  <div class="container stats-grid">
+    <div class="reveal"><div class="stat-num">38M+</div><div class="stat-lbl">Broadcasts delivered</div></div>
+    <div class="reveal"><div class="stat-num">67%</div><div class="stat-lbl">Avg pickup rate</div></div>
+    <div class="reveal"><div class="stat-num"><span class="gold">14k/min</span></div><div class="stat-lbl">Peak throughput</div></div>
+    <div class="reveal"><div class="stat-num">487</div><div class="stat-lbl">Upazilas reached</div></div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Where broadcasts win</span>
+      <h2>One announcement, lakhs reached — the moments voice does it best</h2>
+      <p>SMS gets lost. Email gets ignored. A voice call interrupts the right way — and in BD, it still gets answered. Here's where teams are using VoiceReach Broadcast right now.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-icon">🛒</div>
+        <h4>E-commerce campaigns</h4>
+        <p>Eid sales, flash deals, abandoned cart win-back, new collection launches.</p>
+        <ul class="case-list">
+          <li>Personalized name + product call-out</li>
+          <li>DTMF "press 1" to convert mid-call</li>
+          <li>Carrier pacing during peak office hours</li>
+        </ul>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">🏥</div>
+        <h4>Public health & awareness</h4>
+        <p>Vaccination reminders, dengue advisories, health camps, BTRC awareness drives.</p>
+        <ul class="case-list">
+          <li>Bangla narration with regional dialects</li>
+          <li>Rural reach without smartphone dependency</li>
+          <li>Government-grade audit trails</li>
+        </ul>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">🚨</div>
+        <h4>Emergency notifications</h4>
+        <p>Cyclone alerts, evacuation calls, school closures, utility outage updates.</p>
+        <ul class="case-list">
+          <li>14k calls/min peak throughput</li>
+          <li>Geo-targeted by district / upazila</li>
+          <li>Priority routing across all 4 carriers</li>
+        </ul>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">🗳</div>
+        <h4>NGO & political outreach</h4>
+        <p>Campaign messaging, voter awareness, donation drives, member updates.</p>
+        <ul class="case-list">
+          <li>Pre-recorded voice in candidate's own voice</li>
+          <li>Opt-out compliance baked in</li>
+          <li>District-level delivery reporting</li>
+        </ul>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">🏦</div>
+        <h4>Bill reminders & collections</h4>
+        <p>Loan EMIs, utility bills, insurance premiums, MFS top-up nudges.</p>
+        <ul class="case-list">
+          <li>Variable amounts per recipient</li>
+          <li>"Press 1 to pay now" with MFS handoff</li>
+          <li>Automated follow-up cadence</li>
+        </ul>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-icon">🎓</div>
+        <h4>Education & exams</h4>
+        <p>Result announcements, fee reminders, parent-teacher updates, admission alerts.</p>
+        <ul class="case-list">
+          <li>Personalized with student/roll number</li>
+          <li>Bangla-first scripting</li>
+          <li>Quiet hours auto-enforced</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="steps">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">How it works</span>
+      <h2>Compose, target, schedule, send — char step e shesh</h2>
+      <p>From idea to ringing phones in under ten minutes. No telephony engineer, no carrier negotiations, no spreadsheets.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h4>Compose</h4>
+        <p>Write the script in Bangla, English, or Banglish. Drop in <code style="background:#eef3fb;color:var(--navy);padding:1px 5px;border-radius:4px;font-size:12px">{{name}}</code> placeholders. Preview the TTS instantly — pick the voice you like.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h4>Target</h4>
+        <p>Upload a CSV, paste numbers, or pull a saved segment. Filter by district, carrier, last activity, or tag. We handle DNC and BTRC opt-outs automatically.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h4>Schedule</h4>
+        <p>Send now, or schedule for the BD-friendly call windows we recommend. Set carrier pacing so you don't get throttled. Quiet hours enforced by default.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <h4>Track</h4>
+        <p>Watch delivery, pickup, completion, and DTMF responses live. Drill into per-carrier and per-district breakdowns. Export or webhook the raw events.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPOSER MOCKUP -->
+<section class="composer-band">
+  <div class="container composer-grid">
+    <div class="reveal">
+      <span class="section-tag">Visual composer</span>
+      <h2 style="font-size:clamp(26px,3.6vw,38px);font-weight:800;color:var(--navy);line-height:1.15;letter-spacing:-.02em;margin-bottom:14px">A composer that writes like you talk — in Bangla.</h2>
+      <p style="font-size:16.5px;color:var(--ink2);margin-bottom:22px">Drag a placeholder, hear the TTS, set the carrier mix. The composer is in Bangla and English side by side — no awkward translation, no clipped pronunciation. Listen before you send so the first call your customer gets actually sounds right.</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+        <li style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink2)"><span style="color:var(--blue);font-weight:800">✓</span> 12 native Bangla voices (male/female, formal/casual)</li>
+        <li style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink2)"><span style="color:var(--blue);font-weight:800">✓</span> Code-mixed Banglish with correct pronunciation</li>
+        <li style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink2)"><span style="color:var(--blue);font-weight:800">✓</span> Personalization placeholders + DTMF responses</li>
+        <li style="display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink2)"><span style="color:var(--blue);font-weight:800">✓</span> Live cost estimate as you adjust audience</li>
+      </ul>
+    </div>
+
+    <div class="comp-mock reveal">
+      <div class="comp-bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <span>VoiceReach Composer · Eid Sale Campaign</span>
+      </div>
+      <div class="comp-body">
+        <div class="comp-tabs">
+          <span class="comp-tab active">📝 Script</span>
+          <span class="comp-tab">🎯 Audience</span>
+          <span class="comp-tab">⏰ Schedule</span>
+          <span class="comp-tab">🔍 Preview</span>
+        </div>
+
+        <div class="comp-field">
+          <label>Voice</label>
+          <div>
+            <span class="comp-pill">🎙 Tahmina · Bangla female</span>
+            <span class="comp-pill" style="background:#f1f4fb;color:var(--mute)">Speed 1.0×</span>
+            <span class="comp-pill" style="background:#f1f4fb;color:var(--mute)">Pause 250ms</span>
+          </div>
+        </div>
+
+        <div class="comp-field">
+          <label>Script (Bangla)</label>
+          <div class="comp-script bn">
+            Assalamu alaikum, <span class="placeholder">{{name}}</span>! Calling from VoiceReach. For Eid we have a special offer — <span class="placeholder">{{discount}}</span>% off the collection you love. Press <b>1</b> to order now, or visit our website.
+            <button class="play-btn">▶</button>
+          </div>
+        </div>
+
+        <div class="comp-row">
+          <div class="comp-field">
+            <label>Audience size</label>
+            <input class="comp-input mono" value="2,84,621 numbers" readonly>
+          </div>
+          <div class="comp-field">
+            <label>Languages</label>
+            <input class="comp-input" value="Bangla · English fallback" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-foot">
+        <div class="comp-cost">Estimated cost · <b>৳ 2,84,621</b> @ ৳1.00/call</div>
+        <button class="btn btn-gold" style="padding:8px 16px;font-size:13px">Schedule send →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="dashboard-band">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Live dashboard</span>
+      <h2>Watch the wave roll across Bangladesh — in real time</h2>
+      <p>Every call status, every DTMF press, every district hits the dashboard within seconds. Stop a campaign mid-flight if pickup tanks. Re-target the failed numbers in one click.</p>
+    </div>
+    <div class="dash-mock reveal">
+      <div class="dash-bar">
+        <h5>📢 Eid Sale Broadcast · 4 carriers · 64 districts</h5>
+        <span class="live"><i></i> LIVE · 14m 23s elapsed</span>
+      </div>
+      <div class="dash-body">
+        <div class="dash-kpi">
+          <div class="kpi"><div class="lbl">Calls placed</div><div class="val">2,84,621</div><div class="delta">▲ 1,200/sec pacing</div></div>
+          <div class="kpi"><div class="lbl">Pickup rate</div><div class="val">73.4%</div><div class="delta">▲ 6pt vs last campaign</div></div>
+          <div class="kpi gold"><div class="lbl">DTMF "1" pressed</div><div class="val">42,318</div><div class="delta">▲ 14.9% conversion</div></div>
+          <div class="kpi"><div class="lbl">Spend so far</div><div class="val">৳ 2.84L</div><div class="delta">Within budget</div></div>
+        </div>
+
+        <div class="dash-chart">
+          <div class="chart-box">
+            <h6>Pickup rate over time <small>last 15 minutes</small></h6>
+            <svg class="chart-svg" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="grad-line" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(0,112,186,.35)"/>
+                  <stop offset="100%" stop-color="rgba(0,112,186,0)"/>
+                </linearGradient>
+              </defs>
+              <g stroke="#e5e9f2" stroke-dasharray="4 4">
+                <line x1="0" y1="40" x2="400" y2="40"/>
+                <line x1="0" y1="80" x2="400" y2="80"/>
+                <line x1="0" y1="120" x2="400" y2="120"/>
+              </g>
+              <path d="M0,110 Q40,90 80,80 T160,60 Q200,50 240,55 T320,40 Q360,35 400,30 L400,160 L0,160 Z" fill="url(#grad-line)"/>
+              <path d="M0,110 Q40,90 80,80 T160,60 Q200,50 240,55 T320,40 Q360,35 400,30" fill="none" stroke="#0070BA" stroke-width="2.5" stroke-linecap="round"/>
+              <g fill="#FFC439" stroke="#fff" stroke-width="2">
+                <circle cx="80" cy="80" r="4"/>
+                <circle cx="160" cy="60" r="4"/>
+                <circle cx="240" cy="55" r="4"/>
+                <circle cx="320" cy="40" r="4"/>
+                <circle cx="400" cy="30" r="5"><animate attributeName="r" values="5;8;5" dur="1.5s" repeatCount="indefinite"/></circle>
+              </g>
+              <text x="10" y="20" font-family="Plus Jakarta Sans" font-size="10" fill="#6b7593" font-weight="700">80%</text>
+              <text x="10" y="55" font-family="Plus Jakarta Sans" font-size="10" fill="#6b7593" font-weight="700">60%</text>
+              <text x="10" y="95" font-family="Plus Jakarta Sans" font-size="10" fill="#6b7593" font-weight="700">40%</text>
+              <text x="10" y="135" font-family="Plus Jakarta Sans" font-size="10" fill="#6b7593" font-weight="700">20%</text>
+            </svg>
+          </div>
+
+          <div class="chart-box">
+            <h6>By carrier <small>delivery rate</small></h6>
+            <div class="carrier-row">
+              <span class="name">Grameenphone</span>
+              <div class="carrier-bar"><i style="width:88%;background:linear-gradient(90deg,#003087,#0070BA)"></i></div>
+              <span style="text-align:right;color:var(--navy)">88%</span>
+            </div>
+            <div class="carrier-row">
+              <span class="name">Robi</span>
+              <div class="carrier-bar"><i style="width:74%;background:linear-gradient(90deg,#ff3a3a,#ff8a8a)"></i></div>
+              <span style="text-align:right;color:var(--navy)">74%</span>
+            </div>
+            <div class="carrier-row">
+              <span class="name">Banglalink</span>
+              <div class="carrier-bar"><i style="width:62%;background:linear-gradient(90deg,#ffc439,#ffd97a)"></i></div>
+              <span style="text-align:right;color:var(--navy)">62%</span>
+            </div>
+            <div class="carrier-row">
+              <span class="name">Airtel</span>
+              <div class="carrier-bar"><i style="width:71%;background:linear-gradient(90deg,#ff0066,#ff66a3)"></i></div>
+              <span style="text-align:right;color:var(--navy)">71%</span>
+            </div>
+            <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mute);font-weight:600">
+              💡 Banglalink lagging — auto-failover queued for 12,400 numbers
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section class="compliance">
+  <div class="container compliance-grid">
+    <div class="comp-shield reveal">
+      <svg class="shield-svg" viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="shieldG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFC439"/>
+            <stop offset="100%" stop-color="#FF8E2C"/>
+          </linearGradient>
+        </defs>
+        <path d="M160,20 L290,70 L290,180 Q290,290 160,340 Q30,290 30,180 L30,70 Z" fill="url(#shieldG)" stroke="#fff" stroke-width="3"/>
+        <path d="M160,40 L270,80 L270,180 Q270,275 160,320 Q50,275 50,180 L50,80 Z" fill="rgba(0,48,135,.95)"/>
+        <path d="M105,170 L145,210 L220,135" stroke="#FFC439" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="270" text-anchor="middle" fill="#FFC439" font-family="Plus Jakarta Sans" font-size="20" font-weight="800">BTRC</text>
+        <text x="160" y="295" text-anchor="middle" fill="#fff" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" opacity=".85">COMPLIANT</text>
+      </svg>
+    </div>
+    <div class="reveal">
+      <span class="section-tag" style="background:rgba(255,196,57,.95);color:var(--ink);border-color:transparent">BTRC compliant by default</span>
+      <h2 style="color:#fff;text-align:left;margin:14px 0;font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15">Stay legal. <span style="color:var(--gold)">Don't think about it.</span></h2>
+      <p style="color:rgba(255,255,255,.92);font-size:16px;margin-bottom:24px;line-height:1.7">Bangladesh's regulatory framework for promotional voice is strict — and it should be. We bake every requirement directly into the platform so you can't accidentally break it. Audit logs, opt-out handling, retention windows — all automatic.</p>
+      <div class="comp-rules">
+        <div class="comp-rule">
+          <div class="ic">⏰</div>
+          <div>
+            <h5>Quiet hours auto-enforced</h5>
+            <p style="color:rgba(255,255,255,.85)">No promotional calls 9pm–10am as per BTRC 2026 guidelines.</p>
+          </div>
+        </div>
+        <div class="comp-rule">
+          <div class="ic">🚫</div>
+          <div>
+            <h5>DNC & opt-out instant</h5>
+            <p style="color:rgba(255,255,255,.85)">Press 9 to opt out — number suppressed across all future campaigns within seconds.</p>
+          </div>
+        </div>
+        <div class="comp-rule">
+          <div class="ic">📋</div>
+          <div>
+            <h5>Full audit logs</h5>
+            <p style="color:rgba(255,255,255,.85)">Every call recorded with consent metadata. 13-month retention. One-click BTRC export.</p>
+          </div>
+        </div>
+        <div class="comp-rule">
+          <div class="ic">🪪</div>
+          <div>
+            <h5>Sender ID masking</h5>
+            <p style="color:rgba(255,255,255,.85)">Approved short codes and brand IDs shown to recipients — no spoofing, ever.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE / API -->
+<section class="code-band">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Developer-friendly</span>
+      <h2>Trigger broadcasts from your stack — in 8 lines</h2>
+      <p>The dashboard is for marketers. The API is for engineers. Both talk to the same engine, both produce the same audit logs, both are equally Bangladesh-aware.</p>
+    </div>
+    <div class="code-grid">
+      <div class="code-feats reveal">
+        <div class="code-feat">
+          <div class="h"><div class="ic">⚡</div><h5>Fire-and-forget API</h5></div>
+          <p>Single POST creates a campaign, queues calls, and returns a job ID. Track via webhooks or polling.</p>
+        </div>
+        <div class="code-feat">
+          <div class="h"><div class="ic">🪝</div><h5>Per-call webhooks</h5></div>
+          <p>Get notified for queued, ringing, picked-up, completed, voicemail, busy, failed, and DTMF events.</p>
+        </div>
+        <div class="code-feat">
+          <div class="h"><div class="ic">🔁</div><h5>Smart retry policy</h5></div>
+          <p>Configurable retries on no-answer or busy, with carrier-specific delay windows we tuned for BD.</p>
+        </div>
+        <div class="code-feat">
+          <div class="h"><div class="ic">📊</div><h5>Stream live metrics</h5></div>
+          <p>Subscribe to a campaign's live event stream and pipe straight into Grafana, Looker, or your warehouse.</p>
+        </div>
+      </div>
+
+      <div class="code-window reveal">
+        <div class="code-bar">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div class="file">broadcast-eid-sale.js</div>
+          <div class="lang">Node.js</div>
+        </div>
+<pre><span class="tk-com">// Eid sale broadcast — 2.8L customers, all carriers</span>
+<span class="tk-key">import</span> VoiceReach <span class="tk-key">from</span> <span class="tk-str">'@voicereach/node'</span>;
+
+<span class="tk-key">const</span> vr = <span class="tk-key">new</span> <span class="tk-fn">VoiceReach</span>(process.env.<span class="tk-prop">VR_KEY</span>);
+
+<span class="tk-key">const</span> job = <span class="tk-key">await</span> vr.broadcast.<span class="tk-fn">create</span>({
+  <span class="tk-prop">name</span>: <span class="tk-str">'Eid Sale 2026'</span>,
+  <span class="tk-prop">audience</span>: <span class="tk-str">'segment_dhaka_active_buyers'</span>,
+  <span class="tk-prop">script</span>: {
+    <span class="tk-prop">language</span>: <span class="tk-str">'bn-BD'</span>,
+    <span class="tk-prop">voice</span>: <span class="tk-str">'tahmina-female'</span>,
+    <span class="tk-prop">text</span>: <span class="tk-str">'Assalamu alaikum {{name}}! Eid offer — {{discount}}% off. Press 1 to order.'</span>,
+    <span class="tk-prop">dtmf</span>: { <span class="tk-str">"1"</span>: <span class="tk-str">'sms_offer_link'</span> }
+  },
+  <span class="tk-prop">schedule</span>: {
+    <span class="tk-prop">start</span>: <span class="tk-str">'2026-04-26T11:00:00+06:00'</span>,
+    <span class="tk-prop">pacing</span>: <span class="tk-num">1200</span>      <span class="tk-com">// calls/sec</span>
+  },
+  <span class="tk-prop">retry</span>: { <span class="tk-prop">attempts</span>: <span class="tk-num">2</span>, <span class="tk-prop">delayMin</span>: <span class="tk-num">30</span> }
+});
+
+<span class="tk-com">// → bc_8h2k4f9... · queued · 2,84,621 calls</span>
+console.<span class="tk-fn">log</span>(job.<span class="tk-prop">id</span>, job.<span class="tk-prop">status</span>);</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-band">
+  <div class="container">
+    <div class="testi-card reveal">
+      <div>
+        <p class="testi-quote">"In a single Eid night we sent a voice broadcast to 2.8 lakh customers — and the dashboard showed everything happening live. Unlike SMS, nothing got lost. We saw <span style="color:var(--blue)">14.9% conversion</span> just from people pressing DTMF '1'. That's proven ROI."</p>
+        <div class="testi-meta">
+          <div class="testi-av">SR</div>
+          <div>
+            <div class="testi-name">Sajid Rahman</div>
+            <div class="testi-role">CMO · Daraz Bangladesh</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-stat">
+        <div class="n">14.9%</div>
+        <div class="l">DTMF conversion · Eid 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">FAQ</span>
+      <h2>Common questions about voice broadcast</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <div class="faq-q">How fast can I send to lakhs of numbers? <span class="arrow">+</span></div>
+        <div class="faq-a">Peak throughput is 14,000 calls per minute across all four BD carriers, so 2.8 lakh numbers complete in roughly 20 minutes. You can lower the pacing if you want to spread the load over the day.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Do I need to negotiate with carriers myself? <span class="arrow">+</span></div>
+        <div class="faq-a">No. We have direct interconnects with Grameenphone, Robi, Banglalink, and Airtel. You get one contract with us and we handle the carrier relationships, throughput negotiations, and sender ID approvals.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What languages and voices are supported? <span class="arrow">+</span></div>
+        <div class="faq-a">12 native Bangla voices (male/female, formal/conversational), plus English (US/IN), Hindi, and code-mixed Banglish with correct phonetics. You can also upload pre-recorded MP3/WAV if you prefer a human voice — say, your CEO or a brand spokesperson.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How does opt-out / DNC work? <span class="arrow">+</span></div>
+        <div class="faq-a">Press 9 during any promotional call and the number is suppressed across your entire account within seconds. We also auto-sync with the BTRC DNC list daily and reject numbers on it before placing calls.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can I personalize each call? <span class="arrow">+</span></div>
+        <div class="faq-a">Yes — every script supports placeholders like <code style="background:#f1f4fb;color:var(--navy);padding:1px 6px;border-radius:5px;font-size:13px">{{name}}</code>, <code style="background:#f1f4fb;color:var(--navy);padding:1px 6px;border-radius:5px;font-size:13px">{{amount}}</code>, etc. Pass them in the audience CSV or via the API. The TTS engine handles Bangla pronunciation correctly even for English brand names and numbers.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What does it cost per call? <span class="arrow">+</span></div>
+        <div class="faq-a">Voice broadcast starts at ৳0.85 per connected call on Business plan, ৳0.65 on Enterprise. Failed calls (busy, switched off) are not billed. See <a href="pricing.html" style="color:var(--blue);font-weight:700">pricing</a> for the full breakdown.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can I record DTMF responses for follow-up? <span class="arrow">+</span></div>
+        <div class="faq-a">Absolutely. DTMF presses are captured per call, fired via webhook in real time, and shown on the dashboard. You can branch — "Press 1 to receive an SMS link, Press 2 for a callback" — and we'll handle the routing automatically.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Is broadcast available in all 64 districts? <span class="arrow">+</span></div>
+        <div class="faq-a">Yes. We deliver to all 64 districts and 487 upazilas — anywhere a Grameenphone, Robi, Banglalink, or Airtel signal reaches. Rural pickup rates are typically 8–12pp higher than urban because voice is still the dominant communication channel outside the metros.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="reveal">
+        <h2>Your customers <span class="gold">are listening.</span></h2>
+        <p>Run a free 100-call broadcast trial today. Real BD numbers, real carrier routing, real dashboards — no credit card needed. Want a live demo? We'll set up a meeting.</p>
+        <div class="cta-actions">
+          <a class="btn btn-gold" href="contact.html">Start free trial → 100 calls</a>
+          <a class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.25)" href="contact.html">Book a demo</a>
+        </div>
+      </div>
+      <div class="cta-stat-card reveal">
+        <div><div class="cs-num">14k/min</div><div class="cs-lbl">Peak throughput</div></div>
+        <div><div class="cs-num">67%</div><div class="cs-lbl">Avg pickup rate</div></div>
+        <div><div class="cs-num">৳0.65</div><div class="cs-lbl">Per call · Enterprise</div></div>
+        <div><div class="cs-num">99.97%</div><div class="cs-lbl">Platform uptime</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="frontend.html">
+          <span class="logo-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M5.6 5.6l4.2 4.2M2 12h6M5.6 18.4l4.2-4.2M12 16v6M18.4 18.4l-4.2-4.2M16 12h6M18.4 5.6l-4.2 4.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </span>
+          VoiceReach<span style="color:var(--gold);margin-left:2px">.</span>
+        </a>
+        <p>Voice OTP, surveys, and broadcast for the Bangladesh market. Built in Banani, deployed across 64 districts.</p>
+        <div class="badges">
+          <span>🇧🇩 Made in BD</span>
+          <span>BTRC compliant</span>
+          <span>SOC 2 Type II</span>
+        </div>
+      </div>
+      <div>
+        <h5>Products</h5>
+        <ul>
+          <li><a href="voice-otp.html">Voice OTP</a></li>
+          <li><a href="voice-survey.html">Voice Surveys</a></li>
+          <li><a href="voice-broadcast.html">Voice Broadcast</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Developers</h5>
+        <ul>
+          <li><a href="api-docs.html">API docs</a></li>
+          <li><a href="api-docs.html#sdk">SDKs</a></li>
+          <li><a href="api-docs.html#status">Status page</a></li>
+          <li><a href="blog.html">Engineering blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="about.html#team">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Talk to us</h5>
+        <ul>
+          <li>+880 1313-484823</li>
+          <li>hello@protiddhoni.bd</li>
+          <li>Banani, Dhaka 1213</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Protiddhoni Ltd. All rights reserved.</div>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">DPA</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// reveal
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:0,rootMargin:"0px 0px -10% 0px"});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// faq toggle
+document.querySelectorAll('.faq-item').forEach(it=>{
+  it.querySelector('.faq-q').addEventListener('click',()=>{
+    it.classList.toggle('open');
+  });
+});
+
+// composer tab toggle (visual only)
+document.querySelectorAll('.comp-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.comp-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+</script>
+
+<script src="assets/js/cms-client.js"></script>
+<script>CMS.init({ base: window.PROTIDDHONI_CMS_BASE || 'http://localhost:8000/api', page: 'voice-broadcast' });</script>
+</body>
+</html>
