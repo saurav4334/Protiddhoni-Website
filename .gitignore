@@ -19,3 +19,5 @@ yarn-error.log
 /storage/framework/testing/*
 /storage/framework/views/*
 /storage/logs/*
+/__MACOSX
+/build_views.php

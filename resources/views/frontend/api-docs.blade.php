@@ -1,108 +1,673 @@
-@extends('layouts.frontend')
-
-@section('title', 'API Documentation — Protiddhoni Voice Broadcasting')
+@extends('layouts.site')
 
 @push('styles')
+@verbatim
 <style>
-  :root{
-    --navy:#003087;--blue:#0070BA;--sky:#009CDE;--gold:#FFC439;--cream:#FFF9E6;
-    --ink:#0a1230;--ink2:#3a4566;--mute:#6b7593;--line:#e5e9f2;--bg:#f7f9fc;--white:#fff;
-    --code-bg:#0a1230;--code-bg2:#0e1840;--code-text:#e5e9f2;
-  }
-  .hero{padding:60px 0 48px;background:linear-gradient(180deg,#fff 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
-  .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:54px;align-items:center}
-  .hero-code{background:var(--code-bg);border-radius:18px;box-shadow:0 24px 64px rgba(0,48,135,.18);overflow:hidden;border:1px solid rgba(255,255,255,.06)}
-  .code-bar{background:var(--code-bg2);padding:12px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
-  .hero-code pre{padding:22px;margin:0;color:var(--code-text);font-size:13px;line-height:1.75;overflow-x:auto;font-family:'JetBrains Mono',monospace}
-  .docs-grid{display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:start}
-  .docs-side{position:sticky;top:90px;background:#fff;border-radius:16px;border:1px solid var(--line);padding:22px;max-height:calc(100vh - 110px);overflow-y:auto}
-  .ds-section a{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:13px;color:var(--ink2);font-weight:600;margin-bottom:2px}
-  .ds-section a:hover,.ds-section a.active{background:#eef3fb;color:var(--navy)}
-  .docs-content{background:#fff;border-radius:16px;border:1px solid var(--line);padding:46px;box-shadow:0 8px 24px rgba(0,48,135,.10)}
-  .endpoint{background:#f7f9fc;border:1px solid var(--line);border-left:4px solid var(--blue);padding:16px 20px;border-radius:10px;margin:18px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .params{width:100%;border-collapse:collapse;margin:18px 0;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .params th{background:#f1f4fb;text-align:left;padding:12px 16px;font-size:10px;font-weight:800;color:var(--ink);text-transform:uppercase}
-  .params td{padding:14px 16px;font-size:13px;color:var(--ink2);border-top:1px solid var(--line)}
+:root{
+  --navy:#003087;--blue:#0070BA;--sky:#009CDE;--gold:#FFC439;--cream:#FFF9E6;
+  --ink:#0a1230;--ink2:#3a4566;--mute:#6b7593;--line:#e5e9f2;--bg:#f7f9fc;--white:#fff;
+  --code-bg:#0a1230;--code-bg2:#0e1840;--code-text:#e5e9f2;
+  --shadow-md:0 8px 24px rgba(0,48,135,.10);
+  --shadow-lg:0 24px 64px rgba(0,48,135,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.bn{font-family:'Hind Siliguri','Plus Jakarta Sans',sans-serif}
+.mono,code,pre{font-family:'JetBrains Mono',monospace}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--navy)}
+.logo-mark{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(0,48,135,.30)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{font-size:14.5px;font-weight:600;color:var(--ink2);transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--navy)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s;border:none;text-decoration:none;font-family:inherit}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 8px 20px rgba(0,48,135,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,48,135,.4)}
+.btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 8px 20px rgba(255,196,57,.4)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,196,57,.55)}
+.btn-ghost{background:transparent;color:var(--navy);border:2px solid var(--line)}
+.btn-ghost:hover{border-color:var(--navy);background:#fff}
+.menu-tog{display:none;background:none;border:0;font-size:26px;color:var(--navy);cursor:pointer}
+
+/* hero */
+.hero{padding:60px 0 48px;background:
+  radial-gradient(900px 500px at 0% 0%,rgba(0,156,222,.12),transparent),
+  radial-gradient(700px 400px at 100% 0%,rgba(255,196,57,.10),transparent),
+  linear-gradient(180deg,#fff 0%,var(--bg) 100%);border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:54px;align-items:center}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,112,186,.10);border:1px solid rgba(0,112,186,.25);padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;color:var(--navy);margin-bottom:18px}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(0,156,222,.20);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.hero h1{font-size:clamp(34px,4.6vw,52px);font-weight:800;line-height:1.08;letter-spacing:-.02em;color:var(--navy)}
+.hero h1 .grad{background:linear-gradient(135deg,var(--blue),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p.lede{font-size:17.5px;color:var(--ink2);margin:18px 0 26px;max-width:560px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:22px;color:var(--mute);font-size:13.5px;font-weight:600}
+.hero-meta span{display:inline-flex;align-items:center;gap:6px}
+
+/* hero code */
+.hero-code{background:var(--code-bg);border-radius:18px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.code-bar{background:var(--code-bg2);padding:12px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.code-bar .dots{display:flex;gap:6px}
+.code-bar .dots i{width:10px;height:10px;border-radius:50%;background:#3a4566}
+.code-bar .dots i:nth-child(1){background:#ff5f57}
+.code-bar .dots i:nth-child(2){background:#febc2e}
+.code-bar .dots i:nth-child(3){background:#28c840}
+.code-bar .file{color:#a8b1cf;font-size:12.5px;font-weight:600;margin-left:8px}
+.code-bar .lang{margin-left:auto;background:rgba(255,196,57,.18);color:var(--gold);padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:700}
+.hero-code pre{padding:22px;margin:0;color:var(--code-text);font-size:13.5px;line-height:1.75;overflow-x:auto}
+.tk-com{color:#7886a8}
+.tk-key{color:#ff8eb1}
+.tk-str{color:#ffc77a}
+.tk-fn{color:#5fd4ff}
+.tk-num{color:#a4f7a7}
+.tk-prop{color:#e9b3ff}
+
+/* sections */
+section{padding:80px 0}
+.section-head{text-align:center;margin-bottom:48px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,196,57,.18);color:#a86b00;border:1px solid rgba(255,196,57,.4);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.section-head h2{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.12;letter-spacing:-.02em;color:var(--navy);max-width:820px;margin:0 auto}
+.section-head p{font-size:17px;color:var(--ink2);margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+
+/* layout: docs */
+.docs{padding:60px 0}
+.docs-grid{display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:start}
+.docs-side{position:sticky;top:90px;background:#fff;border-radius:16px;border:1px solid var(--line);padding:22px;max-height:calc(100vh - 110px);overflow-y:auto}
+.ds-section{margin-bottom:18px}
+.ds-section h5{font-size:11px;font-weight:800;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.ds-section a{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:13.5px;color:var(--ink2);font-weight:600;transition:.2s;margin-bottom:2px}
+.ds-section a:hover,.ds-section a.active{background:#eef3fb;color:var(--navy)}
+.ds-section a .method{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:5px;letter-spacing:.04em;flex-shrink:0}
+.ds-section a .m-get{background:#dfeff7;color:#016ba8}
+.ds-section a .m-post{background:#dff7e3;color:#0d8b3e}
+.ds-section a .m-del{background:#fdd9d9;color:#a91e1e}
+
+.docs-content{background:#fff;border-radius:16px;border:1px solid var(--line);padding:46px;box-shadow:var(--shadow-md)}
+.docs-content h2{font-size:30px;color:var(--navy);font-weight:800;letter-spacing:-.01em;margin-bottom:14px;scroll-margin-top:90px}
+.docs-content h3{font-size:22px;color:var(--navy);font-weight:800;margin:34px 0 12px;letter-spacing:-.01em;scroll-margin-top:90px}
+.docs-content h4{font-size:16px;color:var(--navy);font-weight:800;margin:22px 0 10px}
+.docs-content p{font-size:15.5px;color:var(--ink2);margin-bottom:14px}
+.docs-content code:not(pre code){background:#f1f4fb;color:var(--navy);padding:2px 7px;border-radius:5px;font-size:13.5px;font-weight:600}
+.docs-content pre{background:var(--code-bg);color:var(--code-text);padding:22px;border-radius:12px;font-size:13.5px;line-height:1.75;overflow-x:auto;margin:14px 0;border:1px solid rgba(255,255,255,.06)}
+.docs-content ul{padding-left:22px;margin-bottom:14px}
+.docs-content ul li{font-size:15.5px;color:var(--ink2);margin-bottom:6px}
+
+.endpoint{background:#f7f9fc;border:1px solid var(--line);border-left:4px solid var(--blue);padding:16px 20px;border-radius:10px;margin:18px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.endpoint .method{font-size:11px;font-weight:800;padding:5px 12px;border-radius:6px;letter-spacing:.06em}
+.endpoint code{background:transparent;font-size:14.5px;font-weight:700;color:var(--ink)}
+.endpoint .desc{margin-left:auto;font-size:13px;color:var(--mute);font-weight:600}
+
+/* params table */
+.params{width:100%;border-collapse:collapse;margin:18px 0;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.params th{background:#f1f4fb;text-align:left;padding:12px 16px;font-size:12px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.params td{padding:14px 16px;font-size:13.5px;color:var(--ink2);border-top:1px solid var(--line);vertical-align:top}
+.params td code{background:#eef3fb;color:var(--navy);padding:2px 7px;border-radius:5px;font-size:12.5px;font-weight:700}
+.params .req{background:rgba(255,196,57,.25);color:#a86b00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:800}
+.params .opt{background:#eef3fb;color:var(--mute);padding:2px 8px;border-radius:5px;font-size:11px;font-weight:800}
+
+/* features grid */
+.features{padding:80px 0;background:#fff}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.feat-card{padding:28px;border-radius:16px;border:1.5px solid var(--line);transition:.3s;background:#fff;position:relative;overflow:hidden}
+.feat-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.feat-card .ic{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,rgba(0,112,186,.1),rgba(0,156,222,.18));color:var(--blue);display:grid;place-items:center;font-size:22px;margin-bottom:14px}
+.feat-card h4{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.feat-card p{font-size:14px;color:var(--ink2);line-height:1.65}
+
+/* errors table */
+.err-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:30px}
+.err-table th{background:#f1f4fb;padding:14px 18px;text-align:left;font-size:12px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.err-table td{padding:14px 18px;font-size:13.5px;color:var(--ink2);border-top:1px solid var(--line)}
+.err-table .code{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--navy)}
+.err-table .status-2{color:#0d8b3e;font-weight:700}
+.err-table .status-4{color:#a86b00;font-weight:700}
+.err-table .status-5{color:#a91e1e;font-weight:700}
+
+/* base url band */
+.base-band{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:60px 0;position:relative;overflow:hidden}
+.base-band::before{content:"";position:absolute;top:-100px;right:-100px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.2),transparent)}
+.base-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;position:relative}
+.base-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:24px;backdrop-filter:blur(8px)}
+.base-card .lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px}
+.base-card .val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#fff;line-height:1.4;word-break:break-all}
+.base-card .desc{font-size:13px;color:rgba(255,255,255,.85);margin-top:8px}
+
+/* CTA */
+.cta{background:radial-gradient(800px 400px at 100% 0%,rgba(255,196,57,.18),transparent),linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:#fff;padding:80px 0;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;top:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,156,222,.30),transparent)}
+.cta-inner{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;position:relative}
+.cta h2{font-size:42px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+.cta h2 .gold{color:var(--gold)}
+.cta p{font-size:17px;opacity:.92;max-width:560px;margin-bottom:26px}
+.cta-actions{display:flex;flex-wrap:wrap;gap:12px}
+.cta-stat-card{background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cs-num{font-size:30px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:6px}
+.cs-lbl{font-size:12px;opacity:.8;font-weight:600;line-height:1.4}
+
+/* footer */
+.footer{background:#06112d;color:#a8b1cf;padding:64px 0 30px}
+.footer-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:36px;margin-bottom:40px}
+.footer h5{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase}
+.footer .logo{color:#fff;margin-bottom:16px}
+.footer p{font-size:13.5px;line-height:1.7;color:#a8b1cf}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:10px}
+.footer ul a{font-size:13.5px;color:#a8b1cf;transition:.2s}
+.footer ul a:hover{color:var(--gold)}
+.footer .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.footer .badges span{background:rgba(255,255,255,.08);padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:600;color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px}
+.footer-bottom .links{display:flex;gap:22px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:980px){
+  .nav-links{display:none}
+  .menu-tog{display:block}
+  .hero-grid{grid-template-columns:1fr}
+  .docs-grid{grid-template-columns:1fr}
+  .docs-side{position:relative;top:0;max-height:none}
+  .docs-content{padding:28px}
+  .feat-grid{grid-template-columns:1fr}
+  .base-grid{grid-template-columns:1fr}
+  .cta-inner{grid-template-columns:1fr}
+}
 </style>
+@endverbatim
 @endpush
 
 @section('content')
+@verbatim
+<!-- NAV -->
+
+
 <!-- HERO -->
-<section class="hero pt-32">
-  <div class="max-w-7xl mx-auto px-6 hero-grid">
+<section class="hero">
+  <div class="container hero-grid">
     <div class="reveal">
-      <span class="chip mb-4"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse mr-2"></span> {{ \App\Models\PageBlock::value('api-docs.hero.pill', 'Protiddhoni API · v1.0 · Stable') }}</span>
-      <h1 class="text-5xl font-extrabold text-navy-900 leading-tight">
-        {!! \App\Models\PageBlock::value('api-docs.hero.headline', 'Voice broadcasting API <span class="text-gradient">for Bangladesh.</span>') !!}
-      </h1>
-      <p class="mt-6 text-lg text-ink-500 max-w-xl leading-relaxed">
-        {!! \App\Models\PageBlock::value('api-docs.hero.subhead', 'Send Voice OTPs, run multi-number broadcasts, and pull results over a clean REST API.') !!}
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a class="btn-primary" href="#authentication">Quickstart →</a>
-        <a class="btn-outline" href="{{ url('/contact') }}">Get API token</a>
+      <span class="hero-pill"><span class="dot"></span><span data-cms="api-docs.hero.pill">Protiddhoni API · v1.0 · Stable</span></span>
+      <h1 data-cms-html="api-docs.hero.headline">Voice broadcasting API <span class="grad">for Bangladesh.</span></h1>
+      <p class="lede" data-cms-html="api-docs.hero.subhead">Send Voice OTPs, run multi-number broadcasts, launch surveys, and pull results — all over a clean REST API. Built for BD carriers, secured by Bearer tokens, ready for production. The docs don't lecture you — the code speaks for itself.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#authentication">Quickstart →</a>
+        <a class="btn btn-ghost" href="/contact">Get API token</a>
+      </div>
+      <div class="hero-meta">
+        <span>🔐 Bearer auth</span>
+        <span>📞 Up to 999 numbers/call</span>
+        <span>🪝 Survey webhooks</span>
+        <span>🇧🇩 BD-first</span>
       </div>
     </div>
     <div class="hero-code reveal">
       <div class="code-bar">
-        <div class="flex gap-1.5"><i class="w-2.5 h-2.5 rounded-full bg-red-400"></i><i class="w-2.5 h-2.5 rounded-full bg-yellow-400"></i><i class="w-2.5 h-2.5 rounded-full bg-green-400"></i></div>
-        <div class="ml-4 text-[10px] font-bold text-ink-300">send-otp.sh</div>
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="file">send-otp.sh</div>
+        <div class="lang">cURL</div>
       </div>
-<pre>curl -X POST https://api.protiddhoni.com/api/broadcasts/otp \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{
+<pre><span class="tk-com"># Voice OTP — single phone, one cURL</span>
+curl -X POST https://api.protiddhoni.com/api/broadcasts/otp \
+  -H <span class="tk-str">"Authorization: Bearer $TOKEN"</span> \
+  -H <span class="tk-str">"Content-Type: application/json"</span> \
+  -d <span class="tk-str">'{
+    "request_id": "otp_2026_04_26_001",
     "voice": "otp_voice_bn",
+    "sender": "8801313484823",
     "phone_number": "01712345678",
     "otp_code": "8429"
-  }'</pre>
+  }'</span>
+
+<span class="tk-com"># → 200 OK</span>
+{ <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"broadcast"</span>: { <span class="tk-prop">"id"</span>: <span class="tk-num">123</span>, <span class="tk-prop">"status"</span>: <span class="tk-str">"broadcasting"</span> } }</pre>
     </div>
   </div>
 </section>
 
-<!-- DOCS -->
-<section class="py-24">
-  <div class="max-w-7xl mx-auto px-6">
+<!-- BASE URL BAND -->
+<section style="padding:0">
+  <div class="container" style="padding-top:60px;padding-bottom:0">
+    <div class="base-band" style="border-radius:24px">
+      <div class="container base-grid">
+        <div class="base-card reveal">
+          <div class="lbl">Base URL</div>
+          <div class="val">api.protiddhoni.com/api</div>
+          <div class="desc">All endpoints prefixed with this. HTTPS only.</div>
+        </div>
+        <div class="base-card reveal">
+          <div class="lbl">Version</div>
+          <div class="val">v1.0 · Stable</div>
+          <div class="desc">Semver-locked. Breaking changes ship as v2.</div>
+        </div>
+        <div class="base-card reveal">
+          <div class="lbl">Auth</div>
+          <div class="val">Bearer token</div>
+          <div class="desc">Generate from your dashboard → Account → API.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Why Protiddhoni API</span>
+      <h2>Ten endpoints. Everything voice in Bangladesh.</h2>
+      <p>From a one-line balance check to a 999-number broadcast or a multi-question survey campaign — one consistent REST surface, one Bearer token, one base URL.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal"><div class="ic">📞</div><h4>OTP & Broadcast</h4><p>Single-number Voice OTP at <code>/broadcasts/otp</code>, or up to 999 numbers in one call at <code>/broadcasts</code>.</p></div>
+      <div class="feat-card reveal"><div class="ic">📊</div><h4>Surveys with DTMF</h4><p>Launch a published template, get keys-pressed back per recipient via API or webhook.</p></div>
+      <div class="feat-card reveal"><div class="ic">🪝</div><h4>Survey webhooks</h4><p>Configure a <code>webhook_url</code> on survey creation — we POST results when complete.</p></div>
+      <div class="feat-card reveal"><div class="ic">🎙</div><h4>Voice & sender catalog</h4><p>List approved voices and active caller-sender numbers via simple GET endpoints.</p></div>
+      <div class="feat-card reveal"><div class="ic">💰</div><h4>Live balance</h4><p><code>GET /balance</code> returns your current account balance. Pre-flight before bulk runs.</p></div>
+      <div class="feat-card reveal"><div class="ic">🛡️</div><h4>Idempotent by design</h4><p>Every write takes a <code>request_id</code> — duplicates are detected and rejected, not retried.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCS LAYOUT -->
+<section class="docs">
+  <div class="container">
     <div class="docs-grid">
+
+      <!-- SIDEBAR -->
       <aside class="docs-side reveal">
-        <div class="ds-section mb-6">
-          <h5 class="text-[10px] font-bold text-ink-300 uppercase tracking-widest mb-4">Getting started</h5>
+        <div class="ds-section">
+          <h5>Getting started</h5>
           <a href="#overview" class="active">Overview</a>
           <a href="#authentication">Authentication</a>
         </div>
-        <div class="ds-section mb-6">
-          <h5 class="text-[10px] font-bold text-ink-300 uppercase tracking-widest mb-4">Broadcasts</h5>
-          <a href="#otp-broadcast">OTP broadcast</a>
-          <a href="#broadcast-multiple">Multi-number broadcast</a>
+        <div class="ds-section">
+          <h5>Account</h5>
+          <a href="#check-balance"><span class="method m-get">GET</span> Check balance</a>
+          <a href="#list-voices"><span class="method m-get">GET</span> List voices</a>
+          <a href="#list-senders"><span class="method m-get">GET</span> List senders</a>
+        </div>
+        <div class="ds-section">
+          <h5>Broadcasts</h5>
+          <a href="#otp-broadcast"><span class="method m-post">POST</span> OTP broadcast</a>
+          <a href="#broadcast-multiple"><span class="method m-post">POST</span> Multi-number broadcast</a>
+          <a href="#list-broadcasts"><span class="method m-get">GET</span> List broadcasts</a>
+          <a href="#broadcast-result"><span class="method m-get">GET</span> Broadcast result</a>
+        </div>
+        <div class="ds-section">
+          <h5>Surveys</h5>
+          <a href="#create-survey"><span class="method m-post">POST</span> Create survey</a>
+          <a href="#survey-result"><span class="method m-get">GET</span> Survey result</a>
+          <a href="#survey-webhooks">Survey webhooks</a>
+        </div>
+        <div class="ds-section">
+          <h5>Reference</h5>
+          <a href="#error-responses">Error responses</a>
         </div>
       </aside>
 
+      <!-- CONTENT -->
       <article class="docs-content reveal">
-        <h2 id="overview" class="text-3xl font-extrabold text-navy-900 mb-4">Overview</h2>
-        <p class="text-ink-500 mb-8">The Protiddhoni API powers voice automation across Bangladesh. All requests are made over HTTPS to <code>api.protiddhoni.com/api</code>, authenticated via a Bearer token.</p>
 
-        <h2 id="authentication" class="text-2xl font-extrabold text-navy-900 mt-12 mb-4">Authentication</h2>
-        <p class="text-ink-500 mb-6">All API requests require a Bearer token in the <code>Authorization</code> header.</p>
-        <div class="bg-yellow-50 border-l-4 border-paypal-gold p-4 rounded-r-xl mb-8">
-          <p class="text-xs text-ink-700"><strong>⚠ Important:</strong> keep your API token secure and never share it publicly.</p>
-        </div>
+        <h2 id="overview">Overview</h2>
+        <p>The Protiddhoni API powers voice automation across Bangladesh — Voice OTP delivery, multi-number broadcasts, and DTMF-driven surveys. All requests are made over HTTPS to <code>api.protiddhoni.com/api</code>, authenticated via a Bearer token, and respond with JSON.</p>
+        <p>This reference covers all endpoints in <strong>v1.0</strong>. Every write request takes a <code>request_id</code> — pass a unique 16–64 character string per call to prevent duplicate processing on retry.</p>
 
-        <h2 id="otp-broadcast" class="text-2xl font-extrabold text-navy-900 mt-12 mb-4">Voice OTP broadcast</h2>
-        <div class="endpoint">
-          <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold">POST</span>
-          <code class="text-xs font-bold">/api/broadcasts/otp</code>
-        </div>
-        <p class="text-ink-500 mb-6">Single-recipient OTP delivery.</p>
+        <h2 id="authentication" style="margin-top:50px">Authentication</h2>
+        <p>All API requests require a Bearer token in the <code>Authorization</code> header. You can obtain your API token from your <strong>dashboard → Account settings</strong>.</p>
+        <p style="background:#fff7e6;border-left:4px solid var(--gold);padding:14px 18px;border-radius:8px"><strong>⚠ Important:</strong> keep your API token secure and never share it publicly. Treat it like a password — rotate immediately if leaked.</p>
 
+        <h4>Required headers</h4>
         <table class="params">
-          <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+          <thead><tr><th>Header</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><code>voice</code></td><td>string</td><td>Name of approved voice.</td></tr>
-            <tr><td><code>phone_number</code></td><td>string</td><td>Recipient — <code>01XXXXXXXXX</code>.</td></tr>
-            <tr><td><code>otp_code</code></td><td>string</td><td>The code to read out.</td></tr>
+            <tr><td><code>Authorization</code></td><td>Bearer token for authentication</td></tr>
+            <tr><td><code>Accept</code></td><td>Must be set to <code>application/json</code></td></tr>
+            <tr><td><code>Content-Type</code></td><td>Required for POST requests — <code>application/json</code></td></tr>
+          </tbody>
+        </table>
+
+        <h4>Example request headers</h4>
+<pre>Authorization: Bearer <span class="tk-str">your_api_token_here</span>
+Accept: <span class="tk-str">application/json</span>
+Content-Type: <span class="tk-str">application/json</span></pre>
+
+        <!-- ============ ACCOUNT ============ -->
+
+        <h2 id="check-balance" style="margin-top:50px">Check balance</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dfeff7;color:#016ba8">GET</span>
+          <code>/api/balance</code>
+          <span class="desc">Retrieve current account balance.</span>
+        </div>
+        <p>Returns the live balance for the authenticated account. Useful for pre-flight checks before bulk broadcasts so you don't get hit with a 402.</p>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"balance"</span>: <span class="tk-num">1250.75</span>
+}</pre>
+
+        <!-- ============ OTP ============ -->
+
+        <h2 id="otp-broadcast" style="margin-top:50px">Voice OTP broadcast</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dff7e3;color:#0d8b3e">POST</span>
+          <code>/api/broadcasts/otp</code>
+          <span class="desc">Send a Voice OTP to one phone number.</span>
+        </div>
+        <p>Single-recipient OTP delivery. The voice you specify must be approved <em>and</em> have digit-mode enabled (so the OTP digits are spoken correctly). Use a unique <code>request_id</code> per call to make retries safe.</p>
+        <h4>Body parameters</h4>
+        <table class="params">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>request_id</code></td><td>string</td><td><span class="req">Yes</span></td><td>Unique request identifier (16–64 characters).</td></tr>
+            <tr><td><code>voice</code></td><td>string</td><td><span class="req">Yes</span></td><td>Name of an approved voice with digit mode enabled.</td></tr>
+            <tr><td><code>sender</code></td><td>string</td><td><span class="req">Yes</span></td><td>An active caller-sender number on your account.</td></tr>
+            <tr><td><code>phone_number</code></td><td>string</td><td><span class="req">Yes</span></td><td>Recipient — <code>01XXXXXXXXX</code> format.</td></tr>
+            <tr><td><code>otp_code</code></td><td>string</td><td><span class="req">Yes</span></td><td>The OTP code to read out (4–6 digits).</td></tr>
+          </tbody>
+        </table>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"broadcast"</span>: {
+    <span class="tk-prop">"id"</span>: <span class="tk-num">123</span>,
+    <span class="tk-prop">"name"</span>: <span class="tk-str">"otp_api_1_your_voice_019XXXXXXXX"</span>,
+    <span class="tk-prop">"status"</span>: <span class="tk-str">"broadcasting"</span>
+  }
+}</pre>
+        <p style="background:#eaf3fa;border-left:4px solid var(--blue);padding:12px 16px;border-radius:8px;font-size:14px"><strong>💡 Note:</strong> use a unique <code>request_id</code> for each call to prevent duplicate processing on network retries.</p>
+
+        <!-- ============ MULTI BROADCAST ============ -->
+
+        <h2 id="broadcast-multiple" style="margin-top:50px">Broadcast to multiple numbers</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dff7e3;color:#0d8b3e">POST</span>
+          <code>/api/broadcasts</code>
+          <span class="desc">Send the same voice message to up to 999 numbers.</span>
+        </div>
+        <p>Bulk-send a voice message to multiple recipients in one request. Maximum 999 numbers per call — for larger campaigns, batch your requests.</p>
+        <h4>Body parameters</h4>
+        <table class="params">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>request_id</code></td><td>string</td><td><span class="req">Yes</span></td><td>Unique request identifier.</td></tr>
+            <tr><td><code>voice</code></td><td>string</td><td><span class="req">Yes</span></td><td>Name of an approved voice.</td></tr>
+            <tr><td><code>sender</code></td><td>string</td><td><span class="req">Yes</span></td><td>Active caller-sender number.</td></tr>
+            <tr><td><code>phone_numbers</code></td><td>array</td><td><span class="req">Yes</span></td><td>Array of phone numbers — max 999.</td></tr>
+          </tbody>
+        </table>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"broadcast"</span>: {
+    <span class="tk-prop">"id"</span>: <span class="tk-num">123</span>,
+    <span class="tk-prop">"name"</span>: <span class="tk-str">"api_1_your_voice_3"</span>,
+    <span class="tk-prop">"status"</span>: <span class="tk-str">"broadcasting"</span>
+  }
+}</pre>
+
+        <!-- ============ LIST BROADCASTS ============ -->
+
+        <h2 id="list-broadcasts" style="margin-top:50px">List broadcasts</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dfeff7;color:#016ba8">GET</span>
+          <code>/api/broadcasts</code>
+          <span class="desc">List all broadcasts in a date range.</span>
+        </div>
+        <p>Returns broadcasts on your account. Date range cannot exceed <strong>90 days</strong> — for older history, paginate or query a smaller window.</p>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"broadcasts"</span>: [
+    {
+      <span class="tk-prop">"id"</span>: <span class="tk-num">123</span>,
+      <span class="tk-prop">"name"</span>: <span class="tk-str">"api_1_voice_100"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"completed"</span>
+    },
+    {
+      <span class="tk-prop">"id"</span>: <span class="tk-num">124</span>,
+      <span class="tk-prop">"name"</span>: <span class="tk-str">"api_1_voice_50"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"broadcasting"</span>
+    }
+  ]
+}</pre>
+
+        <!-- ============ BROADCAST RESULT ============ -->
+
+        <h2 id="broadcast-result" style="margin-top:50px">Get broadcast result</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dfeff7;color:#016ba8">GET</span>
+          <code>/api/broadcasts/:id/result</code>
+          <span class="desc">Per-recipient delivery and answer status.</span>
+        </div>
+        <p>Once a broadcast finishes, this endpoint returns per-number outcome — answered, not-answered, failed — plus call duration in seconds for the answered ones.</p>
+        <h4>Response — Completed</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"isComplete"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"statusDistribution"</span>: {
+    <span class="tk-prop">"answered"</span>: <span class="tk-num">2</span>,
+    <span class="tk-prop">"notAnswered"</span>: <span class="tk-num">1</span>,
+    <span class="tk-prop">"failed"</span>: <span class="tk-num">0</span>
+  },
+  <span class="tk-prop">"results"</span>: [
+    {
+      <span class="tk-prop">"phoneNumber"</span>: <span class="tk-str">"019XXXXXXXX"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"answered"</span>,
+      <span class="tk-prop">"duration"</span>: <span class="tk-num">45</span>
+    }
+  ]
+}</pre>
+
+        <!-- ============ LIST VOICES ============ -->
+
+        <h2 id="list-voices" style="margin-top:50px">List voices</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dfeff7;color:#016ba8">GET</span>
+          <code>/api/voices</code>
+          <span class="desc">All voices on your account with approval status.</span>
+        </div>
+        <p>Lists every voice you've uploaded along with its current status — <code>approved</code> (ready to use in broadcasts), <code>pending</code> (under review), or <code>rejected</code>.</p>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"voices"</span>: [
+    {
+      <span class="tk-prop">"id"</span>: <span class="tk-num">1</span>,
+      <span class="tk-prop">"name"</span>: <span class="tk-str">"welcome_message"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"approved"</span>
+    },
+    {
+      <span class="tk-prop">"id"</span>: <span class="tk-num">2</span>,
+      <span class="tk-prop">"name"</span>: <span class="tk-str">"otp_voice"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"pending"</span>
+    }
+  ]
+}</pre>
+
+        <!-- ============ LIST SENDERS ============ -->
+
+        <h2 id="list-senders" style="margin-top:50px">List senders</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dfeff7;color:#016ba8">GET</span>
+          <code>/api/senders</code>
+          <span class="desc">Caller-sender numbers and their states.</span>
+        </div>
+        <p>Returns the calling numbers configured on your account. Only senders with <code>status: "active"</code> can be used in broadcast or OTP requests.</p>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"senders"</span>: [
+    {
+      <span class="tk-prop">"id"</span>: <span class="tk-num">1</span>,
+      <span class="tk-prop">"callingNumber"</span>: <span class="tk-str">"8801234567890"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"active"</span>
+    },
+    {
+      <span class="tk-prop">"id"</span>: <span class="tk-num">2</span>,
+      <span class="tk-prop">"callingNumber"</span>: <span class="tk-str">"8809876543210"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"inactive"</span>
+    }
+  ]
+}</pre>
+
+        <!-- ============ CREATE SURVEY ============ -->
+
+        <h2 id="create-survey" style="margin-top:50px">Create survey</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dff7e3;color:#0d8b3e">POST</span>
+          <code>/api/surveys</code>
+          <span class="desc">Launch a survey campaign from a published template.</span>
+        </div>
+        <p>Surveys are built from <strong>published templates</strong> in the dashboard. This endpoint takes the template name + a list of phone numbers (max 999) and starts the campaign. Optionally provide a <code>webhook_url</code> to be notified when results are ready.</p>
+        <h4>Body parameters</h4>
+        <table class="params">
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>request_id</code></td><td>string</td><td><span class="req">Yes</span></td><td>Unique request identifier.</td></tr>
+            <tr><td><code>template_name</code></td><td>string</td><td><span class="req">Yes</span></td><td>Name of a published survey template.</td></tr>
+            <tr><td><code>sender</code></td><td>string</td><td><span class="req">Yes</span></td><td>Active sender number.</td></tr>
+            <tr><td><code>phone_numbers</code></td><td>array</td><td><span class="req">Yes</span></td><td>Phone numbers — max 999.</td></tr>
+            <tr><td><code>webhook_url</code></td><td>string</td><td><span class="opt">No</span></td><td>URL to POST results to when the survey completes.</td></tr>
+          </tbody>
+        </table>
+        <h4>Response — 200 OK</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"survey"</span>: {
+    <span class="tk-prop">"id"</span>: <span class="tk-num">456</span>,
+    <span class="tk-prop">"status"</span>: <span class="tk-str">"ready"</span>,
+    <span class="tk-prop">"totalCount"</span>: <span class="tk-num">3</span>
+  }
+}</pre>
+
+        <!-- ============ SURVEY RESULT ============ -->
+
+        <h2 id="survey-result" style="margin-top:50px">Get survey result</h2>
+        <div class="endpoint">
+          <span class="method" style="background:#dfeff7;color:#016ba8">GET</span>
+          <code>/api/surveys/:id/result</code>
+          <span class="desc">Per-number status + DTMF keys pressed.</span>
+        </div>
+        <p>Returns each recipient's status and the sequence of keys they pressed in response to the survey questions.</p>
+        <h4>Response — Completed</h4>
+<pre>{
+  <span class="tk-prop">"success"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"isComplete"</span>: <span class="tk-key">true</span>,
+  <span class="tk-prop">"numbers"</span>: [
+    {
+      <span class="tk-prop">"number"</span>: <span class="tk-str">"019XXXXXXXX"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"answered"</span>,
+      <span class="tk-prop">"pressedKeys"</span>: [<span class="tk-str">"1"</span>, <span class="tk-str">"5"</span>]
+    }
+  ]
+}</pre>
+
+        <!-- ============ WEBHOOKS ============ -->
+
+        <h2 id="survey-webhooks" style="margin-top:50px">Survey webhooks</h2>
+        <p>If you provided a <code>webhook_url</code> when creating a survey, Protiddhoni will POST the final results to that URL when the survey completes.</p>
+        <h4>POST body delivered to your webhook URL</h4>
+<pre>{
+  <span class="tk-prop">"survey_id"</span>: <span class="tk-num">456</span>,
+  <span class="tk-prop">"results"</span>: [
+    {
+      <span class="tk-prop">"phone_number"</span>: <span class="tk-str">"019XXXXXXXX"</span>,
+      <span class="tk-prop">"status"</span>: <span class="tk-str">"answered"</span>,
+      <span class="tk-prop">"responses"</span>: [<span class="tk-str">"1"</span>, <span class="tk-str">"5"</span>]
+    }
+  ]
+}</pre>
+        <p>Your webhook endpoint should respond with <code>2xx</code> to acknowledge. Make it idempotent — survey results may be re-delivered on transient errors.</p>
+
+        <!-- ============ ERRORS ============ -->
+
+        <h2 id="error-responses" style="margin-top:50px">Error responses</h2>
+        <p>The API uses standard HTTP status codes. All error bodies share the shape <code>{"success": false, "message": "..."}</code> — branch on the status code and message.</p>
+        <table class="err-table">
+          <thead><tr><th>Status</th><th>Meaning</th><th>Example response</th></tr></thead>
+          <tbody>
+            <tr><td class="status-4">401</td><td>Unauthorized — token missing or invalid</td><td><code class="code">{"success": false, "message": "Unauthorized"}</code></td></tr>
+            <tr><td class="status-4">400</td><td>Bad request — schema or duplicate input</td><td><code class="code">{"success": false, "message": "Duplicate phone number found"}</code></td></tr>
+            <tr><td class="status-4">402</td><td>Payment required — top up your balance</td><td><code class="code">{"success": false, "message": "Insufficient balance"}</code></td></tr>
+            <tr><td class="status-4">403</td><td>Forbidden — voice/sender not approved</td><td><code class="code">{"success": false, "message": "Voice not found or not approved"}</code></td></tr>
+            <tr><td class="status-4">404</td><td>Not found — broadcast/survey id doesn't exist</td><td><code class="code">{"success": false, "message": "Broadcast not found"}</code></td></tr>
+            <tr><td class="status-5">500</td><td>Internal server error — our fault, retry</td><td><code class="code">{"success": false, "message": "Failed to create OTP broadcast"}</code></td></tr>
           </tbody>
         </table>
       </article>
     </div>
   </div>
 </section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="reveal">
+        <h2>Got a token? <span class="gold">Send your first call.</span></h2>
+        <p>Free trial includes 100 calls and full sandbox access. Production credentials issued the same day. Get your token, start writing code.</p>
+        <div class="cta-actions">
+          <a class="btn btn-gold" href="/contact">Get API token — free</a>
+          <a class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.25)" href="/contact">Talk to engineering</a>
+        </div>
+      </div>
+      <div class="cta-stat-card reveal">
+        <div><div class="cs-num">10</div><div class="cs-lbl">REST endpoints</div></div>
+        <div><div class="cs-num">999</div><div class="cs-lbl">Numbers per request</div></div>
+        <div><div class="cs-num">v1.0</div><div class="cs-lbl">Stable, production</div></div>
+        <div><div class="cs-num">90 days</div><div class="cs-lbl">Broadcast history</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+@endverbatim
 @endsection
+
+@push('scripts')
+@verbatim
+<script>
+// Reveal — threshold:0 so even huge sections (like the docs article) fade in
+// as soon as any pixel enters the viewport. rootMargin pulls the trigger up
+// 10% so things start animating before they fully arrive.
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:0, rootMargin:'0px 0px -10% 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Safety net: if any .reveal element is already in the viewport on first paint
+// (or JS disabled / observer skipped), force-show it after 600ms.
+setTimeout(()=>{
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+  });
+},600);
+
+// sidebar active state on scroll
+const sectionLinks = document.querySelectorAll('.ds-section a');
+const headings = Array.from(document.querySelectorAll('.docs-content [id]'));
+window.addEventListener('scroll',()=>{
+  let current = '';
+  headings.forEach(h=>{
+    if(window.scrollY >= h.offsetTop - 140) current = h.id;
+  });
+  sectionLinks.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+});
+</script>
+@endverbatim
+@endpush

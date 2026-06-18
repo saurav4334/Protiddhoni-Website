@@ -1,119 +1,807 @@
-@extends('layouts.frontend')
-
-@section('title', 'Blog & Insights — VoiceReach by Protiddhoni')
+@extends('layouts.site')
 
 @push('styles')
+@verbatim
 <style>
-  :root{
-    --navy:#003087;--blue:#0070BA;--sky:#009CDE;--gold:#FFC439;--cream:#FFF9E6;
-    --ink:#0a1230;--ink2:#3a4566;--mute:#6b7593;--line:#e5e9f2;--bg:#f7f9fc;--white:#fff;
-  }
-  .hero{padding:64px 0 32px;background:linear-gradient(180deg,#fff 0%,var(--bg) 100%)}
-  .search-wrap{margin:32px 0 12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:#fff;padding:8px;border-radius:999px;box-shadow:0 8px 24px rgba(0,48,135,.10);border:1px solid var(--line);max-width:820px}
-  .search-wrap input{flex:1;min-width:200px;border:0;outline:0;padding:14px 18px;font-size:15px;background:transparent}
-  .featured-card{display:grid;grid-template-columns:1.15fr 1fr;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 24px 64px rgba(0,48,135,.18);border:1px solid var(--line)}
-  .featured-img{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 60%);min-height:440px;padding:36px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
-  .post-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column}
-  .post-thumb{height:200px;background:var(--navy)}
-  .with-side{display:grid;grid-template-columns:1fr 320px;gap:36px}
-  .newsletter{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:18px;padding:28px}
+:root{
+  --navy:#003087;--blue:#0070BA;--sky:#009CDE;--gold:#FFC439;--cream:#FFF9E6;
+  --ink:#0a1230;--ink2:#3a4566;--mute:#6b7593;--line:#e5e9f2;--bg:#f7f9fc;--white:#fff;
+  --shadow-md:0 8px 24px rgba(0,48,135,.10);
+  --shadow-lg:0 24px 64px rgba(0,48,135,.18);
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.bn{font-family:'Hind Siliguri','Plus Jakarta Sans',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--navy)}
+.logo-mark{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(0,48,135,.30)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{font-size:14.5px;font-weight:600;color:var(--ink2);transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--navy)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s;border:none;text-decoration:none;font-family:inherit}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 8px 20px rgba(0,48,135,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,48,135,.4)}
+.btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 8px 20px rgba(255,196,57,.4)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,196,57,.55)}
+.btn-ghost{background:transparent;color:var(--navy);border:2px solid var(--line)}
+.btn-ghost:hover{border-color:var(--navy);background:#fff}
+.menu-tog{display:none;background:none;border:0;font-size:26px;color:var(--navy);cursor:pointer}
+
+/* hero */
+.hero{padding:64px 0 32px;background:
+  radial-gradient(900px 500px at 0% 0%,rgba(0,156,222,.10),transparent),
+  radial-gradient(700px 400px at 100% 0%,rgba(255,196,57,.10),transparent),
+  linear-gradient(180deg,#fff 0%,var(--bg) 100%)}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,112,186,.10);border:1px solid rgba(0,112,186,.25);padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;color:var(--navy);margin-bottom:18px}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 4px rgba(0,156,222,.20);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.hero h1{font-size:clamp(34px,5.4vw,58px);font-weight:800;line-height:1.06;letter-spacing:-.02em;color:var(--navy);max-width:900px}
+.hero h1 .grad{background:linear-gradient(135deg,var(--blue),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p.lede{font-size:18px;color:var(--ink2);margin:18px 0 26px;max-width:720px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:22px;color:var(--mute);font-size:14px;font-weight:600}
+.hero-meta span{display:inline-flex;align-items:center;gap:6px}
+
+/* search bar */
+.search-wrap{margin:32px 0 12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:#fff;padding:8px;border-radius:999px;box-shadow:var(--shadow-md);border:1px solid var(--line);max-width:820px}
+.search-wrap input{flex:1;min-width:200px;border:0;outline:0;padding:14px 18px;font-size:15px;font-family:inherit;color:var(--ink);background:transparent}
+.search-wrap select{border:0;background:#f1f4fb;padding:12px 16px;border-radius:999px;font-weight:600;font-size:14px;color:var(--ink);font-family:inherit;cursor:pointer;outline:0}
+
+/* category chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+.chip{padding:9px 18px;border-radius:999px;background:#fff;border:1.5px solid var(--line);font-size:13.5px;font-weight:600;color:var(--ink2);cursor:pointer;transition:.2s}
+.chip:hover{border-color:var(--blue);color:var(--blue)}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 6px 16px rgba(0,48,135,.25)}
+
+/* sections */
+section{padding:80px 0}
+.section-head{text-align:center;margin-bottom:48px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,196,57,.18);color:#a86b00;border:1px solid rgba(255,196,57,.4);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.section-head h2{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.12;letter-spacing:-.02em;color:var(--navy);max-width:820px;margin:0 auto}
+.section-head p{font-size:17px;color:var(--ink2);margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+
+/* featured */
+.featured{padding:24px 0 0}
+.featured-card{display:grid;grid-template-columns:1.15fr 1fr;background:#fff;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+.featured-img{position:relative;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 60%,var(--sky) 100%);min-height:440px;overflow:hidden;color:#fff;padding:36px;display:flex;flex-direction:column;justify-content:space-between}
+.featured-img::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(700px 360px at 100% 100%,rgba(255,196,57,.30),transparent),
+  radial-gradient(500px 360px at 0% 0%,rgba(0,156,222,.40),transparent)}
+.feat-svg{position:absolute;inset:0;opacity:.55}
+.feat-tag{position:relative;display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,196,57,.95);color:#1a1d2e;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;width:fit-content}
+.featured-img h3{position:relative;font-size:32px;font-weight:800;line-height:1.15;margin-top:auto;letter-spacing:-.01em}
+.featured-img .feat-author{position:relative;display:flex;align-items:center;gap:12px;margin-top:18px;font-size:14px;font-weight:600}
+.author-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#fff);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:14px}
+.featured-body{padding:46px;display:flex;flex-direction:column;justify-content:center}
+.featured-body .meta{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--mute);font-weight:600;margin-bottom:14px}
+.featured-body p{font-size:16.5px;color:var(--ink2);line-height:1.7;margin-bottom:24px}
+.featured-body .stats{display:flex;gap:32px;border-top:1px solid var(--line);padding-top:22px;margin-bottom:26px}
+.fb-stat .num{font-size:24px;font-weight:800;color:var(--navy);line-height:1}
+.fb-stat .lbl{font-size:12px;color:var(--mute);font-weight:600;margin-top:4px}
+
+/* topic grid */
+.topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.topic-card{background:#fff;border-radius:18px;padding:26px;border:1.5px solid var(--line);transition:.3s;cursor:pointer;position:relative;overflow:hidden}
+.topic-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--blue),var(--sky));transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.topic-card:hover::before{transform:scaleX(1)}
+.topic-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.topic-icon{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,rgba(0,112,186,.1),rgba(0,156,222,.18));color:var(--blue);display:grid;place-items:center;font-size:22px;margin-bottom:16px}
+.topic-card h4{font-size:16.5px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.topic-card p{font-size:13.5px;color:var(--ink2);margin-bottom:12px;line-height:1.55}
+.topic-card .topic-count{font-size:12.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em}
+
+/* posts grid */
+.posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.post-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line);transition:.3s;display:flex;flex-direction:column}
+.post-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.post-thumb{height:200px;position:relative;overflow:hidden}
+.post-thumb svg{width:100%;height:100%;display:block}
+.post-thumb .cat{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.96);color:var(--navy);padding:5px 12px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.post-body{padding:22px;flex:1;display:flex;flex-direction:column}
+.post-body .meta{display:flex;gap:12px;font-size:12px;color:var(--mute);font-weight:600;margin-bottom:10px;flex-wrap:wrap}
+.post-body h3{font-size:18px;font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:10px;letter-spacing:-.01em}
+.post-body p{font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:18px;flex:1}
+.post-body .author-row{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:14px;margin-top:auto}
+.author-row .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+.author-row .who{font-size:12.5px;font-weight:700;color:var(--ink)}
+.author-row .role{font-size:11.5px;color:var(--mute);font-weight:500}
+.read-arrow{margin-left:auto;color:var(--blue);font-size:18px;font-weight:800}
+
+/* sidebar layout */
+.with-side{display:grid;grid-template-columns:1fr 320px;gap:36px;align-items:start}
+.side-card{background:#fff;border-radius:18px;padding:26px;border:1px solid var(--line);box-shadow:var(--shadow-md);margin-bottom:22px}
+.side-card h4{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.side-card h4 .badge-bd{font-size:11px;background:var(--gold);color:var(--ink);padding:3px 8px;border-radius:6px;font-weight:700}
+.popular-list{display:flex;flex-direction:column;gap:14px}
+.pop-item{display:flex;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);cursor:pointer;transition:.2s}
+.pop-item:last-child{border-bottom:0;padding-bottom:0}
+.pop-item:hover .pop-title{color:var(--blue)}
+.pop-num{font-size:24px;font-weight:800;color:var(--gold);line-height:1;min-width:28px;-webkit-text-stroke:1px rgba(255,196,57,.6)}
+.pop-title{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.4;transition:.2s;margin-bottom:4px}
+.pop-meta{font-size:11.5px;color:var(--mute);font-weight:600}
+
+.newsletter{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:18px;padding:28px;border:0;position:relative;overflow:hidden;margin-bottom:22px}
+.newsletter::before{content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.30),transparent)}
+.newsletter h4{color:#fff;font-size:17px}
+.newsletter h4 .badge-bd{background:rgba(255,196,57,.95);color:var(--ink)}
+.newsletter p{font-size:13.5px;opacity:.92;margin-bottom:14px;position:relative}
+.news-form{display:flex;flex-direction:column;gap:8px;position:relative}
+.news-form input{padding:11px 14px;border-radius:9px;border:0;outline:0;font-family:inherit;font-size:13.5px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.news-form input::placeholder{color:rgba(255,255,255,.6)}
+.news-form button{padding:11px;background:var(--gold);color:var(--ink);border:0;border-radius:9px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.2s}
+.news-form button:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(255,196,57,.4)}
+.news-foot{font-size:11.5px;opacity:.78;margin-top:10px;position:relative}
+
+.tag-cloud{display:flex;flex-wrap:wrap;gap:8px}
+.tag{background:#f1f4fb;color:var(--navy);font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer;transition:.2s}
+.tag:hover{background:var(--navy);color:#fff}
+
+.author-spot{display:flex;gap:14px;align-items:center;padding:14px;border-radius:14px;background:#f7f9fc;margin-bottom:10px;cursor:pointer;transition:.2s}
+.author-spot:hover{background:#eaf1fb}
+.spot-av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex-shrink:0}
+.spot-name{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.spot-role{font-size:11.5px;color:var(--mute);font-weight:600;margin-bottom:4px}
+.spot-meta{font-size:11px;color:var(--blue);font-weight:600}
+
+/* podcast band */
+.podcast-band{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:#fff;border-radius:24px;padding:48px;display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;position:relative;overflow:hidden;margin-top:30px}
+.podcast-band::before{content:"";position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.20),transparent)}
+.pod-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,196,57,.95);color:var(--ink);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;width:fit-content}
+.podcast-band h3{font-size:32px;font-weight:800;line-height:1.15;margin-bottom:14px;letter-spacing:-.01em;position:relative}
+.podcast-band p{font-size:15.5px;opacity:.94;margin-bottom:22px;line-height:1.7;position:relative;max-width:560px}
+.pod-actions{display:flex;flex-wrap:wrap;gap:12px;position:relative}
+.pod-visual{position:relative;display:grid;place-items:center}
+.pod-disk{width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0%,#f1f4fb 30%,var(--ink) 60%,#000 100%);display:grid;place-items:center;box-shadow:0 30px 80px rgba(0,0,0,.4),inset 0 0 0 4px rgba(255,255,255,.15);animation:spin 8s linear infinite;position:relative}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.pod-disk::after{content:"";position:absolute;width:60px;height:60px;border-radius:50%;background:var(--gold);box-shadow:inset 0 0 0 6px var(--ink)}
+.pod-eq{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:5px;align-items:flex-end;height:42px}
+.pod-eq i{display:block;width:5px;background:var(--gold);border-radius:3px;animation:eqAnim 1s ease-in-out infinite}
+.pod-eq i:nth-child(1){animation-delay:0s;height:30%}
+.pod-eq i:nth-child(2){animation-delay:.15s;height:60%}
+.pod-eq i:nth-child(3){animation-delay:.3s;height:90%}
+.pod-eq i:nth-child(4){animation-delay:.45s;height:50%}
+.pod-eq i:nth-child(5){animation-delay:.6s;height:75%}
+@keyframes eqAnim{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+/* CTA */
+.cta{background:radial-gradient(800px 400px at 100% 0%,rgba(255,196,57,.18),transparent),linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:#fff;padding:80px 0;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;top:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,156,222,.30),transparent)}
+.cta-inner{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;position:relative}
+.cta h2{font-size:42px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+.cta h2 .gold{color:var(--gold)}
+.cta p{font-size:17px;opacity:.92;max-width:560px;margin-bottom:26px}
+.cta-actions{display:flex;flex-wrap:wrap;gap:12px}
+.cta-stat-card{background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cs-num{font-size:30px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:6px}
+.cs-lbl{font-size:12px;opacity:.8;font-weight:600;line-height:1.4}
+
+/* footer */
+.footer{background:#06112d;color:#a8b1cf;padding:64px 0 30px}
+.footer-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:36px;margin-bottom:40px}
+.footer h5{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase}
+.footer .logo{color:#fff;margin-bottom:16px}
+.footer p{font-size:13.5px;line-height:1.7;color:#a8b1cf}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:10px}
+.footer ul a{font-size:13.5px;color:#a8b1cf;transition:.2s}
+.footer ul a:hover{color:var(--gold)}
+.footer .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.footer .badges span{background:rgba(255,255,255,.08);padding:5px 11px;border-radius:7px;font-size:11.5px;font-weight:600;color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px}
+.footer-bottom .links{display:flex;gap:22px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:980px){
+  .nav-links{display:none}
+  .menu-tog{display:block}
+  .featured-card{grid-template-columns:1fr}
+  .featured-img{min-height:280px}
+  .featured-body{padding:30px}
+  .topic-grid{grid-template-columns:repeat(2,1fr)}
+  .posts-grid{grid-template-columns:1fr}
+  .with-side{grid-template-columns:1fr}
+  .podcast-band{grid-template-columns:1fr;text-align:center;padding:36px 24px}
+  .pod-actions{justify-content:center}
+  .cta-inner{grid-template-columns:1fr}
+}
 </style>
+@endverbatim
 @endpush
 
 @section('content')
-<!-- HERO -->
-<section class="hero pt-32">
-  <div class="max-w-7xl mx-auto px-6">
-    <span class="chip mb-4">{{ \App\Models\PageBlock::value('blog.hero.pill', 'Updated weekly · 4 carriers tracked live') }}</span>
-    <h1 class="text-5xl font-extrabold text-navy-900 leading-tight">
-      {!! \App\Models\PageBlock::value('blog.hero.headline', 'Voice marketing playbooks <span class="text-gradient">for Bangladesh</span> — written by people who run them.') !!}
-    </h1>
-    <p class="mt-6 text-lg text-ink-500 max-w-3xl leading-relaxed">
-      {!! \App\Models\PageBlock::value('blog.hero.subhead', 'Carrier deliverability data, OTP conversion benchmarks, regulatory updates from BTRC, and Banglish UX patterns.') !!}
-    </p>
+@verbatim
+<!-- NAV -->
 
-    <div class="search-wrap mt-10">
-      <input type="text" placeholder="Search 142 articles..." />
-      <button class="btn-primary !rounded-full">Search</button>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-pill"><span class="dot"></span>Updated weekly · 4 carriers tracked live</span>
+    <h1>Voice marketing playbooks <span class="grad">for Bangladesh</span> — written by people who run them.</h1>
+    <p class="lede">Carrier deliverability data, OTP conversion benchmarks, regulatory updates from BTRC, Banglish UX patterns, and the messy on-the-ground learnings from 280+ teams using VoiceReach. Not theory — practice.</p>
+    <div class="hero-meta">
+      <span>📚 142 articles</span>
+      <span>👥 24 contributors</span>
+      <span>🇧🇩 Bangla + English</span>
+      <span>⏱️ Avg read 7 min</span>
+    </div>
+
+    <div class="search-wrap">
+      <input type="text" placeholder="Search 142 articles — 'OTP conversion', 'BTRC compliance', 'NPS'…" />
+      <select>
+        <option>All categories</option>
+        <option>Voice OTP</option>
+        <option>Surveys</option>
+        <option>Broadcast</option>
+        <option>Compliance</option>
+        <option>Engineering</option>
+        <option>BD market</option>
+      </select>
+      <button class="btn btn-primary">Search</button>
+    </div>
+
+    <div class="chips">
+      <span class="chip active">All</span>
+      <span class="chip">Voice OTP</span>
+      <span class="chip">Surveys</span>
+      <span class="chip">Broadcast</span>
+      <span class="chip">Carrier ops</span>
+      <span class="chip">BTRC compliance</span>
+      <span class="chip">Engineering</span>
+      <span class="chip">BD market</span>
+      <span class="chip">Customer stories</span>
     </div>
   </div>
 </section>
 
 <!-- FEATURED -->
-<section class="py-12">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="featured-card reveal">
+<section class="featured reveal">
+  <div class="container">
+    <div class="featured-card">
       <div class="featured-img">
-        <span class="bg-paypal-gold text-ink-900 px-3 py-1 rounded-full text-[10px] font-bold self-start uppercase tracking-widest">⭐ Featured</span>
-        <h3 class="text-3xl font-extrabold mt-auto">How Brac Bank cut OTP failure from 11% to 0.4% in six weeks.</h3>
-        <div class="flex items-center gap-3 mt-6">
-          <div class="w-10 h-10 rounded-full bg-paypal-gold text-navy-900 flex items-center justify-center font-bold">RA</div>
-          <div class="text-sm">Rashedul Amin · CTO</div>
+        <svg class="feat-svg" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFC439" stop-opacity=".4"/>
+              <stop offset="100%" stop-color="#009CDE" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- waveform -->
+          <g stroke="rgba(255,255,255,.4)" stroke-width="3" fill="none" stroke-linecap="round">
+            <path d="M40,250 Q100,100 160,250 T280,250 T400,250 T520,250 T640,250"/>
+            <path d="M40,260 Q100,180 160,260 T280,260 T400,260 T520,260 T640,260" opacity=".6"/>
+            <path d="M40,240 Q100,160 160,240 T280,240 T400,240 T520,240 T640,240" opacity=".4"/>
+          </g>
+          <circle cx="500" cy="120" r="80" fill="url(#bg1)"/>
+          <circle cx="100" cy="380" r="60" fill="rgba(255,255,255,.10)"/>
+          <!-- BD outline-ish dots -->
+          <g fill="rgba(255,196,57,.85)">
+            <circle cx="180" cy="110" r="5"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="240" cy="170" r="5"><animate attributeName="r" values="5;8;5" dur="2.4s" repeatCount="indefinite"/></circle>
+            <circle cx="320" cy="200" r="5"><animate attributeName="r" values="5;8;5" dur="2.2s" repeatCount="indefinite"/></circle>
+            <circle cx="400" cy="170" r="5"><animate attributeName="r" values="5;8;5" dur="2.6s" repeatCount="indefinite"/></circle>
+            <circle cx="280" cy="380" r="5"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="360" cy="320" r="5"><animate attributeName="r" values="5;8;5" dur="2.3s" repeatCount="indefinite"/></circle>
+          </g>
+        </svg>
+        <span class="feat-tag">⭐ Featured · 12 min read</span>
+        <h3>How Brac Bank cut OTP failure from 11% to 0.4% in six weeks — the carrier-by-carrier playbook</h3>
+        <div class="feat-author">
+          <div class="author-avatar">RA</div>
+          <div>
+            <div>Rashedul Amin · CTO, Protiddhoni</div>
+            <div style="opacity:.78;font-weight:500;font-size:13px">Apr 18, 2026 · Engineering</div>
+          </div>
         </div>
       </div>
-      <div class="p-10 flex flex-col justify-center">
-        <p class="text-ink-500 mb-8 leading-relaxed">Brac Bank\'s mobile app logins were failing 1 in every 9 OTP attempts. SMS routes were clogged, customers were rage-quitting. Here is how we fixed it.</p>
-        <div class="grid grid-cols-3 gap-4 border-t border-surface-200 pt-6 mb-8">
-          <div><div class="text-xl font-bold text-navy-900">99.6%</div><div class="text-[10px] text-ink-300 uppercase">Delivery</div></div>
-          <div><div class="text-xl font-bold text-navy-900">8.4s</div><div class="text-[10px] text-ink-300 uppercase">Avg time</div></div>
+      <div class="featured-body">
+        <div class="meta">
+          <span>📂 Voice OTP</span>
+          <span>📅 Apr 18, 2026</span>
+          <span>👁 8.2k reads</span>
+          <span>💬 47 comments</span>
         </div>
-        <a class="btn-primary self-start" href="#">Read the playbook →</a>
+        <p>Brac Bank's mobile app logins were failing 1 in every 9 OTP attempts. SMS routes were clogged, customers were rage-quitting, the support queue was on fire. We rebuilt their OTP layer from scratch using Voice as primary on Grameenphone and Robi, with an SMS fallback chain. Six weeks later: 99.6% delivery, sub-9-second average, and a happy CISO. Here's exactly how we did it — fallback logic, carrier negotiation tactics, retry windows, and the three things we got wrong before getting it right.</p>
+        <div class="stats">
+          <div class="fb-stat"><div class="num">99.6%</div><div class="lbl">Delivery rate</div></div>
+          <div class="fb-stat"><div class="num">8.4s</div><div class="lbl">Avg time</div></div>
+          <div class="fb-stat"><div class="num">৳3.8L</div><div class="lbl">Saved/month</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn btn-primary" href="#">Read the playbook →</a>
+          <a class="btn btn-ghost" href="#">Listen (audio · 14 min)</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- LATEST -->
-<section class="py-24">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="with-side">
-      <div class="grid md:grid-cols-2 gap-8">
-        @php
-          $posts = [
-            ['Voice OTP', 'Why your OTP retry window should be 47 seconds', 'Saif Chowdhury'],
-            ['Surveys', 'Bangla NPS surveys outperform English by 38%', 'Nabila Jahan'],
-            ['Compliance', 'BTRC\'s new voice broadcast guidelines (Mar 2026)', 'Farhana Akter'],
-            ['Engineering', 'Webhooks that survive: idempotency and retries', 'Arif Hassan']
-          ];
-        @endphp
-        @foreach($posts as $post)
-        <article class="post-card reveal">
-          <div class="post-thumb"></div>
-          <div class="p-6">
-            <span class="text-[10px] font-bold text-paypal-blue uppercase tracking-widest">{{ $post[0] }}</span>
-            <h3 class="text-lg font-extrabold text-navy-900 mt-2 mb-4 leading-snug">{{ $post[1] }}</h3>
-            <div class="flex items-center gap-2 mt-auto border-t border-surface-100 pt-4">
-              <div class="w-8 h-8 rounded-full bg-paypal-blue text-white flex items-center justify-center text-xs font-bold">{{ substr($post[2], 0, 1) }}</div>
-              <div class="text-xs font-bold text-ink-700">{{ $post[2] }}</div>
-            </div>
-          </div>
-        </article>
-        @endforeach
+<!-- TOPICS -->
+<section style="padding:50px 0 30px">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">Browse by topic</span>
+      <h2>Pick the corner you want to learn</h2>
+      <p>From low-level carrier routing to high-level go-to-market — every chapter of running voice in Bangladesh has a corner here.</p>
+    </div>
+    <div class="topic-grid">
+      <div class="topic-card reveal">
+        <div class="topic-icon">📞</div>
+        <h4>Voice OTP</h4>
+        <p>Conversion benchmarks, fallback chains, retry math, fraud signals, multilingual TTS quality.</p>
+        <div class="topic-count">36 articles</div>
       </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">📊</div>
+        <h4>Surveys & IVR</h4>
+        <p>NPS in Bangla, branching logic, sample design for rural BD, dropoff triage, dashboarding.</p>
+        <div class="topic-count">22 articles</div>
+      </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">📢</div>
+        <h4>Broadcast</h4>
+        <p>Throttle planning, carrier windows, opt-out compliance, A/B testing scripts, DNC hygiene.</p>
+        <div class="topic-count">18 articles</div>
+      </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">🛡️</div>
+        <h4>BTRC compliance</h4>
+        <p>Regulatory updates, masking guidelines, retention rules, audit-ready logging, KYC workflows.</p>
+        <div class="topic-count">14 articles</div>
+      </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">⚙️</div>
+        <h4>Engineering</h4>
+        <p>API patterns, webhook reliability, queue depth, latency budgets, reference architectures.</p>
+        <div class="topic-count">21 articles</div>
+      </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">🇧🇩</div>
+        <h4>BD market data</h4>
+        <p>Carrier share by district, smartphone penetration, voice usage trends, MFS adoption.</p>
+        <div class="topic-count">12 articles</div>
+      </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">🎯</div>
+        <h4>Conversion & growth</h4>
+        <p>Funnels, lifecycle voice, win-back scripts, channel mix, attribution that actually works.</p>
+        <div class="topic-count">11 articles</div>
+      </div>
+      <div class="topic-card reveal">
+        <div class="topic-icon">💬</div>
+        <h4>Customer stories</h4>
+        <p>Brac Bank, Grameen Phone, bKash, Pathao, Square Hospitals — what worked, what didn't.</p>
+        <div class="topic-count">8 articles</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <aside class="space-y-8">
-        <div class="newsletter">
-          <h4 class="text-xl font-extrabold mb-4">Daak diye rekho</h4>
-          <p class="text-sm opacity-90 mb-6">One email every Tuesday. BD voice market data and regulation updates.</p>
-          <form class="space-y-3">
-            <input type="email" placeholder="your@email.com" class="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder:text-white/60 outline-none">
-            <button class="w-full btn-gold !py-3">Subscribe</button>
-          </form>
+<!-- LATEST + SIDEBAR -->
+<section style="padding:60px 0">
+  <div class="container">
+    <div class="section-head reveal" style="text-align:left;margin-bottom:36px">
+      <span class="section-tag">Latest articles</span>
+      <h2 style="margin:0">Fresh from the team this month</h2>
+    </div>
+    <div class="with-side">
+      <div>
+        <div class="posts-grid">
+          <!-- POST 1 -->
+          <article class="post-card reveal">
+            <div class="post-thumb" style="background:linear-gradient(135deg,#003087,#0070BA)">
+              <span class="cat">Voice OTP</span>
+              <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="200" fill="url(#g1)"/>
+                <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#003087"/><stop offset="100%" stop-color="#0070BA"/></linearGradient></defs>
+                <g stroke="rgba(255,196,57,.85)" stroke-width="2.5" fill="none">
+                  <path d="M30,100 Q70,40 110,100 T190,100 T270,100 T350,100 T430,100"/>
+                </g>
+                <g fill="rgba(255,255,255,.95)">
+                  <text x="200" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="16" font-weight="700">8 4 2 9 1 7</text>
+                </g>
+              </svg>
+            </div>
+            <div class="post-body">
+              <div class="meta"><span>Apr 22, 2026</span><span>· 8 min read</span></div>
+              <h3>Why your OTP retry window should be 47 seconds (not 60) — data from 4.2M calls</h3>
+              <p>We analysed 4.2 million Voice OTP attempts across all four BD carriers and found something that surprised us. The default 60-second retry kills 12% more sessions than a tighter 47s window. Here's the math.</p>
+              <div class="author-row">
+                <div class="av">SC</div>
+                <div>
+                  <div class="who">Saif Chowdhury</div>
+                  <div class="role">Voice AI Lead</div>
+                </div>
+                <span class="read-arrow">→</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 2 -->
+          <article class="post-card reveal">
+            <div class="post-thumb" style="background:linear-gradient(135deg,#009CDE,#0070BA)">
+              <span class="cat">Surveys</span>
+              <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="200" fill="url(#g2)"/>
+                <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#009CDE"/><stop offset="100%" stop-color="#003087"/></linearGradient></defs>
+                <g fill="rgba(255,196,57,.95)">
+                  <polygon points="80,140 100,90 120,140"/>
+                  <polygon points="140,150 160,80 180,150"/>
+                  <polygon points="200,140 220,70 240,140"/>
+                  <polygon points="260,150 280,100 300,150"/>
+                  <polygon points="320,135 340,115 360,135"/>
+                </g>
+                <text x="200" y="40" text-anchor="middle" fill="#fff" font-family="Plus Jakarta Sans" font-size="13" font-weight="700">NPS BY DIVISION</text>
+                <line x1="40" y1="160" x2="380" y2="160" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="post-body">
+              <div class="meta"><span>Apr 19, 2026</span><span>· 11 min read</span></div>
+              <h3>Bangla NPS surveys outperform English by 38% — but only if you ask question 1 right</h3>
+              <p>Running NPS in two languages on 50,000 calls taught us something obvious in hindsight: the wording of the very first question controls everything. Sample wordings, dropoff numbers, and what to copy.</p>
+              <div class="author-row">
+                <div class="av">NJ</div>
+                <div>
+                  <div class="who">Nabila Jahan</div>
+                  <div class="role">Customer Success</div>
+                </div>
+                <span class="read-arrow">→</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 3 -->
+          <article class="post-card reveal">
+            <div class="post-thumb" style="background:linear-gradient(135deg,#FFC439,#FF8E2C)">
+              <span class="cat">BTRC compliance</span>
+              <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="200" fill="url(#g3)"/>
+                <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFC439"/><stop offset="100%" stop-color="#FF8E2C"/></linearGradient></defs>
+                <g fill="rgba(0,48,135,.95)">
+                  <path d="M200,40 L240,90 L240,140 Q200,165 160,140 L160,90 Z"/>
+                  <text x="200" y="115" text-anchor="middle" fill="#FFC439" font-family="Plus Jakarta Sans" font-size="22" font-weight="800">✓</text>
+                </g>
+                <text x="200" y="180" text-anchor="middle" fill="#003087" font-family="Plus Jakarta Sans" font-size="13" font-weight="700">BTRC 2026 GUIDELINES</text>
+              </svg>
+            </div>
+            <div class="post-body">
+              <div class="meta"><span>Apr 14, 2026</span><span>· 6 min read</span></div>
+              <h3>BTRC's new voice broadcast guidelines (Mar 2026) — what changed and how to stay legal</h3>
+              <p>BTRC dropped revised guidelines for promotional voice traffic. Window changes, opt-out requirements, audit retention — we read it so you don't have to. Plain-English breakdown with action items.</p>
+              <div class="author-row">
+                <div class="av">FA</div>
+                <div>
+                  <div class="who">Farhana Akter</div>
+                  <div class="role">VP Sales</div>
+                </div>
+                <span class="read-arrow">→</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 4 -->
+          <article class="post-card reveal">
+            <div class="post-thumb" style="background:linear-gradient(135deg,#003087,#1a3a8c)">
+              <span class="cat">Engineering</span>
+              <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="200" fill="#0a1230"/>
+                <g font-family="JetBrains Mono" font-size="11" fill="#5fd4ff">
+                  <text x="20" y="40">$ curl -X POST \</text>
+                  <text x="20" y="60">  https://api.voicereach.bd/v1/calls \</text>
+                  <text x="20" y="80">  -H "Auth: Bearer $TOKEN" \</text>
+                  <text x="20" y="100">  -d '{"to":"+8801711000000",</text>
+                  <text x="20" y="120">       "carrier":"auto"}'</text>
+                  <text x="20" y="150" fill="#FFC439">→ {"status":"queued","id":"vc_..."}</text>
+                </g>
+                <rect x="0" y="0" width="400" height="200" fill="rgba(0,48,135,.4)"/>
+              </svg>
+            </div>
+            <div class="post-body">
+              <div class="meta"><span>Apr 10, 2026</span><span>· 14 min read</span></div>
+              <h3>Webhooks that survive: idempotency, retries, and the BD reality of flaky internet</h3>
+              <p>Your webhook endpoint will get called twice. Sometimes thrice. Sometimes 18 hours late on a Friday night. Here's the architecture pattern we use internally to make it not matter.</p>
+              <div class="author-row">
+                <div class="av">AH</div>
+                <div>
+                  <div class="who">Arif Hassan</div>
+                  <div class="role">VP Engineering</div>
+                </div>
+                <span class="read-arrow">→</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 5 -->
+          <article class="post-card reveal">
+            <div class="post-thumb" style="background:linear-gradient(135deg,#0070BA,#009CDE)">
+              <span class="cat">BD market</span>
+              <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="200" fill="url(#g5)"/>
+                <defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0070BA"/><stop offset="100%" stop-color="#009CDE"/></linearGradient></defs>
+                <g fill="rgba(255,255,255,.96)">
+                  <rect x="60" y="120" width="40" height="50" rx="3"/>
+                  <rect x="120" y="80" width="40" height="90" rx="3"/>
+                  <rect x="180" y="60" width="40" height="110" rx="3"/>
+                  <rect x="240" y="100" width="40" height="70" rx="3"/>
+                  <rect x="300" y="90" width="40" height="80" rx="3"/>
+                </g>
+                <g fill="rgba(255,196,57,.95)" font-family="Plus Jakarta Sans" font-size="10" font-weight="700" text-anchor="middle">
+                  <text x="80" y="190">GP</text>
+                  <text x="140" y="190">Robi</text>
+                  <text x="200" y="190">BL</text>
+                  <text x="260" y="190">Airtel</text>
+                  <text x="320" y="190">TT</text>
+                </g>
+                <text x="200" y="35" text-anchor="middle" fill="#fff" font-family="Plus Jakarta Sans" font-size="13" font-weight="700">CARRIER SHARE 2026</text>
+              </svg>
+            </div>
+            <div class="post-body">
+              <div class="meta"><span>Apr 7, 2026</span><span>· 9 min read</span></div>
+              <h3>Bangladesh telecom market 2026: carrier shares, voice ARPU, and what it means for your campaigns</h3>
+              <p>Fresh data from BTRC and our own routing logs. Grameenphone still dominates urban, Robi crushes Sylhet division, Banglalink leads on price-sensitive segments. Implications for your channel mix.</p>
+              <div class="author-row">
+                <div class="av">MH</div>
+                <div>
+                  <div class="who">Mahmudul Hasan</div>
+                  <div class="role">Carrier Ops</div>
+                </div>
+                <span class="read-arrow">→</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 6 -->
+          <article class="post-card reveal">
+            <div class="post-thumb" style="background:linear-gradient(135deg,#06112d,#003087)">
+              <span class="cat">Customer story</span>
+              <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="400" height="200" fill="#06112d"/>
+                <g fill="rgba(255,196,57,.95)">
+                  <text x="40" y="60" font-family="Plus Jakarta Sans" font-size="42" font-weight="800">"</text>
+                </g>
+                <text x="80" y="100" fill="#fff" font-family="Plus Jakarta Sans" font-size="14" font-weight="600">VoiceReach replaced</text>
+                <text x="80" y="120" fill="#fff" font-family="Plus Jakarta Sans" font-size="14" font-weight="600">our entire OTP stack</text>
+                <text x="80" y="140" fill="#fff" font-family="Plus Jakarta Sans" font-size="14" font-weight="600">in three weeks.</text>
+                <text x="80" y="180" fill="rgba(255,196,57,.95)" font-family="Plus Jakarta Sans" font-size="11" font-weight="700">— PATHAO</text>
+              </svg>
+            </div>
+            <div class="post-body">
+              <div class="meta"><span>Apr 3, 2026</span><span>· 7 min read</span></div>
+              <h3>How Pathao moved 14M monthly OTPs to VoiceReach in three weeks — without one missed login</h3>
+              <p>A migration story with all the gory details. Dual-running both providers, the canary plan, the panic on day 4, and what the final cutover looked like.</p>
+              <div class="author-row">
+                <div class="av">TH</div>
+                <div>
+                  <div class="who">Tareq Hossain</div>
+                  <div class="role">CEO, Protiddhoni</div>
+                </div>
+                <span class="read-arrow">→</span>
+              </div>
+            </div>
+          </article>
         </div>
 
-        <div class="bg-white p-6 rounded-2xl border border-surface-200">
-          <h4 class="text-sm font-bold mb-4 uppercase tracking-widest text-ink-300">🔥 Most read</h4>
-          <div class="space-y-4">
-            @foreach(['Study: 47s OTP window', 'Brac Bank case study', 'BTRC 2026 guidelines'] as $idx => $pop)
-            <div class="flex gap-4">
-              <span class="text-xl font-bold text-paypal-gold opacity-50">0{{ $idx+1 }}</span>
-              <div class="text-sm font-bold text-navy-900 leading-snug">{{ $pop }}</div>
+        <!-- Pagination -->
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:40px">
+          <button class="btn btn-ghost" style="padding:10px 16px">← Newer</button>
+          <button class="btn btn-primary" style="padding:10px 16px;min-width:42px">1</button>
+          <button class="btn btn-ghost" style="padding:10px 16px;min-width:42px">2</button>
+          <button class="btn btn-ghost" style="padding:10px 16px;min-width:42px">3</button>
+          <button class="btn btn-ghost" style="padding:10px 16px;min-width:42px">…</button>
+          <button class="btn btn-ghost" style="padding:10px 16px;min-width:42px">12</button>
+          <button class="btn btn-ghost" style="padding:10px 16px">Older →</button>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="newsletter">
+          <h4>Daak diye rekho <span class="badge-bd">BANGLA</span></h4>
+          <p>One email every Tuesday. BD voice market data, regulation updates, and the article we wished we'd published the week before.</p>
+          <form class="news-form" data-cms-form="newsletter" novalidate>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
+            <input type="email" name="email" placeholder="your@email.com" required>
+            <input type="hidden" name="source" value="blog-sidebar" />
+            <button type="submit">Subscribe (free)</button>
+          </form>
+          <div class="news-foot">3,400+ subscribers · No spam, ever</div>
+        </div>
+
+        <div class="side-card">
+          <h4>🔥 Most read this month</h4>
+          <div class="popular-list">
+            <div class="pop-item">
+              <span class="pop-num">01</span>
+              <div>
+                <div class="pop-title">The 47-second OTP retry window study (4.2M calls)</div>
+                <div class="pop-meta">8.2k reads · Voice OTP</div>
+              </div>
             </div>
-            @endforeach
+            <div class="pop-item">
+              <span class="pop-num">02</span>
+              <div>
+                <div class="pop-title">Brac Bank cuts OTP failure 11% → 0.4%</div>
+                <div class="pop-meta">6.7k reads · Engineering</div>
+              </div>
+            </div>
+            <div class="pop-item">
+              <span class="pop-num">03</span>
+              <div>
+                <div class="pop-title">BTRC Mar 2026 broadcast guidelines decoded</div>
+                <div class="pop-meta">5.4k reads · Compliance</div>
+              </div>
+            </div>
+            <div class="pop-item">
+              <span class="pop-num">04</span>
+              <div>
+                <div class="pop-title">Bangla NPS beats English by 38%</div>
+                <div class="pop-meta">4.9k reads · Surveys</div>
+              </div>
+            </div>
+            <div class="pop-item">
+              <span class="pop-num">05</span>
+              <div>
+                <div class="pop-title">Pathao's 3-week OTP migration story</div>
+                <div class="pop-meta">4.2k reads · Customer story</div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div class="side-card">
+          <h4>✍️ Top contributors</h4>
+          <div class="author-spot">
+            <div class="spot-av">RA</div>
+            <div>
+              <div class="spot-name">Rashedul Amin</div>
+              <div class="spot-role">CTO · 22 articles</div>
+              <div class="spot-meta">↗ Engineering, OTP</div>
+            </div>
+          </div>
+          <div class="author-spot">
+            <div class="spot-av">FA</div>
+            <div>
+              <div class="spot-name">Farhana Akter</div>
+              <div class="spot-role">VP Sales · 18 articles</div>
+              <div class="spot-meta">↗ Compliance, BD market</div>
+            </div>
+          </div>
+          <div class="author-spot">
+            <div class="spot-av">SC</div>
+            <div>
+              <div class="spot-name">Saif Chowdhury</div>
+              <div class="spot-role">Voice AI · 14 articles</div>
+              <div class="spot-meta">↗ TTS, OTP, surveys</div>
+            </div>
+          </div>
+          <div class="author-spot">
+            <div class="spot-av">NJ</div>
+            <div>
+              <div class="spot-name">Nabila Jahan</div>
+              <div class="spot-role">Cust. Success · 12 articles</div>
+              <div class="spot-meta">↗ Surveys, stories</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h4>🏷 Popular tags</h4>
+          <div class="tag-cloud">
+            <span class="tag">#voice-otp</span>
+            <span class="tag">#grameenphone</span>
+            <span class="tag">#robi</span>
+            <span class="tag">#banglalink</span>
+            <span class="tag">#airtel</span>
+            <span class="tag">#btrc</span>
+            <span class="tag">#nps</span>
+            <span class="tag">#fallback</span>
+            <span class="tag">#bangla-tts</span>
+            <span class="tag">#mfs</span>
+            <span class="tag">#fintech</span>
+            <span class="tag">#ecommerce</span>
+            <span class="tag">#api</span>
+            <span class="tag">#webhooks</span>
+            <span class="tag">#latency</span>
+          </div>
+        </div>
+
+        <div class="side-card" style="background:linear-gradient(135deg,#FFF9E6,#fff);border-color:rgba(255,196,57,.4)">
+          <h4 style="color:#a86b00">🎁 Free resources</h4>
+          <ul style="list-style:none;font-size:13.5px">
+            <li style="margin-bottom:10px">📥 <a href="#" style="color:var(--navy);font-weight:600">BD Voice Market Report 2026 (PDF)</a></li>
+            <li style="margin-bottom:10px">📥 <a href="#" style="color:var(--navy);font-weight:600">OTP cost calculator (XLSX)</a></li>
+            <li style="margin-bottom:10px">📥 <a href="#" style="color:var(--navy);font-weight:600">Bangla NPS question bank</a></li>
+            <li>📥 <a href="#" style="color:var(--navy);font-weight:600">BTRC compliance checklist</a></li>
+          </ul>
         </div>
       </aside>
     </div>
   </div>
 </section>
+
+<!-- PODCAST BAND -->
+<section style="padding:30px 0 80px">
+  <div class="container">
+    <div class="podcast-band reveal">
+      <div>
+        <span class="pod-tag">🎙 New podcast</span>
+        <h3>Voice in Bangla — the podcast for voice marketers in BD</h3>
+        <p>Every other week, our team interviews founders, CTOs, and operators running voice campaigns in Bangladesh. Real numbers, real fails, real what-we-wish-we'd-known. Audio-only — grab a cup of tea.</p>
+        <div class="pod-actions">
+          <a class="btn btn-gold" href="#">▶ Listen latest episode</a>
+          <a class="btn" style="background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(8px)" href="#">Spotify</a>
+          <a class="btn" style="background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(8px)" href="#">Apple Podcasts</a>
+        </div>
+      </div>
+      <div class="pod-visual">
+        <div class="pod-disk"></div>
+        <div class="pod-eq"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="reveal">
+        <h2>Reading is great. <span class="gold">Building is better.</span></h2>
+        <p>Spin up a free VoiceReach account and run your first 100 calls today — no credit card, full Bangla support, and a real engineer on Slack if you get stuck.</p>
+        <div class="cta-actions">
+          <a class="btn btn-gold" href="/contact">Start free — 100 calls</a>
+          <a class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.25)" href="/api-docs">Read the docs →</a>
+        </div>
+      </div>
+      <div class="cta-stat-card reveal">
+        <div><div class="cs-num">142</div><div class="cs-lbl">Articles published</div></div>
+        <div><div class="cs-num">3,400+</div><div class="cs-lbl">Newsletter readers</div></div>
+        <div><div class="cs-num">24</div><div class="cs-lbl">Expert contributors</div></div>
+        <div><div class="cs-num">2x/wk</div><div class="cs-lbl">New posts</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+
+
+
+<!-- ========== CMS integration ========== -->
+@endverbatim
 @endsection
+
+@push('scripts')
+@verbatim
+<script>
+// reveal
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:0,rootMargin:"0px 0px -10% 0px"});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// chip toggle (also triggers CMS re-fetch when a category is picked)
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    if (window.CMS && typeof window.refreshPosts === 'function') {
+      window.refreshPosts(c.textContent.trim());
+    }
+  });
+});
+</script>
+@endverbatim
+@endpush

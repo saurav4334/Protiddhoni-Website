@@ -43,6 +43,8 @@ class DatabaseSeeder extends Seeder
 
         // ---------- 3. Page blocks — comprehensive site-wide content ----------
         $this->call(PageBlocksSeeder::class);
+        $this->call(PageSeoSeeder::class);
+        $this->call(PricingPlanSeeder::class);
 
         // ---------- 4. Settings ----------
         Setting::set('site.name',          'Protiddhoni',                   'string', 'general');

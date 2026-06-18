@@ -1,181 +1,839 @@
-@extends('layouts.frontend')
+@verbatim
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How to Manage Your Content — Protiddhoni CMS Guide</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { theme:{ extend:{
+    fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], mono:['JetBrains Mono','monospace'] },
+    colors: { paypal:{navy:'#003087',blue:'#0070BA',sky:'#009CDE',gold:'#FFC439',cream:'#FFF9E6'}, ink:{900:'#0a1f44',700:'#2c2e2f',500:'#687173',300:'#c3cad9'}, surface:{50:'#f7f9fc',100:'#eef3f9',200:'#e1e8f0'}}
+  }}}
+</script>
+<style>
+  body { font-family:'Plus Jakarta Sans', sans-serif; background:#f7f9fc; color:#2c2e2f; }
+  .mesh-blue { background: linear-gradient(135deg,#003087 0%,#0070BA 55%,#009CDE 100%); }
+  .card { background:#fff; border:1px solid #e1e8f0; border-radius:20px; }
+  .chip { display:inline-flex; gap:.35rem; padding:.25rem .8rem; border-radius:999px; font-size:.7rem; font-weight:700; }
+  .chip-info { background:#eef3f9; color:#003087; }
+  .chip-sky { background:#E0F4FB; color:#0070BA; }
+  .chip-gold { background:#FFF9E6; color:#8b6b00; }
+  .chip-success { background:#dcfce7; color:#15803d; }
+  .ring-gold { box-shadow:0 0 0 4px #FFF9E6,0 0 0 5px #FFC439; }
+  .text-gradient { background: linear-gradient(135deg,#003087,#0070BA 50%,#009CDE); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .step-num { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; font-size:1.2rem; flex-shrink:0; }
+  .mock { background:#fff; border:1px solid #e1e8f0; border-radius:14px; box-shadow:0 30px 60px -30px rgba(0,48,135,.25); }
+  .mock-bar { background:#0a1f44; color:#fff; padding:.55rem .9rem; font-size:.7rem; font-weight:600; border-radius:14px 14px 0 0; display:flex; gap:.5rem; align-items:center; }
+  .mock-dot { width:10px; height:10px; border-radius:50%; }
+  .annot { position:absolute; background:#FFC439; color:#0a1f44; font-size:.7rem; font-weight:800; padding:.2rem .55rem; border-radius:999px; box-shadow:0 6px 14px -4px rgba(255,196,57,.6); z-index:5; }
+  .arrow-right::after { content:'→'; margin-left:.4rem; transition:.2s; }
+  .arrow-right:hover::after { margin-left:.7rem; }
+  .pill { padding:.45rem .9rem; border-radius:999px; font-size:.85rem; font-weight:700; display:inline-flex; gap:.4rem; align-items:center; }
+  .toc-link { display:flex; gap:.6rem; padding:.5rem .8rem; border-radius:10px; font-size:.85rem; font-weight:600; color:#687173; }
+  .toc-link:hover { background:#eef3f9; color:#003087; }
+  .toc-link.active { background:#FFF9E6; color:#8b6b00; }
+  .tip { background:linear-gradient(135deg,#FFF9E6,#fff); border-left:4px solid #FFC439; padding:1rem 1.2rem; border-radius:0 12px 12px 0; }
+  .warn { background:linear-gradient(135deg,#fef2f2,#fff); border-left:4px solid #ef4444; padding:1rem 1.2rem; border-radius:0 12px 12px 0; }
+  .info-box { background:linear-gradient(135deg,#eef3f9,#fff); border-left:4px solid #0070BA; padding:1rem 1.2rem; border-radius:0 12px 12px 0; }
+  .key { font-family:'JetBrains Mono',monospace; padding:.1rem .45rem; border-radius:6px; background:#eef3f9; font-size:.75rem; border-bottom:2px solid #c3cad9; }
+  .field { background:#f7f9fc; border:1px solid #e1e8f0; border-radius:8px; padding:.5rem .8rem; font-size:.8rem; color:#2c2e2f; }
+  .editor-tool { padding:.3rem .5rem; border-radius:6px; font-weight:600; color:#687173; font-size:.8rem; }
+  .editor-tool.active { background:#003087; color:#fff; }
+  .progress { height:6px; background:#eef3f9; border-radius:999px; overflow:hidden; }
+  .scroll-thin::-webkit-scrollbar { width:6px; }
+  .scroll-thin::-webkit-scrollbar-thumb { background:#c3cad9; border-radius:999px; }
+  .clickable { background:#FFF9E6; border:2px dashed #FFC439; padding:.4rem .8rem; border-radius:8px; font-size:.8rem; font-weight:700; color:#8b6b00; cursor:pointer; }
+  details > summary { cursor:pointer; }
+</style>
+</head>
+<body class="antialiased">
 
-@section('title', 'How to Manage Your Content — Protiddhoni CMS Guide')
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-surface-200">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+    <a href="/" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl mesh-blue flex items-center justify-center ring-gold"><svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/></svg></div>
+      <div><p class="font-extrabold text-paypal-navy leading-none text-lg">Protiddhoni CMS</p><p class="text-[10px] text-ink-500 font-semibold">Getting started guide</p></div>
+    </a>
+    <div class="flex items-center gap-2">
+      <a href="/admin" class="pill bg-paypal-navy text-white">Open Admin →</a>
+      <a href="/" class="pill bg-paypal-cream text-paypal-navy">Back to site</a>
+    </div>
+  </nav>
+</header>
 
-@push('styles')
-  <style>
-    :root {
-      --navy: #003087;
-      --blue: #0070BA;
-      --sky: #009CDE;
-      --gold: #FFC439;
-      --cream: #FFF9E6;
-      --ink: #0a1230;
-      --ink2: #3a4566;
-      --mute: #6b7593;
-      --line: #e5e9f2;
-      --bg: #f7f9fc;
-      --white: #fff;
-    }
+<!-- HERO -->
+<section class="max-w-7xl mx-auto px-6 pt-12 pb-8 grid lg:grid-cols-3 gap-8 items-end">
+  <div class="lg:col-span-2">
+    <span class="chip chip-gold">📘 Onboarding Guide</span>
+    <h1 class="mt-3 text-4xl sm:text-5xl font-extrabold text-ink-900 tracking-tight">How to manage your website with <span class="text-gradient">Protiddhoni CMS</span></h1>
+    <p class="mt-4 text-ink-500 text-lg">Ekta real example diye dekhabo — login theke shuru kore, ekTa blog post publish kora, social media te share kora, media upload kora, ar analytics dekha — sob step by step.</p>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <span class="pill bg-paypal-cream text-paypal-navy">⏱️ Read time · 8 min</span>
+      <span class="pill bg-paypal-cream text-paypal-navy">🇧🇩 Bangla + English</span>
+      <span class="pill bg-paypal-cream text-paypal-navy">👤 No coding required</span>
+    </div>
+  </div>
+  <div class="card p-6">
+    <p class="text-xs text-ink-500 uppercase font-bold tracking-widest mb-3">In this guide</p>
+    <div class="space-y-1">
+      <a href="#login" class="toc-link"><span>1️⃣</span> Login & dashboard tour</a>
+      <a href="#post" class="toc-link active"><span>2️⃣</span> Publish a blog post</a>
+      <a href="#media" class="toc-link"><span>3️⃣</span> Upload media</a>
+      <a href="#categories" class="toc-link"><span>4️⃣</span> Categories & tags</a>
+      <a href="#social" class="toc-link"><span>5️⃣</span> Schedule social posts</a>
+      <a href="#analytics" class="toc-link"><span>6️⃣</span> Track analytics</a>
+      <a href="#users" class="toc-link"><span>7️⃣</span> Manage users</a>
+      <a href="#daily" class="toc-link"><span>8️⃣</span> Daily routine</a>
+    </div>
+  </div>
+</section>
 
-    .hero {
-      padding: 60px 0 32px;
-      background: linear-gradient(180deg, #fff 0%, var(--bg) 100%)
-    }
+<!-- ============ STEP 1: LOGIN ============ -->
+<section id="login" class="max-w-7xl mx-auto px-6 py-12">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="step-num mesh-blue">1</div>
+    <div>
+      <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 1</p>
+      <h2 class="text-3xl font-extrabold text-ink-900">Login & dashboard ke chinun</h2>
+    </div>
+  </div>
 
-    .toc-link {
-      display: flex;
-      gap: .6rem;
-      padding: .5rem .8rem;
-      border-radius: 10px;
-      font-size: .85rem;
-      font-weight: 600;
-      color: var(--mute)
-    }
+  <div class="grid lg:grid-cols-5 gap-8 items-start">
+    <div class="lg:col-span-2 space-y-4">
+      <p class="text-ink-700 leading-relaxed">Browser-e tomar admin URL kholo (jemon: <span class="key">voicereach.com/admin</span>). Email + password diyo, ar 2FA code (Google Authenticator app theke).</p>
 
-    .toc-link:hover {
-      background: #eef3f9;
-      color: var(--navy)
-    }
-
-    .toc-link.active {
-      background: var(--cream);
-      color: #8b6b00
-    }
-
-    .step-num {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      color: #fff;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, var(--navy), var(--blue))
-    }
-
-    .mock {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: 0 30px 60px -30px rgba(0, 48, 135, .25);
-      overflow: hidden
-    }
-
-    .mock-bar {
-      background: var(--ink);
-      color: #fff;
-      padding: .55rem .9rem;
-      font-size: .7rem;
-      font-weight: 600;
-      display: flex;
-      gap: .5rem;
-      align-items: center
-    }
-  </style>
-@endpush
-
-@section('content')
-  <!-- HERO -->
-  <section class="hero pt-32">
-    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-3 gap-12 items-end">
-      <div class="lg:col-span-2 reveal">
-        <span class="chip mb-4">{{ \App\Models\PageBlock::value('user-guide.hero.pill', '📘 Onboarding Guide') }}</span>
-        <h1 class="text-5xl font-extrabold text-navy-900 leading-tight">
-          {!! \App\Models\PageBlock::value('user-guide.hero.headline', 'How to manage your website with <span class="text-gradient">Protiddhoni CMS</span>') !!}
-        </h1>
-        <p class="mt-6 text-lg text-ink-500 leading-relaxed">
-          {!! \App\Models\PageBlock::value('user-guide.hero.subhead', 'Step-by-step guide to publishing blog posts, managing media, and tracking analytics. No coding required.') !!}
-        </p>
+      <div class="info-box">
+        <p class="text-sm font-bold text-paypal-navy">📍 Keno 2FA must?</p>
+        <p class="text-xs text-ink-700 mt-1">Super Admin role-er jonno 2FA force kora ache. Keu password churi korleo tomar phone chhara dhukte parbe na.</p>
       </div>
-      <div class="bg-white p-6 rounded-2xl border border-surface-200 shadow-xl reveal">
-        <p class="text-[10px] font-bold text-ink-300 uppercase tracking-widest mb-4">In this guide</p>
-        <div class="space-y-1">
-          <a href="#login" class="toc-link"><span>1️⃣</span> Login & dashboard tour</a>
-          <a href="#post" class="toc-link active"><span>2️⃣</span> Publish a blog post</a>
-          <a href="#media" class="toc-link"><span>3️⃣</span> Upload media</a>
-          <a href="#analytics" class="toc-link"><span>6️⃣</span> Track analytics</a>
+
+      <p class="text-ink-700 leading-relaxed">Login holey **Dashboard**-e land korbe. Eikhane chokher poloke 4 Ta KPI, 4-5 Ta chart, ar latest activity feed dekhte pabe — site er pulse ektai screen-e.</p>
+
+      <div class="tip">
+        <p class="text-sm font-bold text-paypal-navy">💡 Pro tip</p>
+        <p class="text-xs text-ink-700 mt-1">Top-bar e <span class="key">⌘K</span> (Mac) ba <span class="key">Ctrl+K</span> (Windows) press korle quick search khulbe — kothao theke tumi posts, users, media e jump korte parbe.</p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-3 mock relative">
+      <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-3 opacity-70">voicereach.com/admin</span></div>
+      <div class="p-5 bg-surface-50">
+        <div class="flex gap-4">
+          <div class="w-12 mesh-blue rounded-xl text-white p-2 flex flex-col gap-2 items-center text-xs">
+            <div class="w-6 h-6 rounded bg-paypal-gold text-paypal-navy flex items-center justify-center font-bold">P</div>
+            <span>📊</span><span>📝</span><span>🖼️</span><span>🌐</span><span>👥</span><span>⚙️</span>
+          </div>
+          <div class="flex-1 bg-white rounded-xl p-4 relative">
+            <span class="annot" style="top:-10px; right:14px">👈 Sidebar nav</span>
+            <p class="font-extrabold text-ink-900">Welcome back, Nazmul 👋</p>
+            <p class="text-xs text-ink-500">April 23, 2026</p>
+            <div class="grid grid-cols-4 gap-2 mt-3">
+              <div class="card !p-2 text-center"><p class="text-[9px] text-ink-500">USERS</p><p class="font-extrabold">24.8k</p></div>
+              <div class="card !p-2 text-center"><p class="text-[9px] text-ink-500">POSTS</p><p class="font-extrabold">1,428</p></div>
+              <div class="card !p-2 text-center"><p class="text-[9px] text-ink-500">VIEWS</p><p class="font-extrabold">2.4M</p></div>
+              <div class="card !p-2 text-center"><p class="text-[9px] text-ink-500">ENG.</p><p class="font-extrabold">6.8%</p></div>
+            </div>
+            <div class="mt-3 h-16 mesh-blue opacity-20 rounded-lg flex items-center justify-center text-xs text-paypal-navy font-bold">📈 Traffic chart</div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- STEP 1 -->
-  <section id="login" class="py-24">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="flex items-center gap-4 mb-10">
-        <div class="step-num">1</div>
-        <div>
-          <p class="text-[10px] font-bold text-paypal-blue uppercase tracking-widest">Step 1</p>
-          <h2 class="text-3xl font-extrabold text-navy-900">Login & dashboard tour</h2>
+<!-- ============ STEP 2: PUBLISH POST ============ -->
+<section id="post" class="bg-white border-y border-surface-100">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="step-num bg-paypal-blue">2</div>
+      <div>
+        <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 2 — most common workflow</p>
+        <h2 class="text-3xl font-extrabold text-ink-900">Ekta blog post publish koro</h2>
+      </div>
+    </div>
+
+    <p class="text-ink-700 mb-8 max-w-3xl">Real example: tumi likhte chao "Eid Sale offer 2026" niye ekTa blog post. Niche full flow — start to publish — 6 substep e bhanga.</p>
+
+    <!-- 2a -->
+    <div class="grid lg:grid-cols-2 gap-8 mb-12 items-center">
+      <div class="space-y-3">
+        <h3 class="text-xl font-extrabold text-ink-900 flex items-center gap-2"><span class="chip chip-info">2a</span> Editor khulun</h3>
+        <p class="text-ink-700 leading-relaxed">Sidebar e <strong>Content → New Post</strong> click koro, ba Dashboard-er top bar e <span class="key">+ New</span> button click koro. Ekdom blank ekTa editor khulbe.</p>
+        <ul class="text-sm text-ink-700 space-y-1 list-disc ml-5">
+          <li>Title field-e likho: <em>"Eid Sale 2026: How to launch a voice campaign in 2 hours"</em></li>
+          <li>Niche **URL slug** auto-generate hobe — chaile manually edit korte parbe</li>
+          <li>Title likhar shathe shathe **draft auto-save** hote thakbe (38s interval)</li>
+        </ul>
+      </div>
+      <div class="mock">
+        <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span></div>
+        <div class="p-5">
+          <div class="flex items-center gap-2 mb-3 text-xs">
+            <button class="text-ink-500">← Back</button>
+            <span class="text-ink-500">·</span>
+            <span class="text-ink-500">Draft saved 38s ago</span>
+            <span class="ml-auto chip chip-success">✓ Synced</span>
+          </div>
+          <input class="w-full text-2xl font-extrabold border-0 px-0 outline-none" value="Eid Sale 2026: How to launch a voice campaign in 2 hours" />
+          <p class="text-xs text-ink-500 mt-1">URL: <span class="font-mono text-paypal-blue">/blog/eid-sale-2026-launch-voice-campaign-2-hours</span> <button class="text-paypal-blue underline ml-1">Edit</button></p>
         </div>
       </div>
+    </div>
 
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div class="space-y-4 reveal">
-          <p class="text-ink-500 leading-relaxed">Login using your admin URL (e.g., <code>/admin</code>). You will land on
-            the Dashboard where you can see your site\'s health at a glance.</p>
-          <div class="bg-paypal-cream p-4 border-l-4 border-paypal-gold rounded-r-xl text-sm">
-            <p class="font-bold text-navy-900">💡 Pro tip</p>
-            <p class="text-ink-500 mt-1">Use <code>⌘K</code> to open quick search from anywhere.</p>
+    <!-- 2b -->
+    <div class="grid lg:grid-cols-2 gap-8 mb-12 items-center">
+      <div class="mock order-2 lg:order-1">
+        <div class="mock-bar bg-surface-50 !text-paypal-navy"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-2 text-xs font-bold">Rich text editor</span></div>
+        <div class="p-2 border-b border-surface-100 flex flex-wrap gap-1">
+          <span class="editor-tool active"><b>B</b></span><span class="editor-tool"><i>I</i></span><span class="editor-tool"><u>U</u></span>
+          <span class="w-px h-5 bg-surface-200 mx-1"></span>
+          <span class="editor-tool">H1</span><span class="editor-tool">H2</span>
+          <span class="w-px h-5 bg-surface-200 mx-1"></span>
+          <span class="editor-tool">• List</span><span class="editor-tool">❝ Quote</span><span class="editor-tool">〈/〉 Code</span>
+          <span class="w-px h-5 bg-surface-200 mx-1"></span>
+          <span class="editor-tool">🔗 Link</span><span class="editor-tool">🖼 Image</span>
+        </div>
+        <div class="p-5 text-sm leading-relaxed">
+          <p>Eid sale chalachhilen onek brand, kintu <strong>SMS open rate 38% pore gechhe</strong>. Voice campaign diye Daraz BD <em>23% extra repeat order</em> peyeche.</p>
+          <h3 class="font-extrabold text-base mt-3">Apnar campaign-er 5 step:</h3>
+          <ol class="list-decimal ml-5 mt-2 text-xs space-y-1 text-ink-700">
+            <li>Target audience define korun</li>
+            <li>Voice script likhun</li>
+            <li>...</li>
+          </ol>
+        </div>
+      </div>
+      <div class="space-y-3 order-1 lg:order-2">
+        <h3 class="text-xl font-extrabold text-ink-900 flex items-center gap-2"><span class="chip chip-info">2b</span> Content lekho — rich editor diye</h3>
+        <p class="text-ink-700 leading-relaxed">Editor body click kore lekha shuru koro. WYSIWYG mane <strong>"jeta dekhcho seita-i publish hobe"</strong> — Word/Google Docs er moto behave kore.</p>
+        <p class="text-ink-700 leading-relaxed">Toolbar theke chaile bold, italic, heading, list, quote, code block, link, image embed — sob niye nite parbe.</p>
+        <div class="tip">
+          <p class="text-sm font-bold text-paypal-navy">💡 Shortcut keys</p>
+          <p class="text-xs text-ink-700 mt-1"><span class="key">Ctrl+B</span> bold · <span class="key">Ctrl+I</span> italic · <span class="key">Ctrl+K</span> link · <span class="key">/</span> insert menu</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2c -->
+    <div class="grid lg:grid-cols-2 gap-8 mb-12 items-center">
+      <div class="space-y-3">
+        <h3 class="text-xl font-extrabold text-ink-900 flex items-center gap-2"><span class="chip chip-info">2c</span> Featured image diye sundor banao</h3>
+        <p class="text-ink-700 leading-relaxed">Right sidebar-e "Featured Image" card-e click koro. Media Library kholbe — already-uploaded image select koro, ba notun ekTa drag & drop kore upload koro.</p>
+        <p class="text-ink-700 leading-relaxed">Ei image-i Facebook/LinkedIn share korle preview-e dekhabe, blog list page-e thumbnail hobe.</p>
+        <div class="warn">
+          <p class="text-sm font-bold text-red-700">⚠️ Image size guideline</p>
+          <p class="text-xs text-ink-700 mt-1">Optimal: <span class="key">1200×630px</span> · max 1 MB · JPG ba PNG. CMS auto-WebP convert kore CDN-e push korbe.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-2 opacity-70">Media Library</span></div>
+        <div class="p-4">
+          <div class="grid grid-cols-4 gap-2">
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-paypal-navy to-paypal-blue flex items-center justify-center text-2xl text-white">🎙️</div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-paypal-gold to-orange-400 flex items-center justify-center text-2xl ring-4 ring-paypal-blue ring-offset-2">🛒</div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-paypal-sky to-cyan-400 flex items-center justify-center text-2xl text-white">⚡</div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-2xl text-white">🎨</div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center text-2xl text-white">📊</div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-rose-600 to-pink-600 flex items-center justify-center text-2xl text-white">❤️</div>
+            <div class="aspect-square rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-2xl text-white">🌐</div>
+            <div class="aspect-square rounded-lg border-2 border-dashed border-paypal-blue/40 flex items-center justify-center text-3xl text-paypal-blue/60">+</div>
+          </div>
+          <p class="text-xs text-paypal-blue font-bold mt-3 text-center">"eid-sale-2026.jpg" selected ✓</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2d -->
+    <div class="grid lg:grid-cols-2 gap-8 mb-12 items-start">
+      <div class="space-y-3">
+        <h3 class="text-xl font-extrabold text-ink-900 flex items-center gap-2"><span class="chip chip-info">2d</span> SEO settings — Google e top e jaak</h3>
+        <p class="text-ink-700 leading-relaxed">Niche scroll kore "SEO &amp; Social Preview" panel-e jao. 3 Ta field bhoro:</p>
+        <ul class="text-sm text-ink-700 space-y-1 list-disc ml-5">
+          <li><strong>Meta title</strong> (60 char max) — Google search e ja dekhabe</li>
+          <li><strong>Meta description</strong> (160 char) — search result-e niche choto explanation</li>
+          <li><strong>Focus keywords</strong> — comma diye separate</li>
+        </ul>
+        <p class="text-ink-700 leading-relaxed">CMS niche live <strong>Google preview</strong> dekhabe + <strong>SEO score (0–100)</strong> calculate kore. 90+ target koro — title, description, image alt text, internal links thik thakle pawa jay.</p>
+      </div>
+      <div class="mock">
+        <div class="mock-bar bg-surface-50 !text-paypal-navy"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-2 text-xs font-bold">SEO panel</span></div>
+        <div class="p-5 space-y-3">
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Meta title <span class="text-ink-300">(58/60)</span></p>
+            <div class="field mt-1">Eid Sale 2026: Launch a voice campaign in 2 hours</div>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Meta description <span class="text-ink-300">(142/160)</span></p>
+            <div class="field mt-1 leading-relaxed">SMS er din shesh — Eid sale e voice campaign use kore Daraz +23% extra orders peyeche. Ei guide-e shikhun kivabe 2 ghontay launch...</div>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Focus keywords</p>
+            <div class="field mt-1 font-mono text-xs text-paypal-blue">eid sale, voice marketing, voice broadcasting bangladesh</div>
+          </div>
+          <div class="bg-surface-50 rounded-lg p-3 mt-3 text-xs">
+            <p class="text-ink-500">voicereach.com › blog</p>
+            <p class="text-paypal-blue font-bold">Eid Sale 2026: Launch a voice campaign in 2 hours</p>
+            <p class="text-ink-500 mt-0.5">SMS er din shesh — Eid sale e voice campaign use kore Daraz...</p>
+          </div>
+          <div class="flex justify-between text-xs items-center pt-2 border-t border-surface-100">
+            <span class="text-ink-500">SEO score</span>
+            <span class="font-extrabold text-green-600">94 / 100 ✓</span>
           </div>
         </div>
-        <div class="mock reveal">
-          <div class="mock-bar">
-            <div class="flex gap-1.5"><i class="w-2 h-2 rounded-full bg-red-400"></i><i
-                class="w-2 h-2 rounded-full bg-yellow-400"></i><i class="w-2 h-2 rounded-full bg-green-400"></i></div>
-            <span class="opacity-70 ml-2">protiddhoni-bd.com/admin</span>
+      </div>
+    </div>
+
+    <!-- 2e -->
+    <div class="grid lg:grid-cols-2 gap-8 mb-12 items-center">
+      <div class="mock order-2 lg:order-1">
+        <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span></div>
+        <div class="p-5 space-y-4">
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500 mb-1">Category</p>
+            <div class="field flex justify-between"><span>Voice Marketing</span><span class="text-ink-500">▼</span></div>
           </div>
-          <div class="p-6 bg-surface-50 h-64">
-            <div class="flex gap-4">
-              <div class="w-12 h-48 bg-navy-900 rounded-xl"></div>
-              <div class="flex-1 bg-white rounded-xl p-4 shadow-sm">
-                <div class="h-4 w-32 bg-surface-200 rounded mb-4"></div>
-                <div class="grid grid-cols-2 gap-2">
-                  <div class="h-12 bg-surface-50 rounded"></div>
-                  <div class="h-12 bg-surface-50 rounded"></div>
-                </div>
-              </div>
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500 mb-2">Tags</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="chip chip-info">eid ✕</span>
+              <span class="chip chip-info">bangladesh ✕</span>
+              <span class="chip chip-info">voice ✕</span>
+              <span class="chip chip-info">campaign ✕</span>
+            </div>
+            <input class="field w-full mt-2" placeholder="Add tag..." />
+          </div>
+          <div class="border-t border-surface-100 pt-4">
+            <p class="text-[10px] uppercase font-bold text-ink-500 mb-2">Cross-post to social</p>
+            <div class="space-y-2 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" checked/> <span class="w-6 h-6 rounded bg-[#1877F2] text-white flex items-center justify-center text-xs font-bold">f</span> Facebook Page</label>
+              <label class="flex items-center gap-2"><input type="checkbox" checked/> <span class="w-6 h-6 rounded bg-[#0A66C2] text-white flex items-center justify-center text-xs font-bold">in</span> LinkedIn Company</label>
+              <label class="flex items-center gap-2"><input type="checkbox"/> <span class="w-6 h-6 rounded bg-black text-white flex items-center justify-center text-xs font-bold">𝕏</span> X (Twitter)</label>
+              <label class="flex items-center gap-2"><input type="checkbox" checked/> <span class="w-6 h-6 rounded text-white flex items-center justify-center text-xs font-bold" style="background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45)">IG</span> Instagram</label>
             </div>
           </div>
         </div>
       </div>
+      <div class="space-y-3 order-1 lg:order-2">
+        <h3 class="text-xl font-extrabold text-ink-900 flex items-center gap-2"><span class="chip chip-info">2e</span> Category, tags &amp; social cross-post</h3>
+        <p class="text-ink-700 leading-relaxed">Right sidebar-e:</p>
+        <ul class="text-sm text-ink-700 space-y-1 list-disc ml-5">
+          <li><strong>Category</strong> select koro (jemon "Voice Marketing")</li>
+          <li><strong>Tags</strong> add koro (#eid, #bangladesh, #voice) — Enter press kore add</li>
+          <li><strong>Cross-post to social</strong> e Facebook + LinkedIn + Instagram tick koro</li>
+        </ul>
+        <p class="text-ink-700 leading-relaxed">Cross-post option tick thakle, post publish howar shathe shathe oi platform-e auto-share hoye jabe — manually post korar dorkar nei.</p>
+      </div>
     </div>
-  </section>
 
-  <!-- STEP 2 -->
-  <section id="post" class="py-24 bg-white border-y border-surface-100">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="flex items-center gap-4 mb-10">
-        <div class="step-num">2</div>
-        <div>
-          <p class="text-[10px] font-bold text-paypal-blue uppercase tracking-widest">Step 2</p>
-          <h2 class="text-3xl font-extrabold text-navy-900">Publish a blog post</h2>
+    <!-- 2f -->
+    <div class="grid lg:grid-cols-2 gap-8 items-start">
+      <div class="space-y-3">
+        <h3 class="text-xl font-extrabold text-ink-900 flex items-center gap-2"><span class="chip chip-info">2f</span> Publish ekhon-i? Naki schedule?</h3>
+        <p class="text-ink-700 leading-relaxed">Top right corner e tin Ta button:</p>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3 p-3 rounded-xl border border-surface-200">
+            <span class="pill bg-surface-100 text-ink-700">💾 Save Draft</span>
+            <span class="text-sm text-ink-700">Pore complete korar jonno save kore rakho — public-e show hobe na</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl border border-surface-200">
+            <span class="pill bg-paypal-gold text-paypal-navy">📅 Schedule</span>
+            <span class="text-sm text-ink-700">Future date/time e auto-publish — perfect Eid morning er jonno</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl border-2 border-paypal-blue">
+            <span class="pill bg-paypal-blue text-white">🚀 Publish</span>
+            <span class="text-sm text-ink-700"><strong>Ekhon-i</strong> live + auto cross-post to social</span>
+          </div>
+        </div>
+        <div class="info-box">
+          <p class="text-sm font-bold text-paypal-navy">📍 Eid sale strategy</p>
+          <p class="text-xs text-ink-700 mt-1">Schedule kore rakho Eid sokal 8 AM e — social media-o oi shomoy automatically post kore dibe. Tumi gummiyeo posts live thakbe.</p>
         </div>
       </div>
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div class="mock reveal">
-          <div class="mock-bar bg-surface-100 !text-navy-900">
-            <span class="text-[10px] font-bold">Rich Text Editor</span>
+      <div class="mock">
+        <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span></div>
+        <div class="p-5 space-y-3">
+          <p class="text-[10px] uppercase font-bold text-ink-500">Publish settings</p>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between items-center"><span class="text-ink-500">Status</span><span class="chip chip-gold">Draft</span></div>
+            <div class="flex justify-between items-center"><span class="text-ink-500">Visibility</span><span class="field !py-0.5">Public ▼</span></div>
+            <div class="flex justify-between items-center"><span class="text-ink-500">Date</span><span class="field !py-0.5 font-mono text-xs">2026-04-26 08:00</span></div>
           </div>
-          <div class="p-6 h-64">
-            <div class="h-6 w-full bg-surface-50 rounded mb-4"></div>
-            <div class="h-32 w-full bg-surface-50 rounded"></div>
+          <div class="bg-paypal-cream rounded-lg p-3 text-xs flex items-center gap-2 border border-paypal-gold">
+            <span>⏰</span>
+            <span class="text-paypal-navy"><strong>Will auto-publish in 3 days</strong> · Apr 26, 8:00 AM BDT</span>
           </div>
-        </div>
-        <div class="space-y-4 reveal">
-          <p class="text-ink-500 leading-relaxed">The editor is fully WYSIWYG. You can format text, add images, and set
-            SEO parameters in the sidebar.</p>
-          <ul class="space-y-2 text-sm font-bold text-navy-900">
-            <li>✓ Auto-save every 30 seconds</li>
-            <li>✓ Real-time SEO scoring</li>
-            <li>✓ Social media cross-posting</li>
-          </ul>
+          <button class="w-full bg-paypal-blue text-white font-bold py-3 rounded-xl">📅 Schedule for Apr 26 →</button>
         </div>
       </div>
     </div>
-  </section>
-@endsection
+  </div>
+</section>
+
+<!-- ============ STEP 3: MEDIA ============ -->
+<section id="media" class="max-w-7xl mx-auto px-6 py-12">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="step-num bg-paypal-sky">3</div>
+    <div>
+      <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 3</p>
+      <h2 class="text-3xl font-extrabold text-ink-900">Media library — image, video, file manage koro</h2>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-8 items-start">
+    <div class="space-y-4">
+      <p class="text-ink-700 leading-relaxed">Sidebar e <strong>Content → Media Library</strong> click koro. Sob image/video/document ekhane organize hoy. Posts e reuse korte parbe — same image bar bar upload korar dorkar nei.</p>
+
+      <div class="space-y-3">
+        <div class="flex items-center gap-3 p-3 bg-surface-50 rounded-xl">
+          <span class="w-10 h-10 rounded-xl bg-paypal-blue text-white flex items-center justify-center text-xl">📤</span>
+          <div><p class="font-bold text-sm">Upload korte:</p><p class="text-xs text-ink-500">Drag &amp; drop, ba "Upload" button click — multiple file ektai jaitey pare</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-surface-50 rounded-xl">
+          <span class="w-10 h-10 rounded-xl bg-paypal-sky text-white flex items-center justify-center text-xl">📁</span>
+          <div><p class="font-bold text-sm">Folder e organize koro:</p><p class="text-xs text-ink-500">"Blog covers", "Case studies", "Social graphics" — left sidebar e folder list</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-surface-50 rounded-xl">
+          <span class="w-10 h-10 rounded-xl bg-paypal-gold text-paypal-navy flex items-center justify-center text-xl">🔍</span>
+          <div><p class="font-bold text-sm">Search koro:</p><p class="text-xs text-ink-500">File name diye search ba type filter (image/video/PDF)</p></div>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-surface-50 rounded-xl">
+          <span class="w-10 h-10 rounded-xl bg-paypal-navy text-white flex items-center justify-center text-xl">🌐</span>
+          <div><p class="font-bold text-sm">CDN auto-deliver:</p><p class="text-xs text-ink-500">Upload kora matro CloudFront CDN e cached — fast load worldwide</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-2 opacity-70">Media Library · 2,428 items · 4.2 GB</span></div>
+      <div class="p-4 grid grid-cols-4 gap-3 bg-surface-50">
+        <div class="col-span-1 space-y-1">
+          <p class="text-[10px] uppercase font-bold text-ink-500 mb-2">Folders</p>
+          <div class="text-xs space-y-1">
+            <div class="bg-paypal-cream text-paypal-navy px-2 py-1 rounded-lg font-bold">📁 All</div>
+            <div class="px-2 py-1 text-ink-700">🖼️ Images</div>
+            <div class="px-2 py-1 text-ink-700">🎥 Videos</div>
+            <div class="px-2 py-1 text-ink-700">📄 Docs</div>
+            <div class="px-2 py-1 text-ink-700 mt-2 text-[10px] uppercase font-bold text-ink-500">Custom</div>
+            <div class="px-2 py-1 text-ink-700">📁 Blog covers</div>
+            <div class="px-2 py-1 text-ink-700">📁 Social</div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-surface-100">
+            <p class="text-[10px] text-ink-500">Storage</p>
+            <div class="progress mt-1"><div class="mesh-blue" style="width:8.4%"></div></div>
+            <p class="text-[10px] text-ink-500 mt-1">4.2 / 50 GB</p>
+          </div>
+        </div>
+        <div class="col-span-3 grid grid-cols-3 gap-2">
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-paypal-navy to-paypal-blue flex items-center justify-center text-2xl text-white">🎙️</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-paypal-gold to-orange-400 flex items-center justify-center text-2xl">🛒</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-paypal-sky to-cyan-400 flex items-center justify-center text-2xl text-white">⚡</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-2xl text-white">🎨</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center text-2xl text-white">📊</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-rose-600 to-pink-600 flex items-center justify-center text-2xl text-white">❤️</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center text-2xl text-white">🌐</div>
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-2xl text-white">📣</div>
+          <div class="aspect-square rounded-lg border-2 border-dashed border-paypal-blue/50 flex items-center justify-center text-3xl text-paypal-blue/60">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 4: CATEGORIES ============ -->
+<section id="categories" class="bg-white border-y border-surface-100">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="step-num bg-paypal-gold !text-paypal-navy">4</div>
+      <div>
+        <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 4</p>
+        <h2 class="text-3xl font-extrabold text-ink-900">Categories &amp; tags — content gucchiye rakho</h2>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 space-y-4">
+        <p class="text-ink-700 leading-relaxed">Sidebar e <strong>Content → Categories &amp; Tags</strong> click koro. Eikhane content-er taxonomy manage korbe.</p>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="card p-5">
+            <span class="text-2xl">📂</span>
+            <p class="font-extrabold text-ink-900 mt-2">Categories</p>
+            <p class="text-xs text-ink-500 mt-1">Wide topics — ekTa post = ekTa category</p>
+            <p class="text-sm mt-3 text-ink-700">Examples: <em>Voice Marketing, Engineering, Case Studies, Security, Product</em></p>
+            <p class="text-xs text-ink-500 mt-2">URL: <span class="font-mono text-paypal-blue">/voice-marketing</span></p>
+          </div>
+          <div class="card p-5">
+            <span class="text-2xl">🏷️</span>
+            <p class="font-extrabold text-ink-900 mt-2">Tags</p>
+            <p class="text-xs text-ink-500 mt-1">Granular keywords — ekTa post = multiple tags</p>
+            <p class="text-sm mt-3 text-ink-700">Examples: <em>#bangladesh, #eid, #bKash, #api, #2026</em></p>
+            <p class="text-xs text-ink-500 mt-2">Cross-link related posts</p>
+          </div>
+        </div>
+
+        <div class="tip">
+          <p class="text-sm font-bold text-paypal-navy">💡 Mone rakho</p>
+          <p class="text-xs text-ink-700 mt-1">Categories <strong>5–10 Ta</strong> shei rakho — beshi hole user confused hobe. Tags jotoTa lage tom-i banao.</p>
+        </div>
+      </div>
+
+      <div class="card p-5 bg-gradient-to-br from-paypal-cream to-white">
+        <p class="text-sm font-bold text-ink-900">Real example</p>
+        <p class="text-xs text-ink-500 mt-1">Eid Sale post er taxonomy:</p>
+        <div class="mt-4 space-y-3">
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Category (1)</p>
+            <span class="chip chip-info mt-1">Voice Marketing</span>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Tags (4)</p>
+            <div class="flex flex-wrap gap-1.5 mt-1">
+              <span class="chip chip-sky">eid</span>
+              <span class="chip chip-sky">bangladesh</span>
+              <span class="chip chip-sky">voice</span>
+              <span class="chip chip-sky">campaign</span>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-3 border border-paypal-gold">
+            <p class="text-[10px] uppercase font-bold text-ink-500">Lav</p>
+            <p class="text-xs text-ink-700 mt-0.5">Future e Eid niye notun post likhle, ei post auto "Related" e show hobe — extra traffic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 5: SOCIAL ============ -->
+<section id="social" class="max-w-7xl mx-auto px-6 py-12">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="step-num" style="background:linear-gradient(45deg,#1877F2,#0A66C2,#E1306C)">5</div>
+    <div>
+      <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 5</p>
+      <h2 class="text-3xl font-extrabold text-ink-900">Social media schedule — manually post korar din shesh</h2>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-8 mb-8 items-start">
+    <div class="space-y-4">
+      <p class="text-ink-700 leading-relaxed">Sidebar e <strong>Social → Content Scheduler</strong> click koro. Calendar view-e dekhabe ekhon obdi koto post planned ache, kon channel e, kokhon.</p>
+
+      <div class="space-y-3">
+        <p class="text-sm font-bold text-paypal-navy">3 way te social post hoy:</p>
+
+        <div class="card p-4">
+          <p class="font-bold text-sm flex items-center gap-2"><span class="chip chip-info">Way 1</span> Cross-post from blog</p>
+          <p class="text-xs text-ink-500 mt-1">Blog editor er sidebar e tick kore (Step 2e)</p>
+        </div>
+        <div class="card p-4">
+          <p class="font-bold text-sm flex items-center gap-2"><span class="chip chip-info">Way 2</span> Standalone social post</p>
+          <p class="text-xs text-ink-500 mt-1">Scheduler-e "+ Schedule post" → image/video/text + channels select</p>
+        </div>
+        <div class="card p-4">
+          <p class="font-bold text-sm flex items-center gap-2"><span class="chip chip-info">Way 3</span> Bulk import (CSV)</p>
+          <p class="text-xs text-ink-500 mt-1">Excel-e 30 din-er content plan → upload → all queued</p>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <p class="text-sm font-bold text-paypal-navy">📍 Best time to post (Bangladesh audience)</p>
+        <p class="text-xs text-ink-700 mt-1">Facebook: <strong>10 AM &amp; 7 PM</strong> · LinkedIn: <strong>12 PM weekday</strong> · Instagram: <strong>6-8 PM</strong>. CMS engagement data theke auto-suggest kore.</p>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-2 opacity-70">Weekly calendar</span></div>
+      <div class="grid grid-cols-7 border-b border-surface-100 text-[10px] font-bold text-center text-ink-500">
+        <div class="py-2">Mon 20</div><div class="py-2">Tue 21</div><div class="py-2">Wed 22</div><div class="py-2 bg-paypal-cream text-paypal-navy">Thu 23</div><div class="py-2">Fri 24</div><div class="py-2">Sat 25</div><div class="py-2">Sun 26</div>
+      </div>
+      <div class="grid grid-cols-7 text-[9px] min-h-[200px]">
+        <div class="border-r border-surface-100 p-1.5 space-y-1">
+          <div class="bg-blue-50 border-l-2 border-[#1877F2] rounded-r p-1"><p class="font-bold">9 AM · f</p><p class="truncate">Launch</p></div>
+        </div>
+        <div class="border-r border-surface-100 p-1.5 space-y-1">
+          <div class="bg-pink-50 border-l-2 border-[#E1306C] rounded-r p-1"><p class="font-bold">10 AM · IG</p><p class="truncate">BTS reel</p></div>
+        </div>
+        <div class="border-r border-surface-100 p-1.5 space-y-1">
+          <div class="bg-gray-50 border-l-2 border-black rounded-r p-1"><p class="font-bold">11 AM · 𝕏</p><p class="truncate">Thread</p></div>
+          <div class="bg-blue-50 border-l-2 border-[#1877F2] rounded-r p-1"><p class="font-bold">5 PM · f</p><p class="truncate">Customer</p></div>
+        </div>
+        <div class="border-r border-surface-100 p-1.5 space-y-1 bg-surface-50">
+          <div class="bg-blue-50 border-l-2 border-[#1877F2] rounded-r p-1"><p class="font-bold text-green-700">9 AM ✓</p><p class="truncate">Eid Sale</p></div>
+          <div class="bg-sky-50 border-l-2 border-[#0A66C2] rounded-r p-1"><p class="font-bold">12 PM</p><p class="truncate">Marketing</p></div>
+        </div>
+        <div class="border-r border-surface-100 p-1.5 space-y-1">
+          <div class="bg-blue-50 border-l-2 border-[#1877F2] rounded-r p-1"><p class="font-bold">10 AM</p><p class="truncate">Friday</p></div>
+        </div>
+        <div class="border-r border-surface-100 p-1.5"></div>
+        <div class="p-1.5 space-y-1">
+          <div class="bg-pink-50 border-l-2 border-[#E1306C] rounded-r p-1 ring-2 ring-paypal-gold"><p class="font-bold text-paypal-navy">8 AM 🎉</p><p class="truncate">Eid post</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <p class="text-sm font-bold text-paypal-navy mb-4">After publish — engagement track koro</p>
+    <p class="text-ink-700 mb-4">Post live howar por <strong>Social → Engagement</strong> e jao. Sob channel-er comments/DMs/mentions ek inbox e dekhte pabe — Facebook, LinkedIn, Instagram, X — ektai jaiga.</p>
+    <div class="grid sm:grid-cols-4 gap-3 text-center">
+      <div class="card !bg-blue-50 !border-blue-200 p-3"><span class="w-10 h-10 mx-auto rounded-xl bg-[#1877F2] text-white flex items-center justify-center font-bold">f</span><p class="text-xs font-bold mt-2">Comments</p><p class="text-[10px] text-ink-500">Reply directly</p></div>
+      <div class="card !bg-sky-50 !border-sky-200 p-3"><span class="w-10 h-10 mx-auto rounded-xl bg-[#0A66C2] text-white flex items-center justify-center font-bold">in</span><p class="text-xs font-bold mt-2">Reposts</p><p class="text-[10px] text-ink-500">Thank shares</p></div>
+      <div class="card !bg-pink-50 !border-pink-200 p-3"><span class="w-10 h-10 mx-auto rounded-xl flex items-center justify-center text-xs font-bold text-white" style="background:linear-gradient(45deg,#833AB4,#E1306C,#FCAF45)">IG</span><p class="text-xs font-bold mt-2">Tags / Stories</p><p class="text-[10px] text-ink-500">Repost UGC</p></div>
+      <div class="card !bg-gray-50 !border-gray-200 p-3"><span class="w-10 h-10 mx-auto rounded-xl bg-black text-white flex items-center justify-center font-bold">𝕏</span><p class="text-xs font-bold mt-2">Replies</p><p class="text-[10px] text-ink-500">Engage thread</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 6: ANALYTICS ============ -->
+<section id="analytics" class="bg-white border-y border-surface-100">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="step-num bg-green-600">6</div>
+      <div>
+        <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 6</p>
+        <h2 class="text-3xl font-extrabold text-ink-900">Performance dekho — koTa kaaj korlo, koTa korlo na</h2>
+      </div>
+    </div>
+
+    <p class="text-ink-700 mb-6 max-w-3xl">Sidebar e <strong>Overview → Analytics</strong> e jao. Ekhane traffic, engagement, conversion sob ektai jaiga.</p>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="card p-4">
+        <p class="text-[10px] uppercase font-bold text-ink-500">Sessions</p>
+        <p class="text-2xl font-extrabold mt-1">1.84M</p>
+        <p class="text-xs text-green-600 mt-1">↗ +22.4%</p>
+        <p class="text-xs text-ink-500 mt-2">Total visits ei mash e</p>
+      </div>
+      <div class="card p-4">
+        <p class="text-[10px] uppercase font-bold text-ink-500">Avg time</p>
+        <p class="text-2xl font-extrabold mt-1">3m 28s</p>
+        <p class="text-xs text-green-600 mt-1">↗ +12s</p>
+        <p class="text-xs text-ink-500 mt-2">Per session reading time</p>
+      </div>
+      <div class="card p-4">
+        <p class="text-[10px] uppercase font-bold text-ink-500">Bounce</p>
+        <p class="text-2xl font-extrabold mt-1">38.2%</p>
+        <p class="text-xs text-green-600 mt-1">↘ -2.1% (good!)</p>
+        <p class="text-xs text-ink-500 mt-2">Lower = beshi engagement</p>
+      </div>
+      <div class="card p-4">
+        <p class="text-[10px] uppercase font-bold text-ink-500">Conversions</p>
+        <p class="text-2xl font-extrabold mt-1">4,284</p>
+        <p class="text-xs text-green-600 mt-1">↗ +18%</p>
+        <p class="text-xs text-ink-500 mt-2">Signup, demo request, etc.</p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-4">
+      <div class="card p-5">
+        <p class="font-extrabold text-ink-900">📈 Top Pages</p>
+        <p class="text-xs text-ink-500 mb-3">Beshi traffic-er pages</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between"><span class="font-mono text-xs">/voice-broadcasting</span><span class="font-bold">248k</span></div>
+          <div class="flex justify-between"><span class="font-mono text-xs">/pricing</span><span class="font-bold">182k</span></div>
+          <div class="flex justify-between"><span class="font-mono text-xs">/blog/voice-marketing</span><span class="font-bold">124k</span></div>
+        </div>
+      </div>
+      <div class="card p-5">
+        <p class="font-extrabold text-ink-900">🌍 Top Locations</p>
+        <p class="text-xs text-ink-500 mb-3">Country-wise breakdown</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between"><span>🇧🇩 Bangladesh</span><span class="font-bold">1.42M</span></div>
+          <div class="flex justify-between"><span>🇮🇳 India</span><span class="font-bold">284k</span></div>
+          <div class="flex justify-between"><span>🇺🇸 USA</span><span class="font-bold">168k</span></div>
+        </div>
+      </div>
+      <div class="card p-5">
+        <p class="font-extrabold text-ink-900">📲 Devices</p>
+        <p class="text-xs text-ink-500 mb-3">Mobile vs desktop</p>
+        <div class="space-y-2 text-sm">
+          <div><div class="flex justify-between mb-1"><span>Mobile</span><span class="font-bold">62%</span></div><div class="progress"><div class="mesh-blue" style="width:62%"></div></div></div>
+          <div><div class="flex justify-between mb-1"><span>Desktop</span><span class="font-bold">28%</span></div><div class="progress"><div style="width:28%;background:#0070BA"></div></div></div>
+          <div><div class="flex justify-between mb-1"><span>Tablet</span><span class="font-bold">10%</span></div><div class="progress"><div style="width:10%;background:#FFC439"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip mt-6">
+      <p class="text-sm font-bold text-paypal-navy">💡 Weekly review habit</p>
+      <p class="text-xs text-ink-700 mt-1">Pratyek Monday sokal e Analytics-e 5 min spend koro. Ja kaaj korche — emon topic / format aro likho. Ja korche na — pivot kora.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 7: USERS ============ -->
+<section id="users" class="max-w-7xl mx-auto px-6 py-12">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="step-num bg-purple-600">7</div>
+    <div>
+      <p class="text-xs font-bold text-paypal-blue uppercase tracking-widest">Step 7</p>
+      <h2 class="text-3xl font-extrabold text-ink-900">Team add koro — role assign koro</h2>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-8 items-start">
+    <div class="space-y-4">
+      <p class="text-ink-700 leading-relaxed">Sidebar e <strong>People → Users → + Invite user</strong>. Email + role select koro — invitation auto-send hobe. User accept korle 2FA setup korbe, then access pabe.</p>
+
+      <div class="space-y-3">
+        <div class="card p-4 border-l-4" style="border-left-color:#FFC439">
+          <div class="flex items-center justify-between">
+            <p class="font-bold text-sm">Super Admin</p>
+            <span class="chip chip-gold">Highest</span>
+          </div>
+          <p class="text-xs text-ink-500 mt-1"><strong>Sob kichu:</strong> billing, security keys, delete org. Shudhu tomar ar co-founder/CTO er jonno.</p>
+        </div>
+        <div class="card p-4 border-l-4" style="border-left-color:#003087">
+          <div class="flex items-center justify-between">
+            <p class="font-bold text-sm">Admin</p>
+            <span class="chip chip-info">High</span>
+          </div>
+          <p class="text-xs text-ink-500 mt-1"><strong>Day-to-day management:</strong> users invite, content publish, social manage. Cannot touch billing.</p>
+        </div>
+        <div class="card p-4 border-l-4" style="border-left-color:#0070BA">
+          <div class="flex items-center justify-between">
+            <p class="font-bold text-sm">Editor</p>
+            <span class="chip chip-sky">Medium</span>
+          </div>
+          <p class="text-xs text-ink-500 mt-1"><strong>Content team:</strong> create, edit, publish posts. Upload media. Schedule social. Cannot delete users or change settings.</p>
+        </div>
+        <div class="card p-4 border-l-4" style="border-left-color:#a855f7">
+          <div class="flex items-center justify-between">
+            <p class="font-bold text-sm">Viewer</p>
+            <span class="chip" style="background:#f3e8ff; color:#7e22ce">Low</span>
+          </div>
+          <p class="text-xs text-ink-500 mt-1"><strong>Read-only access:</strong> dashboard, analytics, reports dekhte parbe. Kichu change korte parbe na. Stakeholder/client er jonno valo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="mock">
+        <div class="mock-bar"><span class="mock-dot bg-red-400"></span><span class="mock-dot bg-yellow-400"></span><span class="mock-dot bg-green-400"></span><span class="ml-2 opacity-70">Invite user</span></div>
+        <div class="p-5 space-y-3">
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Email</p>
+            <div class="field mt-1">rifat@yourcompany.com</div>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Role</p>
+            <div class="field mt-1 flex justify-between"><span>Editor</span><span>▼</span></div>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase font-bold text-ink-500">Welcome message (optional)</p>
+            <div class="field mt-1 text-ink-500">Hi Rifat, welcome to the content team!</div>
+          </div>
+          <button class="w-full bg-paypal-blue text-white font-bold py-2.5 rounded-xl">📧 Send invite</button>
+        </div>
+      </div>
+
+      <div class="warn">
+        <p class="text-sm font-bold text-red-700">⚠️ Security checklist</p>
+        <ul class="text-xs text-ink-700 mt-1 space-y-1 list-disc ml-4">
+          <li>Editor role gulo-r jonno 2FA force koro (Settings)</li>
+          <li>Ex-employee chole gele <strong>shathe shathe</strong> Suspend koro</li>
+          <li>Months-e ekbar Audit Log review koro</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 8: DAILY ROUTINE ============ -->
+<section id="daily" class="bg-gradient-to-br from-paypal-navy via-paypal-blue to-paypal-sky text-white">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="text-center mb-10">
+      <span class="chip chip-gold">🎯 Recommended workflow</span>
+      <h2 class="mt-3 text-3xl sm:text-4xl font-extrabold">Daily 15-minute routine</h2>
+      <p class="mt-3 opacity-90 max-w-2xl mx-auto">Just 15 minutes a day diye tumi ekTa dynamic, growing CMS chalate parbe.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+        <p class="text-paypal-gold font-bold text-sm">🌅 Morning · 5 min</p>
+        <h3 class="font-extrabold mt-2 text-lg">Check-in</h3>
+        <ul class="mt-3 text-sm space-y-2 opacity-90">
+          <li>📊 Dashboard er KPI 4 Ta dekho</li>
+          <li>🔔 Notifications check koro (FB comments, mentions)</li>
+          <li>✓ Today's scheduled posts thik thak chalu kina</li>
+        </ul>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+        <p class="text-paypal-gold font-bold text-sm">🌞 Midday · 5 min</p>
+        <h3 class="font-extrabold mt-2 text-lg">Engage</h3>
+        <ul class="mt-3 text-sm space-y-2 opacity-90">
+          <li>💬 Engagement inbox e new comments e reply koro</li>
+          <li>👍 LinkedIn reposts e thank-you bolo</li>
+          <li>📷 IG stories e tagged content repost koro</li>
+        </ul>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+        <p class="text-paypal-gold font-bold text-sm">🌙 Evening · 5 min</p>
+        <h3 class="font-extrabold mt-2 text-lg">Plan tomorrow</h3>
+        <ul class="mt-3 text-sm space-y-2 opacity-90">
+          <li>📅 Scheduler-e tomorrow er post review koro</li>
+          <li>✏️ Quick draft start koro — Rich editor</li>
+          <li>🚀 Schedule publish for next morning</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-2 gap-5">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+        <p class="text-paypal-gold font-bold text-sm">📅 Weekly · 30 min (Monday)</p>
+        <h3 class="font-extrabold mt-2 text-lg">Strategic review</h3>
+        <ul class="mt-3 text-sm space-y-2 opacity-90">
+          <li>📈 Analytics: top 3 performing posts ki?</li>
+          <li>📉 Worst 3 posts — keno work korlo na?</li>
+          <li>🎯 Next week-e 3-5 Ta post idea jot koro</li>
+          <li>📊 Reports module theke email export — stakeholders ke send koro</li>
+        </ul>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+        <p class="text-paypal-gold font-bold text-sm">🗓️ Monthly · 1 hour</p>
+        <h3 class="font-extrabold mt-2 text-lg">Maintenance</h3>
+        <ul class="mt-3 text-sm space-y-2 opacity-90">
+          <li>🛡️ Audit log review — koi action thik na</li>
+          <li>🔑 Social tokens expire korche kina check</li>
+          <li>🗑️ Trashed posts clean koro</li>
+          <li>👥 Team member access review</li>
+          <li>📊 SEO score &lt; 70 posts re-optimize</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="max-w-4xl mx-auto px-6 py-20 text-center">
+  <h2 class="text-3xl font-extrabold text-ink-900">Tumi ekhon ready! 🚀</h2>
+  <p class="mt-3 text-ink-500 max-w-xl mx-auto">Practice korar best way — admin kholo, ekTa test post likho, draft kore rakho. CMS-e kichu break korbe na — tumi safely experiment korte paro.</p>
+  <div class="mt-8 flex flex-wrap justify-center gap-3">
+    <a href="/admin" class="pill bg-paypal-blue text-white !text-base !py-3 !px-6 arrow-right">Open Admin Now</a>
+    <a href="/api-docs" class="pill bg-paypal-cream text-paypal-navy !text-base !py-3 !px-6">📖 API Docs</a>
+    <a href="/contact" class="pill bg-white border border-surface-200 !text-base !py-3 !px-6">Need help? Contact us</a>
+  </div>
+
+  <details class="mt-12 text-left">
+    <summary class="font-bold text-ink-900 cursor-pointer">📋 Quick reference: full sidebar map</summary>
+    <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+      <div class="card p-4"><p class="font-bold text-paypal-navy">Overview</p><p class="text-xs text-ink-500 mt-1">Dashboard, Analytics, Notifications</p></div>
+      <div class="card p-4"><p class="font-bold text-paypal-navy">Content</p><p class="text-xs text-ink-500 mt-1">Posts, Editor, Categories, Media, SEO</p></div>
+      <div class="card p-4"><p class="font-bold text-paypal-navy">Social</p><p class="text-xs text-ink-500 mt-1">Accounts, Scheduler, Engagement, CAPI</p></div>
+      <div class="card p-4"><p class="font-bold text-paypal-navy">People</p><p class="text-xs text-ink-500 mt-1">Users, Roles, Audit Log</p></div>
+      <div class="card p-4"><p class="font-bold text-paypal-navy">System</p><p class="text-xs text-ink-500 mt-1">Integrations, Architecture, Settings</p></div>
+      <div class="card p-4 bg-paypal-cream"><p class="font-bold text-paypal-navy">Bookmark this page!</p><p class="text-xs text-ink-500 mt-1">Onboarding new team members fast</p></div>
+    </div>
+  </details>
+</section>
+
+<footer class="bg-ink-900 text-white py-8 text-center text-xs text-ink-300">© 2026 Protiddhoni · CMS Onboarding Guide · <a href="/admin" class="hover:text-paypal-gold">Open Admin →</a></footer>
+
+</body>
+</html>
+
+@endverbatim

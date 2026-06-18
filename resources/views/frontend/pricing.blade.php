@@ -1,44 +1,257 @@
-@extends('layouts.frontend')
-
-@section('title', 'Pricing — VoiceReach by Protiddhoni')
+@extends('layouts.site')
 
 @push('styles')
+@verbatim
 <style>
   :root{
     --navy:#003087; --blue:#0070BA; --sky:#009CDE; --gold:#FFC439; --cream:#FFF9E6;
     --ink:#0a1230; --paper:#fafbff; --line:#eef1f8; --muted:#6b7693; --slate:#3d4a72;
     --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
   }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#fff;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none}
+  .bn{font-family:'Hind Siliguri',sans-serif}
+  .container{max-width:1240px;margin:0 auto;padding:0 32px}
+
+  /* NAV (shared) */
+  .navbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;max-width:1240px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.5px;font-size:18px}
+  .logo-dot{width:11px;height:11px;background:linear-gradient(135deg,var(--sky),var(--gold));border-radius:50%;box-shadow:0 0 0 3px rgba(0,156,222,.15)}
+  .nav-links{display:flex;gap:28px;font-size:14px;color:var(--slate);font-weight:500}
+  .nav-links a{transition:color .2s}
+  .nav-links a:hover,.nav-links a.active{color:var(--blue)}
+  .nav-links a.active{font-weight:700}
+  .nav-cta{display:flex;gap:10px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:13px;transition:all .2s}
+  .btn-ghost{color:var(--slate)}
+  .btn-ghost:hover{color:var(--blue)}
+  .btn-primary{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:0 8px 20px -8px rgba(0,48,135,.5)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 28px -8px rgba(0,48,135,.6)}
+  .btn-outline{background:#fff;color:var(--navy);border:1.5px solid #d4dae8}
+  .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-gold{background:linear-gradient(135deg,#FFC439,#f59e0b);color:var(--ink)}
+  .btn-lg{padding:14px 24px;font-size:14px}
+
+  /* PAGE HERO */
   .page-hero{background:linear-gradient(180deg,#fff7e6 0%,#fff 35%,#f0f4ff 100%);position:relative;overflow:hidden;padding:80px 0 48px;text-align:center}
+  .page-hero::before{content:"";position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.2),transparent 70%)}
+  .page-hero::after{content:"";position:absolute;bottom:-150px;left:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,156,222,.15),transparent 70%)}
+  .ph-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(0,112,186,.08);color:var(--navy);padding:8px 16px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;position:relative;z-index:1}
   .ph-h1{font-size:60px;font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--ink);position:relative;z-index:1}
   .ph-h1 .accent{background:linear-gradient(90deg,var(--navy),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
   .ph-sub{font-size:17px;color:#4a5675;line-height:1.65;max-width:620px;margin:18px auto 0;position:relative;z-index:1}
+  .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.6}}
+
+  /* BILLING TOGGLE */
   .billing-toggle{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px;margin-top:36px;position:relative;z-index:1;box-shadow:0 8px 20px -10px rgba(0,48,135,.15)}
-  .bt-opt{padding:10px 22px;border-radius:999px;font-size:13px;font-weight:700;color:var(--slate);cursor:pointer;transition:all .2s;background:transparent;display:inline-flex;align-items:center;gap:8px;border:none;}
+  .bt-opt{padding:10px 22px;border-radius:999px;font-size:13px;font-weight:700;color:var(--slate);cursor:pointer;transition:all .2s;background:transparent;display:inline-flex;align-items:center;gap:8px}
   .bt-opt.active{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:0 6px 16px -6px rgba(0,48,135,.5)}
   .save-badge{background:var(--gold);color:var(--ink);font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;letter-spacing:.5px}
+
+  /* PRICING TIERS */
+  .tiers{padding:48px 0 96px;background:#fff}
   .tiers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1180px;margin:0 auto}
   .tier{background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:36px 30px;position:relative;transition:all .3s;display:flex;flex-direction:column}
+  .tier:hover{border-color:var(--sky);box-shadow:0 30px 60px -25px rgba(0,48,135,.18);transform:translateY(-4px)}
   .tier.featured{background:linear-gradient(180deg,#0a1230,#1a2350);color:#fff;border-color:var(--gold);transform:scale(1.04);box-shadow:0 30px 60px -20px rgba(10,18,48,.4)}
   .tier.featured .tier-name{color:var(--gold)}
+  .tier.featured .tier-price small,.tier.featured .tier-desc,.tier.featured .feat-incl li{color:rgba(255,255,255,.85)}
+  .tier.featured .feat-incl li::before{color:var(--gold)}
+  .tier.featured .feat-divider{border-color:rgba(255,255,255,.12)}
+  .tier-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+  .tier-name{font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+  .tier-desc{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.55;min-height:42px}
+  .tier-price{display:flex;align-items:baseline;gap:6px;margin-bottom:6px}
   .tier-currency{font-size:22px;font-weight:800;color:var(--ink);font-family:'JetBrains Mono',monospace}
   .tier.featured .tier-currency{color:#fff}
   .tier-amt{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:800;letter-spacing:-3px;line-height:1;color:var(--ink)}
   .tier.featured .tier-amt{color:#fff}
-  .feat-incl li::before{content:"✓";color:var(--green);font-weight:800;flex-shrink:0;font-size:14px;margin-right:8px;}
+  .tier-suffix{font-size:14px;color:var(--muted);font-weight:500}
+  .tier-pmin{font-size:12px;color:var(--muted);margin-top:8px;margin-bottom:24px;font-family:'JetBrains Mono',monospace}
+  .tier.featured .tier-pmin{color:rgba(255,255,255,.6)}
+  .feat-divider{border:0;border-top:1px solid var(--line);margin:0 0 22px}
+  .feat-incl{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px;flex:1}
+  .feat-incl li{font-size:13.5px;color:var(--slate);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+  .feat-incl li::before{content:"✓";color:var(--green);font-weight:800;flex-shrink:0;font-size:14px}
+  .feat-incl li strong{color:var(--ink);font-weight:700}
+  .tier.featured .feat-incl li strong{color:#fff}
+  .tier-cta{padding:13px 24px;border-radius:12px;font-weight:700;font-size:14px;text-align:center;transition:all .2s;display:block}
+  .tier .tier-cta{background:#fff;color:var(--navy);border:1.5px solid #d4dae8}
+  .tier .tier-cta:hover{border-color:var(--blue);color:var(--blue)}
+  .tier.featured .tier-cta{background:linear-gradient(135deg,var(--gold),#f59e0b);color:var(--ink);border:none}
+  .tier.featured .tier-cta:hover{transform:translateY(-1px);box-shadow:0 10px 24px -8px rgba(255,196,57,.5)}
+
+  .price-foot{text-align:center;margin-top:36px;font-size:13px;color:var(--muted)}
+  .price-foot strong{color:var(--ink);font-weight:700}
+
+  /* SECTION DEFAULTS */
+  section{padding:96px 0}
+  .section-head{text-align:center;max-width:720px;margin:0 auto 56px}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:800;color:var(--blue);margin-bottom:14px}
+  h2.section-title{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:var(--ink)}
+  h2.section-title .accent{background:linear-gradient(90deg,var(--navy),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .section-sub{font-size:17px;color:#4a5675;margin-top:14px;line-height:1.6}
+
+  /* CALCULATOR */
+  .calc-section{background:linear-gradient(180deg,#f8fafc,#fff)}
   .calc-wrap{max-width:1080px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:28px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;box-shadow:0 30px 60px -30px rgba(0,48,135,.18)}
+  .calc-left h3{font-size:26px;font-weight:800;letter-spacing:-.8px;margin-bottom:8px}
+  .calc-left p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:28px}
+  .calc-field{margin-bottom:22px}
+  .calc-field label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--slate);margin-bottom:10px}
+  .calc-field label strong{font-family:'JetBrains Mono',monospace;color:var(--navy);font-size:15px}
+  .calc-field input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--blue) var(--p,30%),var(--line) var(--p,30%));outline:none}
+  .calc-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--blue);cursor:pointer;box-shadow:0 4px 10px rgba(0,48,135,.3)}
+  .calc-field input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--blue);cursor:pointer}
+  .calc-svc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+  .calc-svc-opt{padding:12px 8px;border:1.5px solid var(--line);border-radius:10px;text-align:center;font-size:12px;font-weight:700;color:var(--slate);cursor:pointer;transition:all .2s;background:#fff}
+  .calc-svc-opt.active{border-color:var(--blue);background:rgba(0,112,186,.05);color:var(--navy)}
+  .calc-svc-opt .ic{display:block;font-size:18px;margin-bottom:4px}
+
   .calc-right{background:linear-gradient(180deg,#0a1230,#1a2350);border-radius:20px;padding:40px;color:#fff;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+  .calc-right::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 80% 20%,rgba(255,196,57,.15),transparent),radial-gradient(400px 200px at 20% 80%,rgba(0,156,222,.18),transparent)}
+  .calc-right>*{position:relative;z-index:1}
+  .calc-rhead{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,196,57,.9);font-weight:800;margin-bottom:8px}
   .calc-rprice{font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:800;letter-spacing:-3px;line-height:1;background:linear-gradient(180deg,#fff,#FFC439);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
-  .calc-field input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--blue) var(--p,30%),#eef1f8 var(--p,30%));outline:none}
+  .calc-rper{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:28px}
+  .calc-breakdown{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;flex-direction:column;gap:11px}
+  .calc-line{display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,.75)}
+  .calc-line strong{color:#fff;font-family:'JetBrains Mono',monospace;font-weight:700}
+  .calc-rec{margin-top:24px;background:rgba(255,196,57,.12);border:1px solid rgba(255,196,57,.3);border-radius:12px;padding:14px 16px;font-size:13px;color:#fff}
+  .calc-rec strong{color:var(--gold);font-weight:800}
+
+  /* COMPARISON TABLE */
+  .compare-section{background:#fff}
+  .compare-wrap{max-width:1180px;margin:0 auto;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#fff}
+  table.compare{width:100%;border-collapse:collapse;font-size:14px}
+  table.compare thead th{background:#f8fafc;padding:22px 16px;text-align:left;font-size:14px;font-weight:800;letter-spacing:-.3px;color:var(--ink);border-bottom:1px solid var(--line);position:sticky;top:64px;z-index:2}
+  table.compare thead th:first-child{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+  table.compare thead th.feat-col{text-align:center;width:18%}
+  table.compare thead th.feat-col.featured{background:linear-gradient(180deg,#FFF9E6,#fff);color:var(--navy);position:relative}
+  table.compare thead th.feat-col.featured::before{content:"POPULAR";position:absolute;top:6px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);padding:2px 10px;border-radius:6px;font-size:9px;font-weight:800;letter-spacing:1px}
+  table.compare tbody td{padding:16px;border-bottom:1px solid var(--line);text-align:center;color:var(--slate);font-size:13.5px}
+  table.compare tbody td:first-child{text-align:left;font-weight:600;color:var(--ink)}
+  table.compare tbody td.featured{background:rgba(255,249,230,.4)}
+  table.compare tbody tr:hover td{background:#f8fafc}
+  table.compare tbody tr:hover td.featured{background:rgba(255,196,57,.1)}
+  table.compare tbody td .yes{color:var(--green);font-size:18px;font-weight:800}
+  table.compare tbody td .no{color:#cbd5e1;font-size:18px}
+  table.compare tbody td .meta{font-size:11px;color:var(--muted);margin-top:2px;display:block;font-family:'JetBrains Mono',monospace}
+  table.compare tbody tr.cat td{background:linear-gradient(180deg,#f0f4ff,#fff);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--navy);padding:14px 16px;text-align:left}
+
+  /* ADD-ONS */
+  .addons{background:linear-gradient(180deg,#f8fafc,#fff)}
+  .addon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1180px;margin:0 auto}
+  .addon-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;transition:all .3s;position:relative}
+  .addon-card:hover{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 20px 40px -16px rgba(0,48,135,.15)}
+  .addon-icon{width:52px;height:52px;border-radius:13px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
+  .addon-card.alt .addon-icon{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#a16207}
+  .addon-card.alt2 .addon-icon{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d}
+  .addon-card h4{font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px}
+  .addon-card p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+  .addon-price{display:flex;align-items:baseline;gap:6px;padding-top:18px;border-top:1px solid var(--line)}
+  .addon-amt{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-1px}
+  .addon-per{font-size:12px;color:var(--muted)}
+
+  /* ENTERPRISE BAND */
+  .enterprise{padding:96px 0;background:linear-gradient(135deg,var(--ink),#1a2350);color:#fff;position:relative;overflow:hidden}
+  .enterprise::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 80% 50%,rgba(255,196,57,.15),transparent),radial-gradient(600px 400px at 10% 50%,rgba(0,156,222,.18),transparent)}
+  .enterprise-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;position:relative;z-index:1}
+  .enterprise h2{font-size:44px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+  .enterprise h2 .accent{background:linear-gradient(90deg,var(--gold),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .enterprise-sub{font-size:16px;color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:28px}
+  .enterprise-feats{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+  .enterprise-feats li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:rgba(255,255,255,.85)}
+  .enterprise-feats li::before{content:"⬢";color:var(--gold);font-weight:800;flex-shrink:0;margin-top:1px}
+  .enterprise .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+  .enterprise .btn-outline:hover{background:rgba(255,255,255,.05);border-color:#fff}
+  .ent-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:32px;backdrop-filter:blur(20px)}
+  .ent-card-head{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:18px}
+  .ent-stat{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .ent-stat:last-child{border-bottom:none}
+  .ent-stat-lbl{font-size:13px;color:rgba(255,255,255,.7)}
+  .ent-stat-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;color:#fff}
+  .ent-stat-val .gold{color:var(--gold)}
+
+  /* FAQ */
+  .faq{background:#fff}
+  .faq-grid{max-width:820px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--line);padding:20px 0}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:16px;letter-spacing:-.2px;list-style:none}
+  .faq-q::-webkit-details-marker{display:none}
+  .faq-q::after{content:"+";font-size:24px;font-weight:300;color:var(--blue);transition:transform .2s;flex-shrink:0;margin-left:16px}
+  .faq-item[open] .faq-q::after{content:"−"}
+  .faq-a{color:var(--muted);font-size:14px;line-height:1.7;margin-top:12px;max-width:680px}
+
+  /* FINAL CTA */
+  .final-cta{background:var(--ink);color:#fff;text-align:center;position:relative;overflow:hidden}
+  .final-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 400px at 50% 0%,rgba(255,196,57,.18),transparent),radial-gradient(600px 400px at 10% 100%,rgba(0,156,222,.15),transparent)}
+  .final-cta-inner{position:relative;z-index:1;max-width:800px;margin:0 auto}
+  .final-cta h2{font-size:48px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:18px}
+  .final-cta h2 .accent{background:linear-gradient(90deg,var(--gold),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .final-cta p{font-size:16px;color:rgba(255,255,255,.75);max-width:560px;margin:0 auto 36px;line-height:1.6}
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .final-cta .btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+  .final-cta .btn-outline:hover{background:rgba(255,255,255,.05);border-color:#fff}
+  .perks{display:flex;justify-content:center;gap:32px;margin-top:32px;color:rgba(255,255,255,.6);font-size:12px;font-weight:600;flex-wrap:wrap}
+  .perks span::before{content:"✓ ";color:var(--green);margin-right:4px}
+
+  /* FOOTER (shared) */
+  .footer{background:#070c1f;color:rgba(255,255,255,.65);padding:64px 0 28px;font-size:13px}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:32px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .footer-brand{font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .footer-tagline{line-height:1.6;margin-bottom:18px;font-size:13px}
+  .footer-social{display:flex;gap:10px}
+  .footer-social a{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .2s}
+  .footer-social a:hover{background:var(--blue);color:#fff}
+  .footer-col h5{color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-col a{transition:color .2s;font-size:13px}
+  .footer-col a:hover{color:#fff}
+  .footer-bot{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:16px;font-size:12px;color:rgba(255,255,255,.45)}
+  .footer-bot-links{display:flex;gap:20px}
+
+  /* RESPONSIVE */
+  @media(max-width:980px){
+    .nav-links{display:none}
+    .ph-h1{font-size:38px}
+    .tiers-grid,.addon-grid{grid-template-columns:1fr}
+    .tier.featured{transform:none}
+    .calc-wrap{grid-template-columns:1fr;padding:28px;gap:28px}
+    .enterprise-grid{grid-template-columns:1fr}
+    .enterprise h2{font-size:30px}
+    .footer-grid{grid-template-columns:repeat(2,1fr)}
+    .final-cta h2{font-size:30px}
+    h2.section-title{font-size:28px}
+    table.compare{font-size:12px}
+    table.compare thead th,table.compare tbody td{padding:10px 8px}
+    section{padding:64px 0}
+    .calc-rprice{font-size:48px}
+  }
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s ease-out,transform .8s ease-out}
+  .reveal.in{opacity:1;transform:translateY(0)}
 </style>
+@endverbatim
 @endpush
 
 @section('content')
+@verbatim
+<!-- NAV -->
+
+
+<!-- PAGE HERO -->
 <section class="page-hero">
-  <div class="max-w-7xl mx-auto px-6">
-    <span class="ph-eyebrow"><span class="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span> {{ \App\Models\PageBlock::value('pricing.hero.pill', 'Transparent pricing · No hidden fees') }}</span>
-    <h1 class="ph-h1">{!! \App\Models\PageBlock::value('pricing.hero.headline', 'Pay only for the calls<br/>that <span class="accent">actually connect.</span>') !!}</h1>
-    <p class="ph-sub">{!! \App\Models\PageBlock::value('pricing.hero.subhead', 'Bangladesh-first pricing in Taka. Plans from solopreneurs to enterprises.') !!}</p>
+  <div class="container">
+    <span class="ph-eyebrow"><span class="live-dot"></span><span data-cms="pricing.hero.pill">Transparent pricing · No hidden fees</span></span>
+    <h1 class="ph-h1" data-cms-html="pricing.hero.headline">Pay only for the calls<br/>that <span class="accent">actually connect.</span></h1>
+    <p class="ph-sub" data-cms-html="pricing.hero.subhead">Bangladesh-first pricing in Taka. Plans from solopreneurs to enterprises — pay-as-you-go through to unlimited monthly. <strong>৳0 setup. ৳0 monthly minimum on Starter.</strong></p>
 
     <div class="billing-toggle" id="billingToggle">
       <button class="bt-opt active" data-cycle="monthly">Monthly</button>
@@ -47,93 +260,415 @@
   </div>
 </section>
 
-<section class="py-24">
-  <div class="max-w-7xl mx-auto px-6">
+<!-- TIERS -->
+<section class="tiers">
+  <div class="container">
     <div class="tiers-grid">
-      @foreach(\App\Models\PageBlock::value('pricing.tiers', []) as $tier)
-      <div class="tier {{ ($tier['featured'] ?? false) ? 'featured' : '' }}">
-        @if($tier['badge'] ?? false)
-        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-paypal-gold text-ink-900 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">{{ $tier['badge'] }}</span>
-        @endif
-        <div class="text-[11px] font-extrabold uppercase tracking-widest mb-2 {{ ($tier['featured'] ?? false) ? 'text-paypal-gold' : 'text-paypal-blue' }}">{{ $tier['name'] }}</div>
-        <p class="text-xs mb-6 opacity-80">{{ $tier['desc'] }}</p>
-        <div class="flex items-baseline gap-1 mb-1">
-          @if(is_numeric($tier['price_monthly']) && $tier['price_monthly'] > 0)
-            <span class="tier-currency">৳</span>
-            <span class="tier-amt" data-monthly="{{ $tier['price_monthly'] }}" data-yearly="{{ $tier['price_yearly'] }}">{{ number_format($tier['price_monthly']) }}</span>
-            <span class="text-sm opacity-60">/month</span>
+@endverbatim
+@forelse(\App\Models\PricingPlan::active()->orderBy('sort_order')->get() as $plan)
+      <div class="tier reveal{{ $plan->is_featured ? ' featured' : '' }}">
+        @if($plan->badge)<span class="tier-badge">{{ $plan->badge }}</span>@endif
+        <div class="tier-name">{{ $plan->name }}</div>
+        <p class="tier-desc">{{ $plan->description }}</p>
+        <div class="tier-price">
+          @if($plan->price_monthly)
+          <span class="tier-currency">৳</span>
+          <span class="tier-amt" data-monthly="{{ $plan->price_monthly }}" data-yearly="{{ $plan->price_yearly ?? $plan->price_monthly }}">{{ number_format($plan->price_monthly) }}</span>
+          <span class="tier-suffix">/month</span>
           @else
-            <span class="tier-amt">Custom</span>
+          <span class="tier-amt" style="font-size:42px">{{ $plan->rate_per_min ?: 'Custom' }}</span>
           @endif
         </div>
-        <p class="text-[11px] font-mono opacity-60 mb-8">+ ৳{{ $tier['rate_per_min'] }} per minute</p>
-        <hr class="border-white/10 mb-8"/>
-        <ul class="flex-1 space-y-3 mb-8">
-          @foreach($tier['features'] as $feature)
-          <li class="text-xs flex items-start gap-2">
-            <span class="text-green-500 font-bold">✓</span>
-            <span>{!! $feature !!}</span>
-          </li>
+        @if($plan->rate_note)<p class="tier-pmin">{{ $plan->rate_note }}</p>@endif
+        <hr class="feat-divider"/>
+        <ul class="feat-incl">
+          @foreach(($plan->features ?? []) as $feat)
+          <li>{!! $feat !!}</li>
           @endforeach
         </ul>
-        <a href="#" class="btn {{ ($tier['featured'] ?? false) ? 'btn-gold' : 'btn-outline' }} justify-center w-full">{{ $tier['cta'] }}</a>
+        <a href="{{ $plan->cta_url ?: '#' }}" class="tier-cta">{{ $plan->cta_label ?: 'Get started' }}</a>
       </div>
-      @endforeach
+@empty
+@verbatim
+      <!-- Starter -->
+      <div class="tier reveal">
+        <div class="tier-name">Starter</div>
+        <p class="tier-desc">For solopreneurs, students, and small projects testing voice OTP or surveys.</p>
+        <div class="tier-price">
+          <span class="tier-currency">৳</span>
+          <span class="tier-amt" data-monthly="999" data-yearly="799">999</span>
+          <span class="tier-suffix">/month</span>
+        </div>
+        <p class="tier-pmin">+ ৳0.50 per minute · Pay as you go</p>
+        <hr class="feat-divider"/>
+        <ul class="feat-incl">
+          <li><strong>1,000 minutes</strong> included monthly</li>
+          <li>Voice OTP — <strong>up to 5,000/mo</strong></li>
+          <li>1 sender ID, 1 outbound number</li>
+          <li>Bangla + English text-to-speech</li>
+          <li>All 4 BD carriers covered</li>
+          <li>REST API + webhooks</li>
+          <li>Email support · 24h response</li>
+          <li>30-day call logs retention</li>
+        </ul>
+        <a href="#" class="tier-cta">Start free trial</a>
+      </div>
+
+      <!-- Business (featured) -->
+      <div class="tier featured reveal">
+        <span class="tier-badge">Most Popular</span>
+        <div class="tier-name">Business</div>
+        <p class="tier-desc">For e-commerce, NGOs, and growth teams running regular broadcasts and OTP at scale.</p>
+        <div class="tier-price">
+          <span class="tier-currency">৳</span>
+          <span class="tier-amt" data-monthly="4999" data-yearly="3999">4,999</span>
+          <span class="tier-suffix">/month</span>
+        </div>
+        <p class="tier-pmin">+ ৳0.45 per minute · Volume discounts apply</p>
+        <hr class="feat-divider"/>
+        <ul class="feat-incl">
+          <li><strong>10,000 minutes</strong> included monthly</li>
+          <li>Voice OTP — <strong>up to 100,000/mo</strong></li>
+          <li>Voice Survey + IVR builder</li>
+          <li>Scheduled broadcasts up to <strong>50,000 contacts</strong></li>
+          <li>5 sender IDs, 3 outbound numbers</li>
+          <li>Custom voice cloning (Bangla/English)</li>
+          <li>Real-time delivery dashboard</li>
+          <li>Priority chat + email · 4h response</li>
+          <li>90-day call logs + recording</li>
+          <li>Zapier, HubSpot, Shopify integrations</li>
+        </ul>
+        <a href="#" class="tier-cta">Get started</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="tier reveal">
+        <div class="tier-name">Enterprise</div>
+        <p class="tier-desc">For banks, MFS, and govt-scale operations needing dedicated infra and SLAs.</p>
+        <div class="tier-price">
+          <span class="tier-amt" style="font-size:42px">Custom</span>
+        </div>
+        <p class="tier-pmin">From ৳0.38/min · Volume tier negotiation</p>
+        <hr class="feat-divider"/>
+        <ul class="feat-incl">
+          <li><strong>Unlimited minutes</strong> with negotiated rate</li>
+          <li>Voice OTP — <strong>unlimited volume</strong></li>
+          <li>Dedicated SIP trunks + carrier routes</li>
+          <li>White-label dashboard with your branding</li>
+          <li>Unlimited sender IDs & numbers</li>
+          <li>Custom AI voice + multi-language stack</li>
+          <li>BTRC compliance + data residency</li>
+          <li>SOC 2 + ISO 27001 reports</li>
+          <li>99.95% SLA + dedicated CSM</li>
+          <li>24/7 phone support · 15min response</li>
+          <li>Unlimited log retention + audit trail</li>
+        </ul>
+        <a href="/contact" class="tier-cta">Talk to sales</a>
+      </div>
+@endverbatim
+@endforelse
+@verbatim
+
     </div>
+
+    <p class="price-foot">All prices in BDT (৳). VAT extra where applicable. <strong>Need something between tiers?</strong> <a href="/contact" style="color:var(--blue);font-weight:700">Custom pricing →</a></p>
   </div>
 </section>
 
-<section class="py-24 bg-surface-50">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-16">
-      <span class="chip">Cost Calculator</span>
-      <h2 class="text-4xl font-extrabold text-ink-900 mt-4">Estimate your <span class="text-gradient">monthly bill</span></h2>
+<!-- CALCULATOR -->
+<section class="calc-section" id="calculator">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Cost Calculator</span>
+      <h2 class="section-title">Estimate your <span class="accent">monthly bill</span></h2>
+      <p class="section-sub">Slide to see how it scales — calls, minutes, OTPs. Real-time cost calculation.</p>
     </div>
 
-    <div class="calc-wrap">
-      <div class="p-8">
-        <h3 class="text-2xl font-extrabold mb-8">Usage settings</h3>
-        <div class="space-y-8">
-          <div>
-            <label class="block text-sm font-bold mb-4">Service Type</label>
-            <div class="grid grid-cols-3 gap-2" id="svcGroup">
-              <button class="calc-svc-opt active p-3 border-2 rounded-xl text-sm font-bold border-paypal-blue bg-paypal-blue/5" data-rate="0.45">Voice OTP</button>
-              <button class="calc-svc-opt p-3 border-2 rounded-xl text-sm font-bold border-surface-200" data-rate="0.55">Survey</button>
-              <button class="calc-svc-opt p-3 border-2 rounded-xl text-sm font-bold border-surface-200" data-rate="0.40">Broadcast</button>
-            </div>
+    <div class="calc-wrap reveal">
+      <div class="calc-left">
+        <h3>Tell us your usage</h3>
+        <p>We'll match you with the right plan instantly.</p>
+
+        <div class="calc-field">
+          <label>Service type
+            <strong id="svcLabel">Voice OTP</strong>
+          </label>
+          <div class="calc-svc" id="svcGroup">
+            <div class="calc-svc-opt active" data-svc="otp" data-rate="0.45"><span class="ic">🔐</span>Voice OTP</div>
+            <div class="calc-svc-opt" data-svc="survey" data-rate="0.55"><span class="ic">🎙</span>Survey</div>
+            <div class="calc-svc-opt" data-svc="broadcast" data-rate="0.40"><span class="ic">📢</span>Broadcast</div>
           </div>
-          <div>
-            <div class="flex justify-between text-sm font-bold mb-2"><span>Calls per month</span><span id="callsVal">5,000</span></div>
-            <input type="range" min="500" max="100000" value="5000" id="callsRange" class="w-full">
-          </div>
-          <div>
-            <div class="flex justify-between text-sm font-bold mb-2"><span>Avg duration</span><span id="durVal">30s</span></div>
-            <input type="range" min="10" max="120" value="30" id="durRange" class="w-full">
+        </div>
+
+        <div class="calc-field">
+          <label>Calls per month <strong><span id="callsVal">5,000</span></strong></label>
+          <input type="range" min="500" max="200000" step="500" value="5000" id="callsRange" />
+        </div>
+
+        <div class="calc-field">
+          <label>Avg duration per call <strong><span id="durVal">30</span>s</strong></label>
+          <input type="range" min="10" max="180" step="5" value="30" id="durRange" />
+        </div>
+
+        <div class="calc-field">
+          <label>Carrier mix <strong><span id="mixVal">All BD carriers</span></strong></label>
+          <div class="calc-svc">
+            <div class="calc-svc-opt active" data-mix="all"><span class="ic">🇧🇩</span>All</div>
+            <div class="calc-svc-opt" data-mix="gp"><span class="ic">📱</span>GP only</div>
+            <div class="calc-svc-opt" data-mix="bl"><span class="ic">📲</span>BL only</div>
           </div>
         </div>
       </div>
+
       <div class="calc-right">
-        <div class="text-xs uppercase tracking-widest text-paypal-gold font-bold mb-2">Estimated Monthly</div>
+        <div class="calc-rhead">Estimated monthly cost</div>
         <div class="calc-rprice">৳<span id="totalCost">2,250</span></div>
-        <p class="text-xs opacity-60 mb-8">~ <span id="totalMin">2,500</span> total minutes</p>
-        <div class="space-y-3 pt-6 border-t border-white/10">
-          <div class="flex justify-between text-sm"><span>Base Plan</span><span id="basePlanCost">৳999</span></div>
-          <div class="flex justify-between text-sm"><span>Usage</span><span id="usageCost">৳1,251</span></div>
-          <div class="flex justify-between text-sm font-bold text-paypal-gold pt-3 border-t border-white/10"><span>Total</span><span id="totalCost2">৳2,250</span></div>
+        <div class="calc-rper"><span id="perCall">৳0.45</span> per call · <span id="totalMin">2,500</span> total minutes</div>
+
+        <div class="calc-breakdown">
+          <div class="calc-line"><span>Plan base</span><strong>৳999</strong></div>
+          <div class="calc-line"><span>Usage minutes</span><strong>৳<span id="usageCost">1,125</span></strong></div>
+          <div class="calc-line"><span>Carrier surcharge</span><strong>৳<span id="surcharge">126</span></strong></div>
+          <div class="calc-line" style="padding-top:11px;border-top:1px dashed rgba(255,255,255,.15)"><span style="font-weight:700;color:#fff">Estimated total</span><strong style="color:var(--gold);font-size:16px">৳<span id="totalCost2">2,250</span></strong></div>
         </div>
-        <div class="mt-8 p-4 rounded-xl bg-white/5 border border-white/10 text-xs">
-          <strong>Rec. Plan:</strong> <span id="recPlan" class="text-paypal-gold">Business</span>
+
+        <div class="calc-rec">
+          <strong>Recommended plan:</strong> <span id="recPlan">Business</span> — saves you ৳<span id="recSave">1,200</span>/mo vs pay-as-you-go.
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- COMPARE -->
+<section class="compare-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Compare All Features</span>
+      <h2 class="section-title">Every feature, side <span class="accent">by side</span></h2>
+      <p class="section-sub">No surprise limits. No "ask for a quote" fine print. Full transparency.</p>
+    </div>
+
+    <div class="compare-wrap reveal">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="feat-col">Starter<br/><span style="font-size:11px;color:var(--muted);font-weight:500;font-family:'JetBrains Mono',monospace">৳999/mo</span></th>
+            <th class="feat-col featured">Business<br/><span style="font-size:11px;color:var(--muted);font-weight:500;font-family:'JetBrains Mono',monospace">৳4,999/mo</span></th>
+            <th class="feat-col">Enterprise<br/><span style="font-size:11px;color:var(--muted);font-weight:500;font-family:'JetBrains Mono',monospace">Custom</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat"><td colspan="4">📞 Voice Capabilities</td></tr>
+          <tr><td>Included minutes / month</td><td>1,000<span class="meta">+৳0.50/min after</span></td><td class="featured">10,000<span class="meta">+৳0.45/min after</span></td><td>Unlimited<span class="meta">From ৳0.38/min</span></td></tr>
+          <tr><td>Voice OTP / month</td><td>5,000</td><td class="featured">100,000</td><td>Unlimited</td></tr>
+          <tr><td>Voice Survey + IVR builder</td><td><span class="no">—</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Scheduled broadcast (max contacts)</td><td>2,000</td><td class="featured">50,000</td><td>Unlimited</td></tr>
+          <tr><td>Outbound numbers</td><td>1</td><td class="featured">3</td><td>Unlimited</td></tr>
+          <tr><td>Sender IDs</td><td>1</td><td class="featured">5</td><td>Unlimited</td></tr>
+
+          <tr class="cat"><td colspan="4">🎙 Audio & Voice</td></tr>
+          <tr><td>Bangla + English TTS</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Custom voice cloning</td><td><span class="no">—</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓ Multiple</span></td></tr>
+          <tr><td>Multi-language stack (Hindi/Urdu/Arabic)</td><td><span class="no">—</span></td><td class="featured"><span class="no">Add-on</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Pre-recorded audio upload</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+
+          <tr class="cat"><td colspan="4">🌐 Network & Reach</td></tr>
+          <tr><td>All 64 BD districts</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>4 carriers (GP, Robi, BL, Airtel)</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Dedicated SIP trunks</td><td><span class="no">—</span></td><td class="featured"><span class="no">—</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>International voice (250+ countries)</td><td><span class="no">—</span></td><td class="featured"><span class="no">Add-on</span></td><td><span class="yes">✓</span></td></tr>
+
+          <tr class="cat"><td colspan="4">🔌 Developer & Integration</td></tr>
+          <tr><td>REST API + webhooks</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>SDKs (Node, Python, PHP, Java)</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Zapier / Make / HubSpot</td><td><span class="no">—</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>White-label dashboard</td><td><span class="no">—</span></td><td class="featured"><span class="no">—</span></td><td><span class="yes">✓</span></td></tr>
+
+          <tr class="cat"><td colspan="4">🔒 Security & Compliance</td></tr>
+          <tr><td>BTRC compliance</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Data residency in BD</td><td><span class="yes">✓</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>SOC 2 / ISO 27001 reports</td><td><span class="no">—</span></td><td class="featured"><span class="no">On request</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>SSO + SAML</td><td><span class="no">—</span></td><td class="featured"><span class="no">—</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Audit logs</td><td>30 days</td><td class="featured">90 days</td><td>Unlimited</td></tr>
+
+          <tr class="cat"><td colspan="4">💬 Support & SLA</td></tr>
+          <tr><td>Email support</td><td>24h</td><td class="featured">4h</td><td>15min</td></tr>
+          <tr><td>Live chat</td><td><span class="no">—</span></td><td class="featured"><span class="yes">✓</span></td><td><span class="yes">✓ 24/7</span></td></tr>
+          <tr><td>Phone support</td><td><span class="no">—</span></td><td class="featured"><span class="no">—</span></td><td><span class="yes">✓ 24/7</span></td></tr>
+          <tr><td>Dedicated CSM</td><td><span class="no">—</span></td><td class="featured"><span class="no">—</span></td><td><span class="yes">✓</span></td></tr>
+          <tr><td>Uptime SLA</td><td>99.5%</td><td class="featured">99.9%</td><td>99.95%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section class="addons">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Add-ons</span>
+      <h2 class="section-title">Mix and match what <span class="accent">you actually need</span></h2>
+      <p class="section-sub">Boost any plan with these à la carte add-ons. No long contracts.</p>
+    </div>
+
+    <div class="addon-grid">
+      <div class="addon-card reveal">
+        <div class="addon-icon">🎭</div>
+        <h4>Custom voice clone</h4>
+        <p>We'll clone your CEO's voice or your brand persona for that unmistakable, on-brand call experience.</p>
+        <div class="addon-price"><span class="addon-amt">৳12,000</span><span class="addon-per">/ one-time setup</span></div>
+      </div>
+      <div class="addon-card alt reveal">
+        <div class="addon-icon">📱</div>
+        <h4>Dedicated outbound number</h4>
+        <p>Branded caller ID specifically for your business. Higher pickup rates, better recall.</p>
+        <div class="addon-price"><span class="addon-amt">৳800</span><span class="addon-per">/ number / mo</span></div>
+      </div>
+      <div class="addon-card alt2 reveal">
+        <div class="addon-icon">🌍</div>
+        <h4>International voice pack</h4>
+        <p>Reach 250+ countries with carrier-grade quality. Perfect for diaspora marketing or global outreach.</p>
+        <div class="addon-price"><span class="addon-amt">৳2,500</span><span class="addon-per">/ mo + per-country rate</span></div>
+      </div>
+      <div class="addon-card reveal">
+        <div class="addon-icon">📊</div>
+        <h4>Advanced analytics</h4>
+        <p>Custom funnel tracking, A/B testing, NPS dashboards, and BI exports to Looker / Tableau / Metabase.</p>
+        <div class="addon-price"><span class="addon-amt">৳1,500</span><span class="addon-per">/ mo</span></div>
+      </div>
+      <div class="addon-card alt reveal">
+        <div class="addon-icon">🤖</div>
+        <h4>AI conversation engine</h4>
+        <p>Two-way conversational IVR powered by LLMs. Customers can ask questions; the bot responds in Bangla.</p>
+        <div class="addon-price"><span class="addon-amt">৳3,500</span><span class="addon-per">/ mo + per-minute</span></div>
+      </div>
+      <div class="addon-card alt2 reveal">
+        <div class="addon-icon">🛟</div>
+        <h4>Premium support</h4>
+        <p>Dedicated WhatsApp + Slack channel, named engineer, monthly health check, quarterly reviews.</p>
+        <div class="addon-price"><span class="addon-amt">৳5,000</span><span class="addon-per">/ mo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTERPRISE BAND -->
+<section class="enterprise">
+  <div class="container">
+    <div class="enterprise-grid">
+      <div class="reveal">
+        <span class="eyebrow" style="color:var(--gold)">Enterprise</span>
+        <h2>Built for the scale of <span class="accent">Bangladesh's biggest brands.</span></h2>
+        <p class="enterprise-sub">From bKash and Nagad's transactional OTPs to Election Commission's voter outreach — we've quietly powered some of the country's largest voice campaigns. Let's design yours.</p>
+
+        <ul class="enterprise-feats">
+          <li>Dedicated SIP routes with carrier-level priority queues</li>
+          <li>BTRC-compliant data residency, on-prem option available</li>
+          <li>SOC 2 Type II + ISO 27001 audit reports for procurement</li>
+          <li>Named engineering point-of-contact + quarterly business review</li>
+          <li>Custom contract terms, payment flexibility, NDA-friendly</li>
+          <li>Volume discounts down to ৳0.38/min at scale</li>
+        </ul>
+
+        <div class="cta-row" style="justify-content:flex-start">
+          <a class="btn btn-gold btn-lg" href="/contact">Schedule a call →</a>
+          <a class="btn btn-outline btn-lg" href="#">Download enterprise PDF</a>
+        </div>
+      </div>
+
+      <div class="ent-card reveal">
+        <div class="ent-card-head">Sample enterprise deal</div>
+        <div class="ent-stat"><span class="ent-stat-lbl">Monthly volume</span><span class="ent-stat-val">2.4M minutes</span></div>
+        <div class="ent-stat"><span class="ent-stat-lbl">Effective rate</span><span class="ent-stat-val gold">৳0.39/min</span></div>
+        <div class="ent-stat"><span class="ent-stat-lbl">Dedicated trunks</span><span class="ent-stat-val">8 SIP</span></div>
+        <div class="ent-stat"><span class="ent-stat-lbl">SLA</span><span class="ent-stat-val">99.95%</span></div>
+        <div class="ent-stat"><span class="ent-stat-lbl">Onboarding</span><span class="ent-stat-val">14 days</span></div>
+        <div class="ent-stat"><span class="ent-stat-lbl">Support</span><span class="ent-stat-val">24/7 phone</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Pricing FAQ</span>
+      <h2 class="section-title">Questions about <span class="accent">billing & limits</span></h2>
+    </div>
+
+    <div class="faq-grid">
+      <details class="faq-item" open>
+        <summary class="faq-q">Do failed calls count against my minutes?</summary>
+        <p class="faq-a">No — if a call hits a busy network, rings without an answer, or is rejected, you're not charged. You only pay for the paid duration of connected and answered calls. For Voice OTP, calls of 12 seconds or less count as a "completed OTP."</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Can I switch plans mid-month?</summary>
+        <p class="faq-a">Yes — you can upgrade instantly (new limits kick in immediately, prorated billing). Downgrades take effect at the end of your current billing cycle. No cancellation fees, ever.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What if I exceed my included minutes?</summary>
+        <p class="faq-a">Your overage rate is shown on every plan (e.g. ৳0.45/min on Business). We'll send alerts at 80% / 100% / 120% of your included quota so nothing is a surprise. You can also set a hard cap to prevent overages entirely.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Is there a free trial?</summary>
+        <p class="faq-a">Yes — 14-day free trial with 200 minutes included. No credit card required to start. You can test all Business-tier features (Voice OTP, Survey, Broadcast, IVR builder) during the trial.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What payment methods do you accept?</summary>
+        <p class="faq-a">bKash, Nagad, Rocket, all major Bangladeshi debit/credit cards, and bank transfer (NPSB / BEFTN). For Enterprise we also support USD wire transfer with monthly invoicing.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Do prices include VAT?</summary>
+        <p class="faq-a">No — prices on this page are exclusive of VAT. Bangladesh VAT (currently 15%) is added at checkout for businesses without a Mushak certificate. NBR-registered businesses can add their BIN for proper invoicing.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Can I get a custom quote for very high volume?</summary>
+        <p class="faq-a">Definitely — at 500K+ minutes/month or 1M+ OTPs/month we can negotiate dedicated routes, custom rates, and SLAs. <a href="/contact" style="color:var(--blue);font-weight:700">Talk to sales →</a></p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What's your refund policy?</summary>
+        <p class="faq-a">If our delivery rate falls below 95% in any rolling 7-day window, we'll credit your account proportionally — automatically. For Enterprise customers, we honor SLA-backed credits per contract terms.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <div class="final-cta-inner">
+      <span class="eyebrow" style="color:var(--gold)">Get started</span>
+      <h2>Pricing that grows <span class="accent">with you, not against you.</span></h2>
+      <p>Start with the free trial — no card required. Upgrade only when you've seen the delivery numbers for yourself.</p>
+      <div class="cta-row">
+        <a class="btn btn-gold btn-lg" href="#">Start 14-day free trial →</a>
+        <a class="btn btn-outline btn-lg" href="/contact">Book a demo</a>
+      </div>
+      <div class="perks">
+        <span>14-day free trial</span>
+        <span>No credit card required</span>
+        <span>Cancel anytime</span>
+        <span>Setup in 5 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+@endverbatim
 @endsection
 
 @push('scripts')
+@verbatim
 <script>
+// Billing toggle
 (function(){
   var toggle = document.getElementById('billingToggle');
+  if (!toggle) return;
   var btns = toggle.querySelectorAll('.bt-opt');
   btns.forEach(function(b){
     b.addEventListener('click', function(){
@@ -141,54 +676,90 @@
       b.classList.add('active');
       var cycle = b.getAttribute('data-cycle');
       document.querySelectorAll('.tier-amt[data-monthly]').forEach(function(el){
-        var val = el.getAttribute('data-' + cycle);
-        if(val) el.textContent = parseInt(val).toLocaleString('en-BD');
+        var v = el.getAttribute(cycle === 'yearly' ? 'data-yearly' : 'data-monthly');
+        el.textContent = parseInt(v).toLocaleString('en-BD');
       });
     });
   });
+})();
 
-  // Basic Calculator logic
+// Calculator
+(function(){
   var callsRange = document.getElementById('callsRange');
   var durRange = document.getElementById('durRange');
-  var svcBtns = document.querySelectorAll('.calc-svc-opt');
-  var rate = 0.45;
+  var svcOpts = document.querySelectorAll('#svcGroup .calc-svc-opt');
+  var mixOpts = document.querySelectorAll('.calc-svc-opt[data-mix]');
+  if (!callsRange) return;
 
+  var state = { calls: 5000, dur: 30, rate: 0.45, mix: 'all', svc: 'Voice OTP' };
+
+  function fmt(n){ return n.toLocaleString('en-BD'); }
   function update(){
-    var calls = parseInt(callsRange.value);
-    var dur = parseInt(durRange.value);
-    var totalMin = (calls * dur) / 60;
-    var usage = totalMin * rate;
-    var base = totalMin > 1000 ? 4999 : 999;
-    var total = Math.round(base + usage);
+    var totalMin = (state.calls * state.dur) / 60;
+    var usage = totalMin * state.rate;
+    var surcharge = state.mix === 'all' ? usage * 0.1 : usage * 0.04;
+    // Plan base selection
+    var base = 999, plan = 'Starter';
+    if (totalMin > 1000 && totalMin <= 10000) { base = 4999; plan = 'Business'; }
+    else if (totalMin > 10000) { base = 0; plan = 'Enterprise'; surcharge = usage * 0.05; }
+    var total = Math.round(base + usage + surcharge);
+    var paygo = Math.round(state.calls * state.dur / 60 * 0.55 + state.calls * 0.05);
+    var saving = Math.max(0, paygo - total);
 
-    document.getElementById('callsVal').textContent = calls.toLocaleString('en-BD');
-    document.getElementById('durVal').textContent = dur + 's';
-    document.getElementById('totalCost').textContent = total.toLocaleString('en-BD');
-    document.getElementById('totalCost2').textContent = total.toLocaleString('en-BD');
-    document.getElementById('totalMin').textContent = Math.round(totalMin).toLocaleString('en-BD');
-    document.getElementById('basePlanCost').textContent = '৳' + base.toLocaleString('en-BD');
-    document.getElementById('usageCost').textContent = '৳' + Math.round(usage).toLocaleString('en-BD');
-    document.getElementById('recPlan').textContent = totalMin > 1000 ? 'Business' : 'Starter';
-    
-    callsRange.style.setProperty('--p', ((calls - 500) / (100000 - 500) * 100) + '%');
-    durRange.style.setProperty('--p', ((dur - 10) / (120 - 10) * 100) + '%');
+    document.getElementById('callsVal').textContent = fmt(state.calls);
+    document.getElementById('durVal').textContent = state.dur;
+    document.getElementById('totalCost').textContent = fmt(total);
+    document.getElementById('totalCost2').textContent = fmt(total);
+    document.getElementById('totalMin').textContent = fmt(Math.round(totalMin));
+    document.getElementById('perCall').textContent = '৳' + (state.rate).toFixed(2);
+    document.getElementById('usageCost').textContent = fmt(Math.round(usage));
+    document.getElementById('surcharge').textContent = fmt(Math.round(surcharge));
+    document.getElementById('recPlan').textContent = plan;
+    document.getElementById('recSave').textContent = fmt(saving);
+    document.getElementById('svcLabel').textContent = state.svc;
+    document.getElementById('mixVal').textContent = state.mix === 'all' ? 'All BD carriers' : state.mix.toUpperCase() + ' only';
+
+    // gradient fill for ranges
+    var p1 = ((state.calls - 500) / (200000 - 500)) * 100;
+    var p2 = ((state.dur - 10) / (180 - 10)) * 100;
+    callsRange.style.setProperty('--p', p1 + '%');
+    durRange.style.setProperty('--p', p2 + '%');
   }
-
-  callsRange.addEventListener('input', update);
-  durRange.addEventListener('input', update);
-  svcBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      svcBtns.forEach(b => {
-        b.classList.remove('active', 'border-paypal-blue', 'bg-paypal-blue/5');
-        b.classList.add('border-surface-200');
-      });
-      btn.classList.add('active', 'border-paypal-blue', 'bg-paypal-blue/5');
-      btn.classList.remove('border-surface-200');
-      rate = parseFloat(btn.getAttribute('data-rate'));
+  callsRange.addEventListener('input', function(){ state.calls = parseInt(this.value); update(); });
+  durRange.addEventListener('input', function(){ state.dur = parseInt(this.value); update(); });
+  svcOpts.forEach(function(o){
+    o.addEventListener('click', function(){
+      svcOpts.forEach(function(x){ x.classList.remove('active'); });
+      o.classList.add('active');
+      state.rate = parseFloat(o.getAttribute('data-rate'));
+      state.svc = o.textContent.trim().replace(/^[^A-Za-z]*/, '');
+      update();
+    });
+  });
+  mixOpts.forEach(function(o){
+    o.addEventListener('click', function(){
+      mixOpts.forEach(function(x){ x.classList.remove('active'); });
+      o.classList.add('active');
+      state.mix = o.getAttribute('data-mix');
       update();
     });
   });
   update();
 })();
+
+// Scroll reveal
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
+  els.forEach(function(el){ io.observe(el); });
+})();
 </script>
+@endverbatim
 @endpush
