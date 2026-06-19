@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>API Documentation — Protiddhoni Voice Broadcasting</title>
-<meta name="description" content="Protiddhoni REST API v1.0 reference — Voice OTP, multi-number broadcasts, surveys, webhooks, and sender management for Bangladesh. Base URL: api.protiddhoni.com/api" />
+<title>Protiddhoni Voice API — Voice OTP, Broadcast &amp; Survey REST API</title>
+<meta name="description" content="Developer documentation for the Protiddhoni REST API: Voice OTP, multi-number broadcasts, surveys, webhooks, and sender management for Bangladesh." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -190,36 +190,43 @@ section{padding:80px 0}
 }
 </style>
 
-<link rel="canonical" href="https://protiddhoni-bd.com/api-docs.html" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="/assets/images/logo.png">
+<link rel="canonical" href="https://protiddhoni-bd.com/api-docs" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Protiddhoni" />
-<meta property="og:title" content="API Documentation — Protiddhoni Voice Broadcasting" />
-<meta property="og:description" content="Protiddhoni REST API v1.0 reference — Voice OTP, multi-number broadcasts, surveys, webhooks, and sender management for Bangladesh. Base URL: api.protiddhoni.com/api" />
-<meta property="og:url" content="https://protiddhoni-bd.com/api-docs.html" />
+<meta property="og:title" content="Protiddhoni Voice API — Voice OTP, Broadcast &amp; Survey REST API" />
+<meta property="og:description" content="Developer documentation for the Protiddhoni REST API: Voice OTP, multi-number broadcasts, surveys, webhooks, and sender management for Bangladesh." />
+<meta property="og:url" content="https://protiddhoni-bd.com/api-docs" />
 <meta property="og:image" content="https://protiddhoni-bd.com/assets/images/og-cover.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="API Documentation — Protiddhoni Voice Broadcasting" />
-<meta name="twitter:description" content="Protiddhoni REST API v1.0 reference — Voice OTP, multi-number broadcasts, surveys, webhooks, and sender management for Bangladesh. Base URL: api.protiddhoni.com/api" />
+<meta name="twitter:title" content="Protiddhoni Voice API — Voice OTP, Broadcast &amp; Survey REST API" />
+<meta name="twitter:description" content="Developer documentation for the Protiddhoni REST API: Voice OTP, multi-number broadcasts, surveys, webhooks, and sender management for Bangladesh." />
 <meta name="twitter:image" content="https://protiddhoni-bd.com/assets/images/og-cover.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Protiddhoni","url":"https://protiddhoni-bd.com","logo":"https://protiddhoni-bd.com/assets/images/logo.png","description":"Bangladesh voice automation platform for Voice OTP, Voice Survey and Voice Broadcast.","contactPoint":{"@type":"ContactPoint","email":"info@protiddhoni-bd.com","contactType":"sales","areaServed":"BD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Protiddhoni","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://protiddhoni-bd.com","offers":{"@type":"Offer","price":"999","priceCurrency":"BDT"},"featureList":["Voice OTP","Voice Survey","Voice Broadcast","AI Order Confirmation","Appointment Reminders"]}</script>
+<style id="pd-cta-style">.pd-sticky-cta{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;flex-direction:column;gap:8px}.pd-sticky-cta a{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:999px;font-weight:700;font-size:13px;box-shadow:0 10px 24px -8px rgba(0,48,135,.5);text-decoration:none;transition:.2s}.pd-cta-primary{background:linear-gradient(135deg,#003087,#0070BA);color:#fff}.pd-cta-primary:hover{transform:translateY(-2px)}.pd-cta-ghost{background:#fff;color:#003087;border:1.5px solid #d4dae8}.pd-cta-ghost:hover{border-color:#0070BA;color:#0070BA}@media(max-width:600px){.pd-sticky-cta a{padding:9px 14px;font-size:12px}}</style>
+<script src="/assets/js/tracking.js" defer></script>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
   <div class="container nav-inner">
-    <a class="logo" href="index.html"><img src="assets/images/logo.png" alt="Protiddhoni" style="height:32px;width:auto;display:block" /></a>
+    <a class="logo" href="/"><img src="/assets/images/logo.png" alt="Protiddhoni" style="height:32px;width:auto;display:block" /></a>
     <div class="nav-links">
-      <a href="voice-otp.html">Voice OTP</a>
-      <a href="voice-survey.html">Surveys</a>
-      <a href="voice-broadcast.html">Broadcast</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="api-docs.html" class="active">API Docs</a>
-      <a href="blog.html">Blog</a>
-      <a href="about.html">About</a>
+      <a href="/voice-otp">Voice OTP</a>
+      <a href="/voice-survey">Surveys</a>
+      <a href="/voice-broadcast">Broadcast</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/api-docs" class="active">API Docs</a>
+      <a href="/blog">Blog</a>
+      <a href="/about">About</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-ghost" href="contact.html">Sign in</a>
-      <a class="btn btn-primary" href="contact.html">Get API token</a>
+      <a class="btn btn-ghost" href="https://dashboard.protiddhoni-bd.com/login" data-track="login" rel="nofollow">Sign in</a>
+      <a class="btn btn-primary" href="/contact">Get API token</a>
     </div>
     <button class="menu-tog">☰</button>
   </div>
@@ -234,7 +241,7 @@ section{padding:80px 0}
       <p class="lede" data-cms-html="api-docs.hero.subhead">Send Voice OTPs, run multi-number broadcasts, launch surveys, and pull results — all over a clean REST API. Built for BD carriers, secured by Bearer tokens, ready for production. The docs don't lecture you — the code speaks for itself.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#authentication">Quickstart →</a>
-        <a class="btn btn-ghost" href="contact.html">Get API token</a>
+        <a class="btn btn-ghost" href="/contact">Get API token</a>
       </div>
       <div class="hero-meta">
         <span>🔐 Bearer auth</span>
@@ -652,8 +659,8 @@ Content-Type: <span class="tk-str">application/json</span></pre>
         <h2>Got a token? <span class="gold">Send your first call.</span></h2>
         <p>Free trial includes 100 calls and full sandbox access. Production credentials issued the same day. Get your token, start writing code.</p>
         <div class="cta-actions">
-          <a class="btn btn-gold" href="contact.html">Get API token — free</a>
-          <a class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.25)" href="contact.html">Talk to engineering</a>
+          <a class="btn btn-gold" href="/contact">Get API token — free</a>
+          <a class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.25)" href="/contact">Talk to engineering</a>
         </div>
       </div>
       <div class="cta-stat-card reveal">
@@ -671,7 +678,7 @@ Content-Type: <span class="tk-str">application/json</span></pre>
   <div class="container">
     <div class="footer-grid">
       <div>
-        <a class="logo" href="index.html"><img src="assets/images/logo-white.png" alt="Protiddhoni" style="height:28px;width:auto;display:block" /></a>
+        <a class="logo" href="/"><img src="/assets/images/logo-white.png" alt="Protiddhoni" style="height:28px;width:auto;display:block" /></a>
         <p>Voice OTP, surveys, and broadcast for the Bangladesh market. Built in Banani, deployed across 64 districts.</p>
         <div class="badges">
           <span>🇧🇩 Made in BD</span>
@@ -682,28 +689,28 @@ Content-Type: <span class="tk-str">application/json</span></pre>
       <div>
         <h5>Products</h5>
         <ul>
-          <li><a href="voice-otp.html">Voice OTP</a></li>
-          <li><a href="voice-survey.html">Voice Surveys</a></li>
-          <li><a href="voice-broadcast.html">Voice Broadcast</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="/voice-otp">Voice OTP</a></li>
+          <li><a href="/voice-survey">Voice Surveys</a></li>
+          <li><a href="/voice-broadcast">Voice Broadcast</a></li>
+          <li><a href="/pricing">Pricing</a></li>
         </ul>
       </div>
       <div>
         <h5>Developers</h5>
         <ul>
-          <li><a href="api-docs.html">API docs</a></li>
-          <li><a href="api-docs.html#authentication">Authentication</a></li>
-          <li><a href="api-docs.html#error-responses">Error responses</a></li>
-          <li><a href="blog.html">Engineering blog</a></li>
+          <li><a href="/api-docs">API docs</a></li>
+          <li><a href="/api-docs#authentication">Authentication</a></li>
+          <li><a href="/api-docs#error-responses">Error responses</a></li>
+          <li><a href="/blog">Engineering blog</a></li>
         </ul>
       </div>
       <div>
         <h5>Company</h5>
         <ul>
-          <li><a href="about.html">About</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="about.html#team">Careers</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about#team">Careers</a></li>
+          <li><a href="/contact">Contact</a></li>
         </ul>
       </div>
       <div>
@@ -759,5 +766,10 @@ window.addEventListener('scroll',()=>{
 });
 </script>
 
+
+<div class="pd-sticky-cta">
+  <a class="pd-cta-primary" href="https://dashboard.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start Free →</a>
+  <a class="pd-cta-ghost" href="https://dashboard.protiddhoni-bd.com/login" data-track="login" rel="nofollow">Login</a>
+</div>
 </body>
 </html>
