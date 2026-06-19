@@ -141,22 +141,28 @@ pre, code, .code, .code-block, .api-code, .hero-code {
 }
 
 /* ============================================================
- *  HERO MAP — keep the ONE original inline district map and make it
- *  responsive. On mobile it stacks below the heading and scales down;
- *  only the decorative absolute overlays (which overflowed) are dropped.
+ *  HERO MAP — keep the ONE original inline map AND its floating stat
+ *  cards on mobile. Shrink the whole stage and rescale/pull the cards
+ *  inward so the desktop composition is preserved with no overflow.
+ *  (Desktop layout is untouched — these rules are mobile-only.)
  * ============================================================ */
 @media (max-width: 768px) {
-  .hero-right { height: auto !important; margin-top: 8px; }
-  .bd-map-frame { height: auto !important; display: block !important; }
-  .bd-svg-real {
-    position: static !important; height: auto !important; width: 100% !important;
-    max-width: 340px; margin: 0 auto; display: block;
+  .hero { overflow: hidden; }
+  .hero-right {
+    height: 420px !important; width: 100%; max-width: 360px;
+    margin: 16px auto 0; position: relative;
   }
-  /* decorative overlays used negative offsets -> caused overflow on phones */
-  .bd-map-overlay, .bd-map-glow, .bd-stat, .country-badge { display: none !important; }
+  /* map, glow, overlay stay as-is (just confined to the smaller stage) */
+  .bd-stat { transform: scale(.72); transform-origin: center; }
+  .bd-stat.s1 { top: 2% !important; left: 0 !important; right: auto !important; }
+  .bd-stat.s2 { top: 40% !important; right: 0 !important; left: auto !important; }
+  .bd-stat.s3 { bottom: 4% !important; left: 2% !important; right: auto !important; }
+  .country-badge { transform: scale(.82); transform-origin: bottom right; bottom: 6px; right: 6px; }
 }
 @media (max-width: 380px) {
-  .bd-svg-real { max-width: 300px; }
+  .hero-right { max-width: 320px; height: 400px !important; }
+  .bd-stat { transform: scale(.62); }
+  .bd-stat.s2 { right: -4px !important; }
 }
 
 /* hide any native duplicate hamburger from the original design (keep .pd-burger) */
