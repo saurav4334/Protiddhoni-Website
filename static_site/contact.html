@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Contact — VoiceReach by Protiddhoni</title>
+<meta name="description" content="Talk to sales, get technical support, or visit our offices in Dhaka, Chattogram, and Sylhet. We respond within 4 hours, every business day." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#003087; --blue:#0070BA; --sky:#009CDE; --gold:#FFC439; --cream:#FFF9E6;
+    --ink:#0a1230; --paper:#fafbff; --line:#eef1f8; --muted:#6b7693; --slate:#3d4a72;
+    --green:#22c55e; --amber:#f59e0b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#fff;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none}
+  input,textarea,select{font-family:inherit;font-size:14px}
+  .container{max-width:1240px;margin:0 auto;padding:0 32px}
+
+  /* NAV */
+  .navbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;max-width:1240px;margin:0 auto}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.5px;font-size:18px}
+  .logo-dot{width:11px;height:11px;background:linear-gradient(135deg,var(--sky),var(--gold));border-radius:50%;box-shadow:0 0 0 3px rgba(0,156,222,.15)}
+  .nav-links{display:flex;gap:28px;font-size:14px;color:var(--slate);font-weight:500}
+  .nav-links a:hover{color:var(--blue)}
+  .nav-cta{display:flex;gap:10px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:13px;transition:all .2s}
+  .btn-ghost{color:var(--slate)}
+  .btn-ghost:hover{color:var(--blue)}
+  .btn-primary{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:0 8px 20px -8px rgba(0,48,135,.5)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-outline{background:#fff;color:var(--navy);border:1.5px solid #d4dae8}
+  .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-gold{background:linear-gradient(135deg,#FFC439,#f59e0b);color:var(--ink)}
+  .btn-lg{padding:14px 24px;font-size:14px}
+
+  /* HERO */
+  .page-hero{background:linear-gradient(180deg,#fff7e6 0%,#fff 35%,#f0f4ff 100%);position:relative;overflow:hidden;padding:80px 0 56px;text-align:center}
+  .page-hero::before{content:"";position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.2),transparent 70%)}
+  .page-hero::after{content:"";position:absolute;bottom:-150px;left:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,156,222,.15),transparent 70%)}
+  .ph-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(0,112,186,.08);color:var(--navy);padding:8px 16px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;position:relative;z-index:1}
+  .ph-h1{font-size:60px;font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--ink);position:relative;z-index:1}
+  .ph-h1 .accent{background:linear-gradient(90deg,var(--navy),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ph-sub{font-size:17px;color:#4a5675;line-height:1.65;max-width:620px;margin:18px auto 0;position:relative;z-index:1}
+  .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.6}}
+
+  /* CHANNELS */
+  .channels{padding:48px 0 24px;background:#fff}
+  .ch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1180px;margin:0 auto}
+  .ch-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;transition:all .3s;display:flex;flex-direction:column;gap:8px}
+  .ch-card:hover{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 20px 40px -16px rgba(0,48,135,.15)}
+  .ch-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:6px}
+  .ch-card.sales .ch-icon{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:var(--navy)}
+  .ch-card.tech .ch-icon{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#a16207}
+  .ch-card.partner .ch-icon{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d}
+  .ch-card.media .ch-icon{background:linear-gradient(135deg,#fae8ff,#e9d5ff);color:#7c3aed}
+  .ch-card h4{font-size:15px;font-weight:800;letter-spacing:-.3px}
+  .ch-card p{font-size:12.5px;color:var(--muted);line-height:1.55}
+  .ch-card a{color:var(--blue);font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace;display:inline-block;margin-top:4px}
+
+  /* CONTACT FORM */
+  .form-section{padding:80px 0;background:linear-gradient(180deg,#f8fafc,#fff)}
+  .form-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;max-width:1180px;margin:0 auto;align-items:flex-start}
+  .form-wrap{background:#fff;border:1px solid var(--line);border-radius:24px;padding:40px;box-shadow:0 30px 60px -30px rgba(0,48,135,.18)}
+  .form-wrap h3{font-size:24px;font-weight:800;letter-spacing:-.6px;margin-bottom:6px}
+  .form-wrap > p{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.55}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .form-row.single{grid-template-columns:1fr}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:12px;font-weight:700;color:var(--slate);letter-spacing:.3px}
+  .field input,.field select,.field textarea{padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fafbff;color:var(--ink);transition:all .2s;outline:none;font-size:14px}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(0,112,186,.08)}
+  .field textarea{resize:vertical;min-height:110px;font-family:inherit}
+  .interest{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+  .interest-opt{padding:10px 8px;border:1.5px solid var(--line);border-radius:10px;text-align:center;font-size:12px;font-weight:700;color:var(--slate);cursor:pointer;transition:all .2s;background:#fff;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .interest-opt .ic{font-size:18px}
+  .interest-opt.active{border-color:var(--blue);background:rgba(0,112,186,.05);color:var(--navy)}
+  .form-cta{margin-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .form-cta .meta{font-size:11px;color:var(--muted);max-width:280px;line-height:1.5}
+  .form-submit{padding:13px 28px;border-radius:11px;font-weight:700;font-size:14px;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:0 10px 24px -8px rgba(0,48,135,.5);transition:all .2s;cursor:pointer}
+  .form-submit:hover{transform:translateY(-1px);box-shadow:0 14px 30px -8px rgba(0,48,135,.6)}
+
+  /* SIDE INFO */
+  .side-info{display:flex;flex-direction:column;gap:18px}
+  .side-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
+  .side-card h4{font-size:14px;font-weight:800;letter-spacing:-.3px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .side-card h4::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .quick-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .quick-list li{display:flex;align-items:flex-start;gap:12px;font-size:13.5px;color:var(--slate)}
+  .quick-list li .ic{width:32px;height:32px;border-radius:9px;background:#f0f4ff;color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:800}
+  .quick-list li strong{color:var(--ink);font-weight:700;display:block}
+  .quick-list li small{color:var(--muted);font-size:12px;margin-top:2px;display:block;font-family:'JetBrains Mono',monospace}
+
+  .sla-card{background:linear-gradient(135deg,var(--ink),#1a2350);color:#fff;border-radius:18px;padding:24px;position:relative;overflow:hidden}
+  .sla-card::before{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 80% 20%,rgba(255,196,57,.15),transparent),radial-gradient(400px 200px at 20% 80%,rgba(0,156,222,.18),transparent)}
+  .sla-card>*{position:relative;z-index:1}
+  .sla-card h4{color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+  .sla-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+  .sla-list li{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.85)}
+  .sla-list li:last-child{border-bottom:none;padding-bottom:0}
+  .sla-list li strong{font-family:'JetBrains Mono',monospace;color:#fff;font-weight:800}
+
+  /* SECTION */
+  section{padding:96px 0}
+  .section-head{text-align:center;max-width:720px;margin:0 auto 56px}
+  .eyebrow{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:800;color:var(--blue);margin-bottom:14px}
+  h2.section-title{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:var(--ink)}
+  h2.section-title .accent{background:linear-gradient(90deg,var(--navy),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .section-sub{font-size:17px;color:#4a5675;margin-top:14px;line-height:1.6}
+
+  /* OFFICES */
+  .offices{background:#fff}
+  .office-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .office-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:all .3s}
+  .office-card:hover{transform:translateY(-3px);box-shadow:0 30px 60px -25px rgba(0,48,135,.18)}
+  .office-img{height:160px;background:linear-gradient(135deg,var(--navy),var(--blue));position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:24px}
+  .office-img::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,196,57,.25),transparent 50%),radial-gradient(circle at 20% 80%,rgba(0,156,222,.3),transparent 50%)}
+  .office-img.dhaka::after{content:"🏙";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;opacity:.18}
+  .office-img.ctg::after{content:"⛴";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;opacity:.18}
+  .office-img.syl::after{content:"🌿";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;opacity:.18}
+  .office-tag{position:relative;z-index:1;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);color:#fff;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+  .office-body{padding:24px}
+  .office-body h4{font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px}
+  .office-body .city{font-size:11px;color:var(--blue);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;font-family:'JetBrains Mono',monospace}
+  .office-body p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+  .office-meta{display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--slate)}
+  .office-meta div{display:flex;align-items:center;gap:8px}
+  .office-meta .ic{width:24px;height:24px;border-radius:6px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--blue)}
+
+  /* SUPPORT TIERS */
+  .support-tiers{background:linear-gradient(180deg,#f8fafc,#fff)}
+  .st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .st-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px;transition:all .3s}
+  .st-card:hover{transform:translateY(-3px);box-shadow:0 24px 48px -22px rgba(0,48,135,.16)}
+  .st-card.featured{background:linear-gradient(180deg,var(--ink),#1a2350);color:#fff;border-color:var(--gold)}
+  .st-tier{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--blue);margin-bottom:8px}
+  .st-card.featured .st-tier{color:var(--gold)}
+  .st-card h4{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:14px}
+  .st-card.featured h4{color:#fff}
+  .st-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:16px}
+  .st-list li{font-size:13.5px;color:var(--slate);display:flex;align-items:flex-start;gap:8px}
+  .st-list li::before{content:"✓";color:var(--green);font-weight:800;flex-shrink:0}
+  .st-card.featured .st-list li{color:rgba(255,255,255,.85)}
+  .st-card.featured .st-list li::before{color:var(--gold)}
+
+  /* FOOTER */
+  .footer{background:#070c1f;color:rgba(255,255,255,.65);padding:64px 0 28px;font-size:13px}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:32px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .footer-brand{font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .footer-tagline{line-height:1.6;margin-bottom:18px;font-size:13px}
+  .footer-social{display:flex;gap:10px}
+  .footer-social a{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .2s}
+  .footer-social a:hover{background:var(--blue);color:#fff}
+  .footer-col h5{color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .footer-col a{transition:color .2s;font-size:13px}
+  .footer-col a:hover{color:#fff}
+  .footer-bot{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:16px;font-size:12px;color:rgba(255,255,255,.45)}
+  .footer-bot-links{display:flex;gap:20px}
+
+  /* RESPONSIVE */
+  @media(max-width:980px){
+    .nav-links{display:none}
+    .ph-h1{font-size:38px}
+    .ch-grid{grid-template-columns:1fr 1fr}
+    .form-grid{grid-template-columns:1fr;gap:24px}
+    .form-row{grid-template-columns:1fr}
+    .interest{grid-template-columns:1fr 1fr}
+    .office-grid,.st-grid{grid-template-columns:1fr}
+    .footer-grid{grid-template-columns:repeat(2,1fr)}
+    h2.section-title{font-size:28px}
+    section{padding:64px 0}
+  }
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s ease-out,transform .8s ease-out}
+  .reveal.in{opacity:1;transform:translateY(0)}
+</style>
+
+<link rel="canonical" href="https://protiddhoni-bd.com/contact.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Protiddhoni" />
+<meta property="og:title" content="Contact — VoiceReach by Protiddhoni" />
+<meta property="og:description" content="Talk to sales, get technical support, or visit our offices in Dhaka, Chattogram, and Sylhet. We respond within 4 hours, every business day." />
+<meta property="og:url" content="https://protiddhoni-bd.com/contact.html" />
+<meta property="og:image" content="https://protiddhoni-bd.com/assets/images/og-cover.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Contact — VoiceReach by Protiddhoni" />
+<meta name="twitter:description" content="Talk to sales, get technical support, or visit our offices in Dhaka, Chattogram, and Sylhet. We respond within 4 hours, every business day." />
+<meta name="twitter:image" content="https://protiddhoni-bd.com/assets/images/og-cover.png" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo"><img src="assets/images/logo.png" alt="Protiddhoni" style="height:32px;width:auto;display:block" /></a>
+    <div class="nav-links">
+      <a href="voice-otp.html">Voice OTP</a>
+      <a href="voice-survey.html">Surveys</a>
+      <a href="voice-broadcast.html">Broadcast</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="api-docs.html">API Docs</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="contact.html">Sign in</a>
+      <a class="btn btn-primary" href="contact.html">Start free →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <span class="ph-eyebrow"><span class="live-dot"></span>Avg response · 4 hours · 09:00–22:00 BDT</span>
+    <h1 class="ph-h1">Got a question?<br/><span class="accent">Ekta call dur.</span></h1>
+    <p class="ph-sub">Sales, technical support, partnerships, or just a quick question — we're always available. Pick a channel below or fill out the form. Most replies come within 4 hours.</p>
+  </div>
+</section>
+
+<!-- CHANNELS -->
+<section class="channels">
+  <div class="container">
+    <div class="ch-grid">
+      <div class="ch-card sales">
+        <div class="ch-icon">💼</div>
+        <h4>Sales & demos</h4>
+        <p>Custom pricing, enterprise demos, procurement docs.</p>
+        <a href="mailto:sales@voicereach.bd">sales@voicereach.bd</a>
+      </div>
+      <div class="ch-card tech">
+        <div class="ch-icon">🛠</div>
+        <h4>Technical support</h4>
+        <p>API issues, integration help, debugging logs.</p>
+        <a href="mailto:support@voicereach.bd">support@voicereach.bd</a>
+      </div>
+      <div class="ch-card partner">
+        <div class="ch-icon">🤝</div>
+        <h4>Partnerships</h4>
+        <p>Reseller, integration, agency partnerships.</p>
+        <a href="mailto:partners@voicereach.bd">partners@voicereach.bd</a>
+      </div>
+      <div class="ch-card media">
+        <div class="ch-icon">📰</div>
+        <h4>Media & press</h4>
+        <p>Press kit, brand assets, interview requests.</p>
+        <a href="mailto:press@voicereach.bd">press@voicereach.bd</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section">
+  <div class="container">
+    <div class="form-grid">
+      <div class="form-wrap reveal">
+        <h3>Send us a message</h3>
+        <p>Fill this in and we'll route it to the right human within 4 business hours.</p>
+
+        <div style="font-size:11px;font-weight:700;color:var(--slate);letter-spacing:.3px;margin-bottom:8px">I'm interested in *</div>
+        <div class="interest" id="interestGroup">
+          <div class="interest-opt active" data-interest="voice_otp"><span class="ic">🔐</span>Voice OTP</div>
+          <div class="interest-opt" data-interest="voice_survey"><span class="ic">🎙</span>Voice Survey</div>
+          <div class="interest-opt" data-interest="voice_broadcast"><span class="ic">📢</span>Broadcast</div>
+          <div class="interest-opt" data-interest="other"><span class="ic">💬</span>Other</div>
+        </div>
+
+        <form action="https://formsubmit.co/hello@protiddhoni-bd.com" method="POST" id="contactForm">
+          <input type="hidden" name="_subject" value="New enquiry from the Protiddhoni website" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <!-- Honeypot field (hidden from users, traps bots) -->
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
+          <!-- Hidden interest field — synced with .interest-opt clicks -->
+          <input type="hidden" name="interest" value="voice_otp" />
+
+          <div class="form-row">
+            <div class="field"><label>Full name *</label><input type="text" name="name" placeholder="Md. Rahim Uddin" required /></div>
+            <div class="field"><label>Work email *</label><input type="email" name="email" placeholder="rahim@yourbrand.com" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Company *</label><input type="text" name="company" placeholder="YourBrand Ltd." required /></div>
+            <div class="field"><label>Phone (optional)</label><input type="tel" name="phone" placeholder="+880 17XX-XXXXXX" /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Industry</label>
+              <select name="industry">
+                <option>Banking & MFS</option>
+                <option>E-commerce</option>
+                <option>Healthcare</option>
+                <option>Education</option>
+                <option>Government & NGO</option>
+                <option>Logistics</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field"><label>Expected monthly volume</label>
+              <select name="expected_volume">
+                <option>Under 10,000 calls</option>
+                <option>10,000 – 100,000 calls</option>
+                <option>100,000 – 1M calls</option>
+                <option>1M+ calls</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="field"><label>How can we help? *</label><textarea name="message" placeholder="Tell us a bit about your use case, timeline, or specific question..." required></textarea></div>
+          </div>
+
+          <div class="form-cta">
+            <p class="meta">When you submit, your data is handled per our privacy policy. No spam, no third-party sharing.</p>
+            <button type="submit" class="form-submit">Send message →</button>
+          </div>
+        </form>
+
+        <!-- CMS client + interest-group sync -->
+        
+      </div>
+
+      <div class="side-info">
+        <div class="side-card reveal">
+          <h4>Quick contact</h4>
+          <ul class="quick-list">
+            <li><div class="ic">📞</div><div><strong>Sales hotline</strong><small>+880 9610-114455</small></div></li>
+            <li><div class="ic">💬</div><div><strong>Live chat (in-app)</strong><small>09:00 – 22:00 BDT, all days</small></div></li>
+            <li><div class="ic">📧</div><div><strong>Email response</strong><small>4 business hours · Mon–Sat</small></div></li>
+            <li><div class="ic">⚡</div><div><strong>Enterprise WhatsApp</strong><small>Dedicated channel for enterprise</small></div></li>
+          </ul>
+        </div>
+
+        <div class="sla-card reveal">
+          <h4>Response time SLAs</h4>
+          <ul class="sla-list">
+            <li><span>Critical bug / outage</span><strong>15 min</strong></li>
+            <li><span>Enterprise support</span><strong>1 hour</strong></li>
+            <li><span>Business support</span><strong>4 hours</strong></li>
+            <li><span>Sales inquiries</span><strong>4 hours</strong></li>
+            <li><span>General questions</span><strong>24 hours</strong></li>
+          </ul>
+        </div>
+
+        <div class="side-card reveal" style="background:linear-gradient(135deg,#FFF9E6,#fff);border-color:#FFC439">
+          <h4 style="color:var(--ink)">📚 Need help fast?</h4>
+          <p style="font-size:13px;color:var(--slate);line-height:1.65;margin-top:-6px">Maybe the answer's already there:</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px;font-size:13px;font-weight:700">
+            <li><a href="api-docs.html" style="color:var(--blue)">→ API Documentation</a></li>
+            <li><a href="pricing.html" style="color:var(--blue)">→ Pricing & plans</a></li>
+            <li><a href="blog.html" style="color:var(--blue)">→ Help Center & guides</a></li>
+            <li><a href="index.html#faq" style="color:var(--blue)">→ Frequently asked questions</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFICES -->
+<section class="offices">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Our offices</span>
+      <h2 class="section-title">Drop by anytime — <span class="accent">3 cities, 1 platform.</span></h2>
+      <p class="section-sub">Our offices are open Sunday – Thursday, 09:00 – 18:00. Walk-ins welcome with prior call.</p>
+    </div>
+
+    <div class="office-grid">
+      <div class="office-card reveal">
+        <div class="office-img dhaka"><span class="office-tag">HQ · Engineering</span></div>
+        <div class="office-body">
+          <h4>Dhaka — Banani</h4>
+          <div class="city">Headquarters</div>
+          <p>Where it all started in 2018. Engineering, sales, leadership, and executive functions.</p>
+          <div class="office-meta">
+            <div><span class="ic">📍</span>House 14, Road 11, Banani, Dhaka 1213</div>
+            <div><span class="ic">📞</span>+880 2-9876-5432</div>
+            <div><span class="ic">🕐</span>Sun – Thu · 09:00 – 18:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="office-card reveal">
+        <div class="office-img ctg"><span class="office-tag">Carrier ops · Engineering</span></div>
+        <div class="office-body">
+          <h4>Chattogram — Agrabad</h4>
+          <div class="city">Engineering hub</div>
+          <p>Carrier ops, infrastructure engineering. Closer to maritime & port-region clients.</p>
+          <div class="office-meta">
+            <div><span class="ic">📍</span>Agrabad C/A, Chattogram 4100</div>
+            <div><span class="ic">📞</span>+880 31-2345-6789</div>
+            <div><span class="ic">🕐</span>Sun – Thu · 09:00 – 18:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="office-card reveal">
+        <div class="office-img syl"><span class="office-tag">Customer success</span></div>
+        <div class="office-body">
+          <h4>Sylhet — Zindabazar</h4>
+          <div class="city">Customer success</div>
+          <p>NE region customer success, NGO partnership operations, regional sales.</p>
+          <div class="office-meta">
+            <div><span class="ic">📍</span>Zindabazar, Sylhet 3100</div>
+            <div><span class="ic">📞</span>+880 821-345-678</div>
+            <div><span class="ic">🕐</span>Sun – Thu · 09:00 – 18:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT TIERS -->
+<section class="support-tiers">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Support tiers</span>
+      <h2 class="section-title">Pick the level <span class="accent">your business needs</span></h2>
+    </div>
+
+    <div class="st-grid">
+      <div class="st-card reveal">
+        <div class="st-tier">Standard</div>
+        <h4>Email + chat</h4>
+        <p style="color:var(--muted);font-size:13.5px;line-height:1.65">Included with every Starter plan. Self-serve docs + email + in-app chat during business hours.</p>
+        <ul class="st-list">
+          <li>24h email response</li>
+          <li>Knowledge base + tutorials</li>
+          <li>Monthly status updates</li>
+          <li>Community Slack access</li>
+        </ul>
+      </div>
+
+      <div class="st-card featured reveal">
+        <div class="st-tier">Priority</div>
+        <h4>Faster, deeper, named</h4>
+        <p style="color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.65">Included with Business plan. Faster SLAs, named support engineer, voice support during business hours.</p>
+        <ul class="st-list">
+          <li>4h email response</li>
+          <li>Live chat 09:00 – 22:00</li>
+          <li>Phone support · business hours</li>
+          <li>Quarterly health checks</li>
+          <li>Migration assistance</li>
+        </ul>
+      </div>
+
+      <div class="st-card reveal">
+        <div class="st-tier">Enterprise</div>
+        <h4>24/7 + Dedicated CSM</h4>
+        <p style="color:var(--muted);font-size:13.5px;line-height:1.65">Included with Enterprise plan. Round-the-clock human support with named CSM and dedicated WhatsApp.</p>
+        <ul class="st-list">
+          <li>15min critical SLA · 24/7</li>
+          <li>Dedicated phone + WhatsApp</li>
+          <li>Named CSM + engineer</li>
+          <li>Quarterly business reviews</li>
+          <li>Custom training & workshops</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><img src="assets/images/logo-white.png" alt="Protiddhoni" style="height:28px;width:auto;display:block" /></div>
+        <p class="footer-tagline">Bangladesh's most reliable voice broadcasting platform. Reaching every district, every upazila, every customer.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="voice-otp.html">Voice OTP</a></li>
+          <li><a href="voice-survey.html">Surveys</a></li>
+          <li><a href="voice-broadcast.html">Voice Broadcast</a></li>
+          <li><a href="api-docs.html">Developer API</a></li>
+          <li><a href="#">SDKs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Solutions</h5>
+        <ul>
+          <li><a href="#">Banking & MFS</a></li>
+          <li><a href="#">E-commerce</a></li>
+          <li><a href="#">Healthcare</a></li>
+          <li><a href="#">Education</a></li>
+          <li><a href="#">Government & NGO</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="api-docs.html">API Reference</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="#">Status page</a></li>
+          <li><a href="#">Compliance</a></li>
+          <li><a href="#">Help center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <div>© 2026 Protiddhoni Ltd. · Built with ❤️ in Dhaka, Bangladesh</div>
+      <div class="footer-bot-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Interest selector
+(function(){
+  var opts = document.querySelectorAll('#interestGroup .interest-opt');
+  opts.forEach(function(o){
+    o.addEventListener('click', function(){
+      opts.forEach(function(x){ x.classList.remove('active'); });
+      o.classList.add('active');
+    });
+  });
+})();
+
+// Reveal
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
