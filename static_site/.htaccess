@@ -6,23 +6,24 @@
 Options +FollowSymLinks -MultiViews
 DirectoryIndex index.html
 
-<IfModule mod_rewrite.c>
-  RewriteEngine On
+# NOTE: rewrite rules are intentionally NOT wrapped in <IfModule mod_rewrite.c>
+# because LiteSpeed (this host) does not always recognize that module name and
+# would skip the whole block. RewriteEngine works on LiteSpeed regardless.
+RewriteEngine On
 
-  # 1) /index.html  ->  /
-  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
-  RewriteRule ^index\.html$ / [R=301,L]
+# 1) /index.html  ->  /
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^index\.html$ / [R=301,L]
 
-  # 2) /page.html  ->  /page   (301, preserves SEO value)
-  RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.html[\s?] [NC]
-  RewriteRule ^([^/]+)\.html$ /$1 [R=301,L]
+# 2) /page.html  ->  /page   (301, preserves SEO value)
+RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.html[\s?] [NC]
+RewriteRule ^([^/]+)\.html$ /$1 [R=301,L]
 
-  # 3) Serve /page from /page.html internally (no redirect)
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.+?)/?$ $1.html [L]
-</IfModule>
+# 3) Serve /page from /page.html internally (no redirect)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
 
 # ---- Custom 404 ----
 ErrorDocument 404 /index.html
