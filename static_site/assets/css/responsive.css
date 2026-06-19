@@ -141,17 +141,40 @@ pre, code, .code, .code-block, .api-code, .hero-code {
 }
 
 /* ============================================================
- *  HERO MAP — visible & responsive on mobile (was hidden before)
- *  Show the map SVG, drop the absolutely-positioned overlays that
- *  used negative offsets and caused the horizontal overflow.
+ *  HERO MAP (mobile) — clean animated bd-map.svg floating top-right.
+ *  Desktop keeps the inline district map; mobile uses the lightweight SVG.
  * ============================================================ */
-.bd-map, .map-svg, img[src*="bd-map"] {
-  display: block; width: 100%; max-width: 420px; height: auto; margin: 24px auto;
-}
+.bd-map-mobile { display: none; }
 @media (max-width: 768px) {
-  .hero-right { height: auto !important; margin-top: 18px; }
-  .bd-map-frame { height: auto !important; display: block !important; }
-  .bd-svg-real { position: static !important; height: auto !important; width: 100% !important; max-width: 300px; margin: 0 auto; display: block; }
-  .bd-map-overlay, .bd-map-glow, .bd-stat, .country-badge { display: none !important; }
-  .bd-map, .map-svg, img[src*="bd-map"] { max-width: 280px; }
+  .hero { position: relative; overflow: hidden; }
+  .hero-right { display: none !important; }            /* hide heavy inline map on mobile */
+  .hero-grid > div:first-child { position: static; }
+  .bd-map-mobile {
+    display: block; position: absolute; top: 58px; right: 6px;
+    width: 42%; max-width: 150px; min-width: 108px; z-index: 1; pointer-events: none;
+  }
+  .bd-map-mobile::before {
+    content: ""; position: absolute; inset: 16%;
+    background: radial-gradient(circle, rgba(0,120,255,.18), transparent 70%);
+    border-radius: 999px; animation: mapPulse 3s ease-in-out infinite;
+  }
+  .bd-map-animated {
+    width: 100%; height: auto; display: block; position: relative; z-index: 1;
+    filter: drop-shadow(0 12px 24px rgba(0,86,179,.18));
+    animation: mapFloat 4s ease-in-out infinite;
+  }
+  .hero .status-pill, .hero-h1, .hero-sub { max-width: 78%; }   /* keep text clear of the map */
 }
+@media (max-width: 360px) {
+  .bd-map-mobile { position: relative; top: auto; right: auto; width: 70%; max-width: 200px; min-width: 0; margin: 12px auto 0; }
+  .hero .status-pill, .hero-h1, .hero-sub { max-width: 100%; }
+}
+@keyframes mapFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.03); } }
+@keyframes mapPulse { 0%, 100% { transform: scale(.9); opacity: .45; } 50% { transform: scale(1.15); opacity: .8; } }
+@media (prefers-reduced-motion: reduce) {
+  .bd-map-animated { animation: none; }
+  .bd-map-mobile::before { animation: none; }
+}
+
+/* hide any native duplicate hamburger from the original design (keep .pd-burger) */
+.menu-tog { display: none !important; }
