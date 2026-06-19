@@ -3,11 +3,17 @@
  * Loaded after each page's inline <style>, so it overrides safely.
  * ============================================================ */
 
-/* ---- 1. Kill horizontal overflow (no side-scroll on any device) ---- */
-html { overflow-x: clip; }
-body { overflow-x: clip; max-width: 100vw; }
-img, video, canvas, iframe { max-width: 100%; height: auto; }
-pre, code, table { max-width: 100%; }
+/* ---- 1. Global box model + kill horizontal overflow ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+img, video { max-width: 100%; height: auto; }
+svg { max-width: 100%; }
+
+/* ---- 2. Responsive container padding ---- */
+.container, .section, .wrapper {
+  width: 100%; max-width: 1240px; margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+}
 
 /* ============================================================
  *  MOBILE NAV — hamburger + slide-in drawer (built by mobile-nav.js)
@@ -15,7 +21,7 @@ pre, code, table { max-width: 100%; }
 .pd-burger {
   display: none; align-items: center; justify-content: center;
   width: 44px; height: 44px; border-radius: 10px; background: transparent;
-  border: 1px solid var(--line, #eef1f8); cursor: pointer; color: var(--navy, #003087);
+  border: 1px solid var(--line, #eef1f8); cursor: pointer; color: var(--navy, #003087); flex: 0 0 auto;
 }
 .pd-burger span { display: block; width: 20px; height: 2px; background: currentColor; position: relative; }
 .pd-burger span::before, .pd-burger span::after { content: ""; position: absolute; left: 0; width: 20px; height: 2px; background: currentColor; }
@@ -49,35 +55,29 @@ pre, code, table { max-width: 100%; }
 .pd-d-signup { background: linear-gradient(135deg, #003087, #0070BA); color: #fff; }
 .pd-d-login { background: #fff; color: #003087; border: 1.5px solid #d4dae8; }
 
-/* show hamburger where the desktop nav links are hidden */
-@media (max-width: 980px) {
-  .pd-burger { display: inline-flex; }
-}
-/* avoid nav crowding on phones — drawer + bottom bar carry the CTAs */
-@media (max-width: 720px) {
-  .nav-cta { display: none !important; }
-}
+@media (max-width: 980px) { .pd-burger { display: inline-flex; } }
+@media (max-width: 720px) { .nav-cta { display: none !important; } }
 
 /* ============================================================
  *  MOBILE STICKY BOTTOM CTA BAR (< 768px)
  * ============================================================ */
 .pd-mobile-bar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 9998;
-  display: none; gap: 10px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-  background: rgba(255,255,255,.96); backdrop-filter: blur(12px); border-top: 1px solid #e1e8f0;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 9998; width: 100%;
+  display: none; gap: 10px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255,255,255,.97); backdrop-filter: blur(12px); border-top: 1px solid #e1e8f0;
   box-shadow: 0 -8px 24px -12px rgba(0,48,135,.25);
 }
 .pd-mobile-bar a {
-  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  min-height: 48px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none;
+  flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 46px; border-radius: 12px; font-weight: 700; font-size: 14px; text-decoration: none; white-space: nowrap;
 }
 .pd-mobile-bar .b-signup { background: linear-gradient(135deg, #003087, #0070BA); color: #fff; }
 .pd-mobile-bar .b-login { background: #FFC439; color: #0a1f44; }
 
 @media (max-width: 767px) {
   .pd-mobile-bar { display: flex; }
-  .pd-sticky-cta { display: none; }      /* hide the desktop floating CTA on phones */
-  body { padding-bottom: 70px; }          /* room for the bottom bar */
+  .pd-sticky-cta { display: none; }
+  body { padding-bottom: 76px; }
 }
 
 /* ============================================================
@@ -86,10 +86,10 @@ pre, code, table { max-width: 100%; }
 @media (max-width: 768px) {
   .container { padding-left: 18px !important; padding-right: 18px !important; }
   section { padding: 52px 0 !important; }
-  .hero-h1 { font-size: clamp(28px, 7.5vw, 40px) !important; letter-spacing: -1px !important; }
-  h1 { font-size: clamp(28px, 7.5vw, 40px) !important; }
+  .hero-h1, h1 { font-size: clamp(28px, 7.5vw, 40px) !important; letter-spacing: -1px !important; }
   h2.section-title, .final-cta h2 { font-size: clamp(26px, 6vw, 34px) !important; }
   .section-sub, .hero-sub { font-size: 16px !important; }
+  h1, h2, h3, p, a, span, li { overflow-wrap: anywhere; word-break: normal; }
 }
 @media (max-width: 400px) {
   .hero-h1, h1 { font-size: 26px !important; }
@@ -97,11 +97,20 @@ pre, code, table { max-width: 100%; }
 }
 
 /* ============================================================
- *  SECTION RESPONSIVENESS — stack multi-column grids on phones
+ *  WIDTH / GRID RESPONSIVENESS  (the real overflow fix)
+ *  - cap every element to its container so fixed px widths can't overflow
+ *  - collapse multi-column grids to a single column
  * ============================================================ */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  /* tame hard-coded widths (width:920px, etc.) without clipping content */
+  .container *, section * { max-width: 100%; }
+  /* let flex/grid children shrink (prevents code blocks pushing the page wide) */
+  [class*="-grid"] > *, .hero-grid > *, .int-grid > * { min-width: 0; }
+}
+@media (max-width: 768px) {
   .service-grid, .steps-grid, .industries, .testi-grid, .pricing-grid, .tiers-grid,
-  .int-grid, .footer-grid, .stats-grid, .hero-grid, [class*="-grid"] {
+  .int-grid, .footer-grid, .stats-grid, .hero-grid, .grid, .features-grid,
+  .industry-grid, .api-grid, .two-column, .api-section, .map-section, [class*="-grid"] {
     grid-template-columns: 1fr !important;
   }
   .stat-item { border-right: none !important; }
@@ -114,20 +123,35 @@ pre, code, table { max-width: 100%; }
   .btn, .btn-primary, .btn-outline, .btn-gold, .tier-cta, .cta-row a, .service-link {
     min-height: 48px; display: inline-flex; align-items: center; justify-content: center;
   }
-  /* hero buttons stack full-width */
   .cta-row { flex-direction: column; align-items: stretch; }
   .cta-row a { width: 100%; }
 }
 
 /* ============================================================
- *  TABLES & CODE — horizontal scroll instead of clipping
+ *  CODE / TABLES — scroll inside their box, never overflow the page
  * ============================================================ */
+pre, code, .code, .code-block, .api-code, .hero-code {
+  max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
 @media (max-width: 768px) {
+  pre, code, .code, .code-block, .api-code, .hero-code {
+    font-size: 12px; line-height: 1.6; max-width: calc(100vw - 36px); white-space: pre;
+  }
   table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
-  pre, .code-block { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
 }
 
-/* hide the tall hero map on very small screens (decorative, avoids overflow) */
-@media (max-width: 600px) {
-  .hero-right { display: none !important; }
+/* ============================================================
+ *  HERO MAP — visible & responsive on mobile (was hidden before)
+ *  Show the map SVG, drop the absolutely-positioned overlays that
+ *  used negative offsets and caused the horizontal overflow.
+ * ============================================================ */
+.bd-map, .map-svg, img[src*="bd-map"] {
+  display: block; width: 100%; max-width: 420px; height: auto; margin: 24px auto;
+}
+@media (max-width: 768px) {
+  .hero-right { height: auto !important; margin-top: 18px; }
+  .bd-map-frame { height: auto !important; display: block !important; }
+  .bd-svg-real { position: static !important; height: auto !important; width: 100% !important; max-width: 300px; margin: 0 auto; display: block; }
+  .bd-map-overlay, .bd-map-glow, .bd-stat, .country-badge { display: none !important; }
+  .bd-map, .map-svg, img[src*="bd-map"] { max-width: 280px; }
 }
