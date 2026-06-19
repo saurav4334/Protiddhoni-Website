@@ -74,10 +74,14 @@ svg { max-width: 100%; }
 .pd-mobile-bar .b-signup { background: linear-gradient(135deg, #003087, #0070BA); color: #fff; }
 .pd-mobile-bar .b-login { background: #FFC439; color: #0a1f44; }
 
-@media (max-width: 767px) {
-  .pd-mobile-bar { display: flex; }
-  .pd-sticky-cta { display: none; }
-  body { padding-bottom: 76px; }
+/* Floating CTA widget (.pd-sticky-cta): visible on tablet + mobile, hidden on
+   desktop. The full-width bottom bar is disabled so phones show one CTA only. */
+.pd-mobile-bar { display: none !important; }
+@media (min-width: 1025px) {
+  .pd-sticky-cta,
+  .floating-cta, .floating-actions, .quick-actions, .sticky-cta, .mobile-cta, .floating-buttons, .floating-auth-widget {
+    display: none !important;
+  }
 }
 
 /* ============================================================
