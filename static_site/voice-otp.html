@@ -345,7 +345,7 @@
         <div class="call-notif">
           <div class="ci-pulse">📞</div>
           <div class="ci-meta">
-            <div class="ci-name">VoiceReach OTP</div>
+            <div class="ci-name">Protiddhoni OTP</div>
             <div class="ci-num">+880 9610-114455</div>
           </div>
         </div>
@@ -355,7 +355,7 @@
           <div class="phone-screen">
             <div class="phone-status"><span>9:41</span><span>● ● ●</span></div>
             <div class="phone-content">
-              <div class="otp-app">VoiceReach OTP</div>
+              <div class="otp-app">Protiddhoni OTP</div>
               <div class="otp-msg">Listen to your 6-digit verification code and <strong>type it</strong> below</div>
               <div class="otp-boxes">
                 <div class="otp-box filled">8</div>
@@ -411,7 +411,7 @@
         <ul class="why-list">
           <li><span class="num">01</span><span><strong>3x higher delivery</strong> — voice goes through even when SMS is throttled</span></li>
           <li><span class="num">02</span><span><strong>Bangla pronunciation</strong> — natural female and male voices pronounce digits clearly</span></li>
-          <li><span class="num">03</span><span><strong>No spam folder</strong> — phone bajbe, inbox e harabe na</span></li>
+          <li><span class="num">03</span><span><strong>No spam folder</strong> — the phone rings, so nothing is lost in an inbox</span></li>
           <li><span class="num">04</span><span><strong>Accessible</strong> — perfect for old phones, low-literacy users, and vision-impaired customers</span></li>
         </ul>
       </div>
@@ -419,7 +419,7 @@
       <div class="vs-card reveal">
         <div class="vs-row head">
           <div class="vs-cell">Compare</div>
-          <div class="vs-cell" style="background:linear-gradient(180deg,#FFF9E6,#fff);color:var(--navy)">VoiceReach OTP</div>
+          <div class="vs-cell" style="background:linear-gradient(180deg,#FFF9E6,#fff);color:var(--navy)">Protiddhoni OTP</div>
         </div>
         <div class="vs-row">
           <div class="vs-cell"><span class="ic">📨</span>SMS OTP</div>
@@ -550,7 +550,7 @@
 
         <div class="code-pane active" data-lang="node">
           <div class="code-block"><span class="code-tag">NODE.JS</span><pre><span class="c">// Send Voice OTP — 5 lines, 1.6s delivery</span>
-<span class="k">const</span> voice = <span class="k">require</span>(<span class="s">'@protiddhoni/voicereach'</span>);
+<span class="k">const</span> voice = <span class="k">require</span>(<span class="s">'@protiddhoni/sdk'</span>);
 <span class="k">const</span> client = <span class="k">new</span> voice.<span class="n">Client</span>(<span class="s">'sk_live_xxx'</span>);
 
 <span class="k">const</span> otp = <span class="k">await</span> client.<span class="n">otp</span>.<span class="n">send</span>({
@@ -565,7 +565,7 @@
 
         <div class="code-pane" data-lang="py">
           <div class="code-block"><span class="code-tag">PYTHON</span><pre><span class="c"># Send Voice OTP via Python SDK</span>
-<span class="k">from</span> voicereach <span class="k">import</span> Client
+<span class="k">from</span> protiddhoni <span class="k">import</span> Client
 
 client = Client(<span class="s">'sk_live_xxx'</span>)
 
@@ -580,7 +580,7 @@ otp = client.otp.send(
 
         <div class="code-pane" data-lang="php">
           <div class="code-block"><span class="code-tag">PHP</span><pre><span class="c">// Send Voice OTP via PHP SDK</span>
-<span class="k">use</span> Protiddhoni\VoiceReach\Client;
+<span class="k">use</span> Protiddhoni\Protiddhoni\Client;
 
 $client = <span class="k">new</span> Client(<span class="s">'sk_live_xxx'</span>);
 
@@ -594,7 +594,7 @@ $otp = $client->otp->send([
 
         <div class="code-pane" data-lang="curl">
           <div class="code-block"><span class="code-tag">cURL</span><pre><span class="c"># Send Voice OTP — direct REST</span>
-curl -X POST https://api.voicereach.bd/v1/otp/send \
+curl -X POST https://api.protiddhoni.com/v1/otp/send \
   -H <span class="s">"Authorization: Bearer sk_live_xxx"</span> \
   -H <span class="s">"Content-Type: application/json"</span> \
   -d <span class="s">'{
@@ -634,7 +634,7 @@ curl -X POST https://api.voicereach.bd/v1/otp/send \
   <div class="container">
     <div class="reveal">
       <div class="testi-quote">
-        After migrating to VoiceReach's Voice OTP, our transaction completion rate climbed from <strong style="color:var(--blue)">63% to 89%</strong>. In the past 6 months not a single failed delivery has slipped past our monitoring.
+        After migrating to Protiddhoni's Voice OTP, our transaction completion rate climbed from <strong style="color:var(--blue)">63% to 89%</strong>. In the past 6 months not a single failed delivery has slipped past our monitoring.
       </div>
       <div class="testi-author">
         <div class="testi-avatar">RA</div>
