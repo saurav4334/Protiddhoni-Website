@@ -1,0 +1,142 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Protiddhoni Blog — Voice OTP, Broadcast, Survey & API Insights</title>
+<meta name="description" content="Insights on Voice OTP, Voice Broadcast, AI Voice Survey, DTMF automation, and Voice APIs to help businesses improve customer communication.">
+<link rel="canonical" href="https://protiddhoni-bd.com/blog">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Protiddhoni">
+<meta property="og:title" content="Protiddhoni Blog — Voice Communication Insights"><meta property="og:description" content="Voice OTP, Voice Broadcast, AI Voice Survey, DTMF and Voice API insights for businesses.">
+<meta property="og:url" content="https://protiddhoni-bd.com/blog"><meta property="og:image" content="https://protiddhoni-bd.com/assets/images/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Protiddhoni Blog"><meta name="twitter:description" content="Voice communication & automation insights."><meta name="twitter:image" content="https://protiddhoni-bd.com/assets/images/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="/assets/css/responsive.css?v=5"><script src="/assets/js/tracking.js?v=5" defer></script><script src="/assets/js/mobile-nav.js?v=5" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Blog","name":"Protiddhoni Blog","url":"https://protiddhoni-bd.com/blog","publisher":{"@type":"Organization","name":"Protiddhoni","logo":{"@type":"ImageObject","url":"https://protiddhoni-bd.com/assets/images/logo.png"}}}</script>
+<style>
+:root{--navy:#003087;--blue:#0070BA;--sky:#009CDE;--gold:#FFC439;--ink:#0a1230;--line:#eef1f8;--muted:#6b7693;--slate:#3d4a72;--green:#22c55e;--bg:#f7f9fc}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#fff;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img{max-width:100%;height:auto}
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+.navbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1240px;margin:0 auto}
+.nav-links{display:flex;gap:24px;font-size:14px;color:var(--slate);font-weight:500}
+.nav-links a:hover{color:var(--blue)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:13px;transition:all .2s;cursor:pointer}
+.btn-ghost{color:var(--slate)}.btn-ghost:hover{color:var(--blue)}
+.btn-primary{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:0 8px 20px -8px rgba(0,48,135,.5)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-outline{background:#fff;color:var(--navy);border:1.5px solid #d4dae8}.btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+.badge{display:inline-block;background:rgba(0,112,186,.1);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.meta{font-size:12.5px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.meta span{display:inline-flex;gap:5px;align-items:center}
+.cover{aspect-ratio:16/9;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:56px;color:#fff;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;inset:0;background:radial-gradient(420px 180px at 80% 20%,rgba(255,196,57,.22),transparent),radial-gradient(360px 200px at 10% 90%,rgba(0,156,222,.28),transparent)}
+.cover span{position:relative;z-index:1}
+/* footer */
+.footer{background:#070c1f;color:rgba(255,255,255,.65);padding:56px 0 26px;font-size:13px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-tagline{line-height:1.6;margin:14px 0 16px;font-size:13px}
+.footer-col h5{color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}.footer-col a:hover{color:#fff}
+.footer-bot{display:flex;justify-content:space-between;padding-top:20px;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,.45)}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr}}
+</style>
+<style>
+.blog-hero{background:linear-gradient(180deg,#fff7e6,#fff 30%,#f0f4ff);padding:70px 0 40px;text-align:center}
+.blog-hero h1{font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-1.5px;max-width:840px;margin:0 auto;line-height:1.1}
+.blog-hero p{font-size:17px;color:#4a5675;max-width:700px;margin:16px auto 0;line-height:1.6}
+.blog-search{max-width:520px;margin:26px auto 0}
+.blog-search input{width:100%;padding:14px 20px;border:1.5px solid var(--line);border-radius:999px;font-size:15px;outline:none;background:#fff}
+.blog-search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,112,186,.1)}
+.cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px}
+.cat{padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:700;color:var(--slate);cursor:pointer;transition:.2s}
+.cat:hover,.cat.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.section{padding:48px 0}
+.featured{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -40px rgba(0,48,135,.25)}
+.featured .cover{border-radius:0;height:100%;min-height:280px;font-size:84px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+.card{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;transition:.25s;display:block}
+.card:hover{transform:translateY(-4px);box-shadow:0 24px 48px -24px rgba(0,48,135,.22);border-color:var(--sky)}
+.sec-title{font-size:26px;font-weight:800;letter-spacing:-.6px;margin-bottom:18px}
+.cta-band{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:24px;padding:44px;text-align:center;color:#fff;margin:8px 0}
+@media(max-width:900px){.featured{grid-template-columns:1fr}.featured .cover{min-height:200px}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<nav class="navbar"><div class="nav-inner">
+  <a href="/" class="logo"><img src="/assets/images/logo.png" alt="Protiddhoni" style="height:32px;width:auto;display:block"></a>
+  <div class="nav-links">
+    <a href="/voice-otp">Voice OTP</a><a href="/voice-survey">Surveys</a><a href="/voice-broadcast">Broadcast</a>
+    <a href="/pricing">Pricing</a><a href="/api-docs">API Docs</a><a href="/blog">Blog</a><a href="/about">About</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-ghost" href="https://dashboard.protiddhoni-bd.com/login">Sign in</a>
+    <a class="btn btn-primary" href="https://dashboard.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start free →</a>
+  </div>
+</div></nav>
+<header class="blog-hero"><div class="container">
+  <h1>Insights on Voice Communication &amp; Business Automation</h1>
+  <p>Learn how Voice OTP, Voice Broadcast, AI Voice Survey, DTMF Automation, and Voice APIs help businesses improve customer communication.</p>
+  <div class="blog-search"><input id="blogSearch" type="search" placeholder="Search articles…" aria-label="Search articles"></div>
+  <div class="cats" id="cats"><button class="cat active" data-cat="All">All</button><button class="cat" data-cat="Voice OTP">Voice OTP</button><button class="cat" data-cat="Voice Broadcast">Voice Broadcast</button><button class="cat" data-cat="Voice Survey">Voice Survey</button><button class="cat" data-cat="Voice API">Voice API</button><button class="cat" data-cat="AI Automation">AI Automation</button><button class="cat" data-cat="Case Studies">Case Studies</button></div>
+</div></header>
+
+<section class="section"><div class="container">
+  <h2 class="sec-title">Featured</h2>
+  <a class="featured card" href="/blog/voice-otp-vs-sms-otp" data-cat="Voice OTP" data-title="voice otp vs sms otp: which one is more secure for businesses?">
+    <div class="cover" style="background:linear-gradient(135deg,#003087,#0070BA)"><span>🔐</span></div>
+    <div style="padding:32px">
+      <span class="badge">Voice OTP</span>
+      <div class="meta" style="margin:12px 0 10px"><span>📅 Feb 10, 2026</span><span>⏱ 6 min read</span></div>
+      <h3 style="font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.25;margin-bottom:10px">Voice OTP vs SMS OTP: Which One Is More Secure for Businesses?</h3>
+      <p style="color:var(--muted);font-size:15px;line-height:1.6">SMS OTP is everywhere — but it fails more often than teams realise. Here is how voice OTP compares on security, delivery, and cost.</p>
+      <div class="btn btn-primary" style="margin-top:18px">Read article →</div>
+    </div>
+  </a>
+</div></section>
+
+<section class="section" style="padding-top:0"><div class="container">
+  <h2 class="sec-title">Latest articles</h2>
+  <div class="grid" id="grid"><a class="card" href="/blog/voice-otp-vs-sms-otp" data-cat="Voice OTP" data-title="voice otp vs sms otp: which one is more secure for businesses?"><div class="cover" style="background:linear-gradient(135deg,#003087,#0070BA);border-radius:0"><span>🔐</span></div><div style="padding:18px 20px 22px"><span class="badge">Voice OTP</span><div class="meta" style="margin:10px 0 8px"><span>📅 Feb 10, 2026</span><span>⏱ 6 min</span></div><h3 style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px;margin-bottom:8px">Voice OTP vs SMS OTP: Which One Is More Secure for Businesses?</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">SMS OTP is everywhere — but it fails more often than teams realise. Here is how voice OTP compares on security, delivery, and cost.</p><div style="margin-top:14px;color:var(--blue);font-weight:700;font-size:13px">Read more →</div></div></a><a class="card" href="/blog/what-is-voice-broadcasting" data-cat="Voice Broadcast" data-title="what is voice broadcasting? a complete guide for businesses"><div class="cover" style="background:linear-gradient(135deg,#0e7490,#0891b2);border-radius:0"><span>📢</span></div><div style="padding:18px 20px 22px"><span class="badge">Voice Broadcast</span><div class="meta" style="margin:10px 0 8px"><span>📅 Feb 12, 2026</span><span>⏱ 7 min</span></div><h3 style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px;margin-bottom:8px">What Is Voice Broadcasting? A Complete Guide for Businesses</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">Voice broadcasting delivers one recorded or AI-generated message to thousands of numbers at once. Here is everything a business needs to know.</p><div style="margin-top:14px;color:var(--blue);font-weight:700;font-size:13px">Read more →</div></div></a><a class="card" href="/blog/ai-voice-surveys-customer-feedback" data-cat="AI Automation" data-title="how ai voice surveys improve customer feedback collection"><div class="cover" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);border-radius:0"><span>📊</span></div><div style="padding:18px 20px 22px"><span class="badge">AI Automation</span><div class="meta" style="margin:10px 0 8px"><span>📅 Feb 14, 2026</span><span>⏱ 6 min</span></div><h3 style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px;margin-bottom:8px">How AI Voice Surveys Improve Customer Feedback Collection</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">Online forms get ignored. AI voice surveys call customers, ask questions, and auto-capture answers — driving far higher response rates.</p><div style="margin-top:14px;color:var(--blue);font-weight:700;font-size:13px">Read more →</div></div></a><a class="card" href="/blog/automated-voice-call-use-cases-bangladesh" data-cat="Case Studies" data-title="top 7 use cases of automated voice calls in bangladesh"><div class="cover" style="background:linear-gradient(135deg,#003087,#15803d);border-radius:0"><span>🇧🇩</span></div><div style="padding:18px 20px 22px"><span class="badge">Case Studies</span><div class="meta" style="margin:10px 0 8px"><span>📅 Feb 16, 2026</span><span>⏱ 8 min</span></div><h3 style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px;margin-bottom:8px">Top 7 Use Cases of Automated Voice Calls in Bangladesh</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">Automated voice calls reach every district — even without internet. Here are seven high-impact use cases proven across Bangladesh.</p><div style="margin-top:14px;color:var(--blue);font-weight:700;font-size:13px">Read more →</div></div></a><a class="card" href="/blog/integrate-voice-calling-api" data-cat="Voice API" data-title="how to integrate a voice calling api into your application"><div class="cover" style="background:linear-gradient(135deg,#1e293b,#0070BA);border-radius:0"><span>⚙️</span></div><div style="padding:18px 20px 22px"><span class="badge">Voice API</span><div class="meta" style="margin:10px 0 8px"><span>📅 Feb 18, 2026</span><span>⏱ 7 min</span></div><h3 style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px;margin-bottom:8px">How to Integrate a Voice Calling API Into Your Application</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">Add voice OTP, broadcasts, and surveys to your app with a few REST calls. Here is the developer-friendly integration walkthrough.</p><div style="margin-top:14px;color:var(--blue);font-weight:700;font-size:13px">Read more →</div></div></a><a class="card" href="/blog/dtmf-survey-explained" data-cat="Voice Survey" data-title="dtmf survey explained: collect customer responses using keypad input"><div class="cover" style="background:linear-gradient(135deg,#a16207,#f59e0b);border-radius:0"><span>☎️</span></div><div style="padding:18px 20px 22px"><span class="badge">Voice Survey</span><div class="meta" style="margin:10px 0 8px"><span>📅 Feb 20, 2026</span><span>⏱ 5 min</span></div><h3 style="font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px;margin-bottom:8px">DTMF Survey Explained: Collect Customer Responses Using Keypad Input</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">&amp;ldquo;Press 1 for yes, 2 for no.&amp;rdquo; DTMF surveys turn keypad presses into clean, structured data. Here is how they work.</p><div style="margin-top:14px;color:var(--blue);font-weight:700;font-size:13px">Read more →</div></div></a></div>
+  <p id="noResults" style="display:none;text-align:center;color:var(--muted);margin-top:24px">No articles match your search.</p>
+</div></section>
+
+<section class="section"><div class="container"><div class="cta-band">
+  <h2 style="font-size:28px;font-weight:800;margin-bottom:10px">Need a Voice Automation Solution?</h2>
+  <p style="color:rgba(255,255,255,.85);max-width:540px;margin:0 auto 18px">Voice OTP, Voice Broadcast, AI Voice Survey, and a developer-friendly API — all in one platform built for Bangladesh.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a class="btn" style="background:#FFC439;color:#0a1f44" href="https://dashboard.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start Free →</a>
+    <a class="btn btn-outline" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.4)" href="/contact">Book Demo</a>
+  </div>
+</div></div></section>
+<footer class="footer"><div class="container">
+  <div class="footer-grid">
+    <div>
+      <img src="/assets/images/logo-white.png" alt="Protiddhoni" style="height:28px;width:auto;display:block">
+      <p class="footer-tagline">Bangladesh's voice communication platform — Voice OTP, Voice Survey, and Voice Broadcast for modern businesses.</p>
+      <div style="font-size:13px;line-height:1.9">
+        <a href="mailto:sales@protiddhoni-bd.com" style="color:rgba(255,255,255,.8);display:block">sales@protiddhoni-bd.com</a>
+        <a href="https://wa.link/w028i2" target="_blank" rel="noopener" style="color:#FFC439;display:block;font-weight:700">WhatsApp Support →</a>
+      </div>
+    </div>
+    <div class="footer-col"><h5>Products</h5><ul><li><a href="/voice-otp">Voice OTP</a></li><li><a href="/voice-survey">Voice Survey</a></li><li><a href="/voice-broadcast">Voice Broadcast</a></li><li><a href="/api-docs">Developer API</a></li></ul></div>
+    <div class="footer-col"><h5>Company</h5><ul><li><a href="/about">About</a></li><li><a href="/blog">Blog</a></li><li><a href="/contact">Contact</a></li><li><a href="/pricing">Pricing</a></li></ul></div>
+    <div class="footer-col"><h5>Resources</h5><ul><li><a href="/api-docs">API Reference</a></li><li><a href="/user-guide">User Guide</a></li><li><a href="/contact">Support</a></li></ul></div>
+  </div>
+  <div class="footer-bot"><div>© 2026 Protiddhoni Ltd. · Built with ❤️ in Dhaka, Bangladesh</div></div>
+</div></footer>
+<script>
+(function(){
+  var cats=document.getElementById('cats'),search=document.getElementById('blogSearch');
+  var cards=[].slice.call(document.querySelectorAll('#grid .card'));
+  var noRes=document.getElementById('noResults');var cat='All';
+  function apply(){var q=(search.value||'').toLowerCase().trim();var shown=0;
+    cards.forEach(function(c){var okCat=cat==='All'||c.getAttribute('data-cat')===cat;
+      var okQ=!q||c.getAttribute('data-title').indexOf(q)>-1;
+      var show=okCat&&okQ;c.style.display=show?'':'none';if(show)shown++;});
+    noRes.style.display=shown?'none':'block';}
+  cats.addEventListener('click',function(e){if(e.target.classList.contains('cat')){
+    [].forEach.call(cats.children,function(b){b.classList.remove('active')});
+    e.target.classList.add('active');cat=e.target.getAttribute('data-cat');apply();}});
+  search.addEventListener('input',apply);
+})();
+</script>
+</body></html>
