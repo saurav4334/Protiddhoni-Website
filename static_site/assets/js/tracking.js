@@ -17,7 +17,7 @@ window.PD_CONFIG = {
   // Global event parameters — attached to EVERY Meta event.
   META: { product: 'Protiddhoni', business_unit: 'Voice Solution', website: 'protiddhoni-bd.com' },
 
-  FORM_EMAIL:  'info@protiddhoni-bd.com',
+  FORM_EMAIL:  'sales@protiddhoni-bd.com',
   DASH_SIGNUP: 'https://dashboard.protiddhoni-bd.com/signup',
   DASH_LOGIN:  'https://dashboard.protiddhoni-bd.com/login'
 };
@@ -112,11 +112,12 @@ window.PD_CONFIG = {
     var tl = text.toLowerCase();
     var dt = el.getAttribute('data-track') || '';
 
-    /* Contact — phone / call / whatsapp / messenger */
-    if (href.indexOf('tel:') === 0) window.pdMeta('track', 'Contact', { method: 'Phone' });
-    else if (/wa\.link|wa\.me|api\.whatsapp|whatsapp/.test(href)) window.pdMeta('track', 'Contact', { method: 'WhatsApp' });
-    else if (/m\.me|messenger/.test(href)) window.pdMeta('track', 'Contact', { method: 'Messenger' });
-    else if (/call now/.test(tl)) window.pdMeta('track', 'Contact', { method: 'Call' });
+    /* Contact — phone / call / whatsapp / messenger / email */
+    if (href.indexOf('tel:') === 0) window.pdMeta('track', 'Contact', { method: 'phone' });
+    else if (/wa\.link|wa\.me|api\.whatsapp|whatsapp/.test(href)) window.pdMeta('track', 'Contact', { method: 'whatsapp' });
+    else if (href.indexOf('mailto:') === 0) window.pdMeta('track', 'Contact', { method: 'email' });
+    else if (/m\.me|messenger/.test(href)) window.pdMeta('track', 'Contact', { method: 'messenger' });
+    else if (/call now/.test(tl)) window.pdMeta('track', 'Contact', { method: 'phone' });
 
     /* Download — brochure / company profile / proposal / pricing pdf */
     if (/\.pdf(\?|$)/.test(href) || el.hasAttribute('download')) {
@@ -176,6 +177,8 @@ window.PD_CONFIG = {
       var name = val('name'), email = val('email'), msg = val('message');
       if (!name.trim() || !email.trim() || !msg.trim()) { show(false, 'Please fill in your name, email, and message.'); return; }
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { show(false, 'Please enter a valid email address.'); return; }
+      var phone = val('phone');
+      if (phone && !/^(\+?880|0)?1[3-9]\d{8}$/.test(phone.replace(/[\s-]/g, ''))) { show(false, 'Please enter a valid Bangladesh phone number.'); return; }
       var honey = form.querySelector('[name="_honey"]'); if (honey && honey.value) return;
       var btn = form.querySelector('button[type="submit"], input[type="submit"]'); var label = btn ? btn.textContent : '';
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
@@ -183,12 +186,12 @@ window.PD_CONFIG = {
         method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form)
       }).then(function (r) { return r.json(); }).then(function (json) {
         if (json && (json.success === 'true' || json.success === true)) {
-          show(true, 'Thank you! We received your message and will reply within 4 hours.');
+          show(true, 'Thank you for contacting Protiddhoni. Our sales team will get back to you shortly.');
           form.reset();
           window.pdTrack('generate_lead', null, { form: 'contact' });        // GA4
-          window.pdMeta('track', 'Lead', { source: 'Contact Form' });         // Meta
-        } else { show(false, 'Sorry, something went wrong. Please email ' + C.FORM_EMAIL + ' directly.'); }
-      }).catch(function () { show(false, 'Network error. Please email ' + C.FORM_EMAIL + ' directly.'); })
+          window.pdMeta('track', 'Lead', { source: 'contact_page' });        // Meta
+        } else { show(false, 'We could not submit your message. Please call us or contact us on WhatsApp.'); }
+      }).catch(function () { show(false, 'We could not submit your message. Please call us or contact us on WhatsApp.'); })
         .finally(function () { if (btn) { btn.disabled = false; btn.textContent = label; } });
     });
   }

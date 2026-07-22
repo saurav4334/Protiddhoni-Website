@@ -8,10 +8,9 @@
   var SIGNUP = 'https://dashboard.protiddhoni-bd.com/signup';
   var LOGIN  = 'https://dashboard.protiddhoni-bd.com/login';
   var LINKS = [
-    ['Home', '/'], ['About', '/about'], ['Pricing', '/pricing'],
-    ['Voice OTP', '/voice-otp'], ['Voice Survey', '/voice-survey'],
-    ['Voice Broadcast', '/voice-broadcast'], ['API Docs', '/api-docs'],
-    ['Blog', '/blog'], ['Contact', '/contact']
+    ['About Us', '/about'], ['Voice OTP', '/voice-otp'], ['Voice Survey', '/voice-survey'],
+    ['Voice Broadcast', '/voice-broadcast'], ['Pricing', '/pricing'], ['API Docs', '/api-docs'],
+    ['Blog', '/blog'], ['Contact Us', '/contact']
   ];
 
   function track(ga, fb, label) {
