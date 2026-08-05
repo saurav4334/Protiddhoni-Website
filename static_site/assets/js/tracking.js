@@ -12,7 +12,7 @@
 window.PD_CONFIG = {
   GA4_ID:  'G-XXXXXXXXXX',            // GA4 base tag lives in each page <head>; keep placeholder here
   GTM_ID:  'GTM-XXXXXXX',             // optional GTM container
-  PIXEL_ID:'883853861046480',      // shared Meta Pixel ID
+  PIXEL_ID:'977845465274616',      // shared Meta Pixel ID
 
   // Global event parameters — attached to EVERY Meta event.
   META: { product: 'Protiddhoni', business_unit: 'Voice Solution', website: 'protiddhoni-bd.com' },
