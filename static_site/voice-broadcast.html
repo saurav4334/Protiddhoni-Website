@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/css/responsive.css?v=9"><script src="/assets/js/tracking.js?v=9" defer></script><script src="/assets/js/mobile-nav.js?v=9" defer></script>
+<link rel="stylesheet" href="/assets/css/responsive.css?v=10"><script src="/assets/js/tracking.js?v=10" defer></script><script src="/assets/js/mobile-nav.js?v=10" defer></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4J6RB3T61Q"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-4J6RB3T61Q");</script>
@@ -28,7 +28,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"What is Voice Broadcast?","acceptedAnswer":{"@type":"Answer","text":"Voice Broadcast is a service that lets a business send a single pre-recorded or AI-generated voice message to many phone numbers automatically, instead of calling each customer manually."}},
 {"@type":"Question","name":"What can I use Voice Broadcast for?","acceptedAnswer":{"@type":"Answer","text":"Common uses include notifications, reminders, promotional announcements, alerts and general customer updates."}},
-{"@type":"Question","name":"How much does Voice Broadcast cost?","acceptedAnswer":{"@type":"Answer","text":"Standard voice calls are billed at ৳0.60 per 30-second pulse. AI Text-to-Speech calls are billed at ৳2.00 per connected minute. See the pricing page for full details."}},
+{"@type":"Question","name":"How much does Voice Broadcast cost?","acceptedAnswer":{"@type":"Answer","text":"Standard voice calls are billed at ৳0.45 per 60-second pulse. AI Text-to-Speech calls are billed at ৳2.00 per connected minute. See the pricing page for full details."}},
 {"@type":"Question","name":"Do I need to install anything?","acceptedAnswer":{"@type":"Answer","text":"No. Voice Broadcast runs from your Protiddhoni account. You can also integrate it into your own software using the Protiddhoni API."}}
 ]}
 </script>
@@ -109,7 +109,7 @@ section{padding:56px 0}
 <nav class="navbar"><div class="nav-inner">
   <a href="/" class="logo"><img src="/assets/images/logo.png" alt="Protiddhoni" style="height:32px;width:auto;display:block"></a>
   <div class="nav-links"><a href="/about">About Us</a><a href="/voice-otp">Voice OTP</a><a href="/voice-survey">Voice Survey</a><a href="/voice-broadcast">Voice Broadcast</a><a href="/pricing">Pricing</a><a href="/api-docs">API Docs</a><a href="/blog">Blog</a><a href="/contact">Contact Us</a></div>
-  <div class="nav-cta"><a class="btn btn-ghost" href="https://dashboard.protiddhoni-bd.com/login">Sign in</a><a class="btn btn-primary" href="https://dashboard.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start free →</a></div>
+  <div class="nav-cta"><a class="btn btn-ghost" href="https://portal.protiddhoni-bd.com/" data-track="login" rel="nofollow">Sign in</a><a class="btn btn-primary" href="https://portal.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start free →</a></div>
 </div></nav>
 
 <!-- 1. HERO -->
@@ -118,7 +118,7 @@ section{padding:56px 0}
   <h1>Reach thousands of customers with one reliable voice campaign.</h1>
   <p>Send automated voice calls for notifications, reminders, promotions and alerts — quickly and consistently — from a single dashboard or through the Protiddhoni API.</p>
   <div class="btns">
-    <a class="btn btn-primary" href="https://dashboard.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start Free</a>
+    <a class="btn btn-primary" href="https://portal.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start Free</a>
     <a class="btn btn-outline" href="/contact">Contact Sales</a>
   </div>
   <div class="note">Create an account to explore the platform.</div>
@@ -139,7 +139,7 @@ section{padding:56px 0}
     <div class="card"><div class="ic">📇</div><h3>Contact list upload</h3><p>Import your customer numbers and launch a campaign to your chosen audience.</p></div>
     <div class="card"><div class="ic">🧩</div><h3>Dashboard &amp; API</h3><p>Run campaigns manually from your account or integrate calling into your own software.</p></div>
     <div class="card"><div class="ic">🔁</div><h3>Reusable campaigns</h3><p>Set up a message once and reuse it for recurring notifications and reminders.</p></div>
-    <div class="card"><div class="ic">💳</div><h3>Simple pulse pricing</h3><p>Pay per 30-second pulse for standard calls, or per connected minute for AI voice.</p></div>
+    <div class="card"><div class="ic">💳</div><h3>Simple pulse pricing</h3><p>Pay per 60-second pulse for standard calls, or per connected minute for AI voice.</p></div>
   </div>
 </div></section>
 
@@ -171,7 +171,7 @@ section{padding:56px 0}
 <section><div class="container">
   <div class="sec-head"><h2>Simple, transparent pricing</h2><p>Pay only for what you use.</p></div>
   <div class="price-wrap">
-    <div class="price"><div class="k">Standard voice</div><div class="v">৳0.60</div><div class="u">per 30-second pulse</div><p>Best for pre-recorded voice campaigns and notifications.</p></div>
+    <div class="price"><div class="k">Standard voice</div><div class="v">৳0.45</div><div class="u">per 60-second pulse</div><p>Best for pre-recorded voice campaigns and notifications.</p></div>
     <div class="price"><div class="k">AI Text-to-Speech</div><div class="v">৳2.00</div><div class="u">per connected minute</div><p>Generate natural voice messages directly from text.</p></div>
   </div>
   <div style="text-align:center;margin-top:24px"><a class="btn btn-outline" href="/pricing">View full pricing →</a></div>
@@ -207,7 +207,7 @@ section{padding:56px 0}
     <details><summary>What is Voice Broadcast?</summary><p>Voice Broadcast is a service that lets a business send a single pre-recorded or AI-generated voice message to many phone numbers automatically, instead of calling each customer manually.</p></details>
     <details><summary>What can I use Voice Broadcast for?</summary><p>Common uses include notifications, reminders, promotional announcements, alerts, order updates and general customer communication.</p></details>
     <details><summary>Can I use my own voice recording?</summary><p>Yes. You can upload your own pre-recorded audio, or generate a voice message from text using AI Text-to-Speech.</p></details>
-    <details><summary>How much does it cost?</summary><p>Standard voice calls are billed at ৳0.60 per 30-second pulse, and AI Text-to-Speech calls at ৳2.00 per connected minute. See the <a href="/pricing" style="color:var(--blue);font-weight:700">pricing page</a> for full details.</p></details>
+    <details><summary>How much does it cost?</summary><p>Standard voice calls are billed at ৳0.45 per 60-second pulse, and AI Text-to-Speech calls at ৳2.00 per connected minute. See the <a href="/pricing" style="color:var(--blue);font-weight:700">pricing page</a> for full details.</p></details>
     <details><summary>Do I need to install anything?</summary><p>No. You can run campaigns directly from your Protiddhoni account, or integrate Voice Broadcast into your own software using the API.</p></details>
     <details><summary>How do I get started?</summary><p>Create a free account to explore the platform, or <a href="/contact" style="color:var(--blue);font-weight:700">contact our sales team</a> to discuss your requirements.</p></details>
   </div>
@@ -218,7 +218,7 @@ section{padding:56px 0}
   <h2>Start your first voice campaign</h2>
   <p>Create an account to explore Voice Broadcast, or talk to our team about your requirements.</p>
   <div class="btns">
-    <a class="btn btn-gold" href="https://dashboard.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start Free</a>
+    <a class="btn btn-gold" href="https://portal.protiddhoni-bd.com/signup" data-track="signup" rel="nofollow">Start Free</a>
     <a class="btn btn-outline" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.4)" href="/contact">Contact Sales</a>
   </div>
 </div></section>

@@ -5,8 +5,8 @@
 (function () {
   'use strict';
 
-  var SIGNUP = 'https://dashboard.protiddhoni-bd.com/signup';
-  var LOGIN  = 'https://dashboard.protiddhoni-bd.com/login';
+  var SIGNUP = 'https://portal.protiddhoni-bd.com/signup';
+  var LOGIN  = 'https://portal.protiddhoni-bd.com/';
   var LINKS = [
     ['About Us', '/about'], ['Voice OTP', '/voice-otp'], ['Voice Survey', '/voice-survey'],
     ['Voice Broadcast', '/voice-broadcast'], ['Pricing', '/pricing'], ['API Docs', '/api-docs'],

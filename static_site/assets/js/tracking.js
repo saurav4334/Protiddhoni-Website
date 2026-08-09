@@ -18,8 +18,8 @@ window.PD_CONFIG = {
   META: { product: 'Protiddhoni', business_unit: 'Voice Solution', website: 'protiddhoni-bd.com' },
 
   FORM_EMAIL:  'sales@protiddhoni-bd.com',
-  DASH_SIGNUP: 'https://dashboard.protiddhoni-bd.com/signup',
-  DASH_LOGIN:  'https://dashboard.protiddhoni-bd.com/login'
+  DASH_SIGNUP: 'https://portal.protiddhoni-bd.com/signup',
+  DASH_LOGIN:  'https://portal.protiddhoni-bd.com/'
 };
 
 (function () {
